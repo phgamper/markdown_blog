@@ -1,6 +1,6 @@
 <?php
 
-class Footer extends View
+class Footer implements View
 {
     protected $config;
 

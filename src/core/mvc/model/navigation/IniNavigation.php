@@ -29,6 +29,10 @@ class IniNavigation extends AbstractNavigation
                 {
                     $items[$key][$k] = $v;
                 }
+                else if (!is_numeric($k) && $k == "path")
+                {
+                    $items[$key][$k] = $v;
+                }
                 else
                 {
                     $items[$key][$key][$k] = $v;

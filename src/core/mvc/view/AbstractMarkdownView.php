@@ -1,12 +1,13 @@
 <?php
 
-abstract class AbstractPageView extends View
+abstract class AbstractMarkdownView implements View
 {
     protected $config;
 
-    public function __construct(IModel $model, $inifile)
+    public function __construct(Markdown $model, $inifile)
     {
-        parent::__construct($model);
+        $this->model = $model;
+        
         if (file_exists($inifile))
         {
             $this->config = parse_ini_file($inifile, true);
@@ -23,7 +24,7 @@ abstract class AbstractPageView extends View
             $string = Logger::getInstance()->toString() . $string;
         }
         
-        return $this->container($string);
+        return '<div class="container">' . $string . '</div>';
     }
 
     protected abstract function content();
@@ -39,21 +40,6 @@ abstract class AbstractPageView extends View
         }
         
         return $footer;
-    }
-
-    protected function back($span = 12, $offset = 0, $row = true)
-    {
-        $back = $_SERVER['PHP_SELF'] . '?module=' . $_GET['module'];
-        $back = '<div class="col-md-' . $span . ' col-md-offset-' . $offset . '"><a href="' . $back .
-             '">zur&uuml;ck</a></div>';
-        $back = $row ? '<div class="row">' . $back . '</div>' : $back;
-        return $back;
-    }
-
-    protected function container($string)
-    {
-        return '<div class="container">' . $string . '</div>';
-        ;
     }
 }
 

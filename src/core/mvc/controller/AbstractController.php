@@ -13,7 +13,7 @@ abstract class AbstractController
             $_GET['module'] = 'home';
         }
         
-        $this->entity = ucfirst($_GET['module']);
+        $this->entity = strtolower($_GET['module']);
     }
 
     public function display()

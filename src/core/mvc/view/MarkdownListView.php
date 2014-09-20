@@ -1,11 +1,11 @@
 <?php
 
-class HomeView extends AbstractPageView
+class MarkdownListView extends AbstractMarkdownView
 {
 
-    public function __construct(IModel $model)
+    public function __construct(Markdown $model, $ini)
     {
-        parent::__construct($model, CONFIG_DIR . 'home.ini');
+        parent::__construct($model, $ini);
     }
 
     public function content()
@@ -13,7 +13,7 @@ class HomeView extends AbstractPageView
         $string = '';
         $pager = '';
         $limit = null;
-        $start = null;
+        $start = 0;
 
         if (isset($this->config['limit']))
         {
@@ -21,7 +21,7 @@ class HomeView extends AbstractPageView
             $start = isset($_GET['page']) && $_GET['page'] > 0 ? $limit * ($_GET['page'] - 1) : 0;
         }
         
-        foreach ($this->model->markdown()->getList(MD_DIR, $start, $limit) as $md)
+        foreach ($this->model->getList($start, $limit) as $md)
         {
             $string .= '<div class="row markdown"><div class="col-md-12">' . $md . '</div></div>';
         }
@@ -35,7 +35,7 @@ class HomeView extends AbstractPageView
             {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';
             }
-            if ($next <= ceil($this->model->markdown()->count / $limit))
+            if ($next <= ceil($this->model->count / $limit))
             {
                 $pager .= '<li class="next"><a href="' . $self . $next . '">Older &rarr;</a></li>';
             }

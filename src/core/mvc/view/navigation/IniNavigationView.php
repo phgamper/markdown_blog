@@ -1,6 +1,6 @@
 <?php
 
-class IniNavigationView extends AbstractNavigationView
+class IniNavigationView implements View
 {
 
     public function __construct(IniNavigation $model)
@@ -63,9 +63,6 @@ class IniNavigationView extends AbstractNavigationView
         </button>
         <a class="navbar-brand" href="'.$_SERVER['PHP_SELF'].'">Blog.md</a>
         </div>';
-        
-        
-        
         
         $container = '<div class="container-fluid">'.$container.$string.'</div>';
         $container = '<div class="navbar navbar-default navbar-fixed-top" role="navigation">'.$container.'</div>';

@@ -1,6 +1,6 @@
 <?php
 
-class SitemapView extends AbstractNavigationView
+class SitemapView implements View
 {
 
     public function __construct(IniNavigation $model)
