@@ -1,0 +1,13 @@
+# git and project settings
+.git
+.buildpath
+.metadata
+.project
+.settings
+
+# security settings
+*.htaccess
+
+# cache & logs
+log/*
+*.bak

@@ -1,0 +1,27 @@
+body {
+	margin: auto;
+	padding-bottom: 40px;
+	padding-top: 70px;
+	color: #5a5a5a;
+}
+
+.container{
+	max-width:1024px;	
+}
+
+a:hover,a:focus {
+	text-decoration: none;
+}
+
+/* RESPONSIVE CSS
+    -------------------------------------------------- */
+@media ( max-width : 979px) {
+	
+}
+
+@media ( max-width : 767px) {
+	
+	body {
+		font-size: 11pt;	
+	}
+}
