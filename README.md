@@ -1,8 +1,8 @@
-## MarkdownBlog
+# MarkdownBlog
 
 MarkdownBlog is a lightweight blog softeware written in php and twitter bootstrap. Unlike as in common blog application like wordpress, MarkdownBlog works without any Database. This is because MarkdownBlog uses markdown files (*.md) instead. The application provides two different types of page views: One that shows a list of markdowns and one that shows a single file. Further a dropdown navigation is included, which is build dynamicaly according to file structure.
 
-### Used Technologies
+## Used Technologies
 
 - Apache 2.2
 - HTML 5
@@ -10,31 +10,33 @@ MarkdownBlog is a lightweight blog softeware written in php and twitter bootstra
 - Bootstrap 3.2
 - Parsedown x.x.x
 
-### Tested on
+## Tested on
 
 - Google Chrome 37.x
-- 
 
-### Quick start
+## Quick start
 
-
-
-### Documentation
-
-#### Navigation structure
-
-#### Views
+1. 
 
 
-##### List of Markdowns
+
+## Documentation
+
+### Navigation structure
+
+### Views
 
 
-##### Single Markdown
+#### List of Markdowns
 
 
-#### Configuration
+#### Single Markdown
 
 
-### Releases
+### Configuration
+
+
+## Releases
 
 - 22.09.2014  v. 0.1
+

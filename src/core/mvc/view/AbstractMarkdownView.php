@@ -4,14 +4,10 @@ abstract class AbstractMarkdownView implements View
 {
     protected $config;
 
-    public function __construct(Markdown $model, $inifile)
+    public function __construct(Markdown $model, $config)
     {
         $this->model = $model;
-        
-        if (file_exists($inifile))
-        {
-            $this->config = parse_ini_file($inifile, true);
-        }
+        $this->config = $config;
     }
 
     public function show()
@@ -23,7 +19,6 @@ abstract class AbstractMarkdownView implements View
         {
             $string = Logger::getInstance()->toString() . $string;
         }
-        
         return '<div class="container">' . $string . '</div>';
     }
 
@@ -38,7 +33,6 @@ abstract class AbstractMarkdownView implements View
             $f = new Footer();
             $footer = $f->show();
         }
-        
         return $footer;
     }
 }

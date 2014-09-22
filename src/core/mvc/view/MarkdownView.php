@@ -3,9 +3,9 @@
 class MarkdownView extends AbstractMarkdownView
 {
 
-    public function __construct(Markdown $model, $ini)
+    public function __construct(Markdown $model, $config)
     {
-        parent::__construct($model, $ini);
+        parent::__construct($model, $config);
     }
 
     public function content()

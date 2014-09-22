@@ -21,7 +21,7 @@ class IniNavigation extends AbstractNavigation
         foreach ($ini as $key => $value)
         {
             $items[$key] = array();
-            $items[$key][$key] = array();
+            $items[$key]['dropdown'] = array();
             
             foreach ($value as $k => $v)
             {

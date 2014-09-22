@@ -21,26 +21,46 @@ class MarkdownController extends AbstractController
 
     protected function actionListener()
     {
-        $ini = CONFIG_DIR.$this->entity.'.ini';
+		$config = $this->config[$this->entity];
+
+		if(isset($_GET['value']) && isset($config['paths'])) 
+		{
+			if(array_key_exists($v = $_GET['value'], $config['paths']))
+			{
+				$path = $config['paths'][$v];
+			}
+			else
+			{
+				$path = 'error.md';
+			}
+		}
+		else if(isset($config['path']))
+		{
+			$path = $config['path'];
+		}
+		else
+		{
+			$path = 'error.md';
+		}
         
         switch (true)
         {
-            case isset($this->config[$this->entity]['path']) && is_dir($this->config[$this->entity]['path']):
+            case is_dir($path):
             {
-                $this->model = new Markdown($this->config[$this->entity]['path']);
-                $this->view = new MarkdownListView($this->model, $ini);
+                $this->model = new Markdown($path);
+                $this->view = new MarkdownListView($this->model, $config);
                 break;
             }
-            case isset($this->config[$this->entity]['path']) && is_file($this->config[$this->entity]['path']):
+            case is_file($path):
             {
-                $this->model = new Markdown($this->config[$this->entity]['path']);
-                $this->view = new MarkdownView($this->model, $ini);
+                $this->model = new Markdown($path);
+                $this->view = new MarkdownView($this->model, $config);
                 break;
             }
             default:
             {
-                $this->model = new Markdown('md/home/');
-                $this->view = new MarkdownListView($this->model, $ini);
+                $this->model = new Markdown('README.md');
+                $this->view = new MarkdownListView($this->model, $config);
             }
         }
         

@@ -18,28 +18,19 @@ class IniNavigationView implements View
             $li_class = $_GET['module'] == $key && !isset($_GET['value']) ? 'active' : '';
             $caret = '';
             $submenu = '';
-            
-            foreach ($value[$key] as $subKey => $subValue)
-            {
-                $a_class = 'dropdown-toggle" data-toggle="dropdown';
-                $caret = '<b class="caret"></b>';
-                if(is_numeric($subKey))
-                {
-                    $href = $_SERVER['PHP_SELF'] . '?module='.$key.'&value='. $subValue;
-                }
-                else
-                {
-                    $href = $_SERVER['PHP_SELF'] . '?module='.$subKey;
-                }
-                $submenu .= '<li><a href="' . $href . '">' . $subValue . '</a></li>';
-            }
-            
-            if ($submenu != '')
-            {
+
+			if(!empty($value['dropdown']))
+			{
+				foreach ($value['dropdown']['names'] as $i => $subValue)
+				{
+					$a_class = 'dropdown-toggle" data-toggle="dropdown';
+					$caret = '<b class="caret"></b>';
+					$href = $_SERVER['PHP_SELF'] . '?module='.$key.'&value='. $i;
+					$submenu .= '<li><a href="' . $href . '">' . $subValue . '</a></li>';
+				}
                 $li_class .= 'dropdown';
                 $submenu = '<ul class="dropdown-menu" role="menu">' . $submenu . '</ul>';
-            }
-            
+           	} 
             $href = $_SERVER['PHP_SELF'] . '?module=' . $key;
             $li = '<a href="' . $href . '" class="' . $a_class . '">' . $value['name'] . $caret . '</a>';
             $menu .= '<li class="' . $li_class . '">' . $li . $submenu . '</li>';
