@@ -9,5 +9,5 @@
 *.htaccess
 
 # cache & logs
-log/*
+*.log
 *.bak

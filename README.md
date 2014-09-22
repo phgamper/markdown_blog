@@ -1,39 +1,29 @@
 # MarkdownBlog
 
-MarkdownBlog is a lightweight blog softeware written in php and twitter bootstrap. Unlike as in common blog application like wordpress, MarkdownBlog works without any Database. This is because MarkdownBlog uses markdown files (*.md) instead. The application provides two different types of page views: One that shows a list of markdowns and one that shows a single file. Further a dropdown navigation is included, which is build dynamicaly according to file structure.
+MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. Unlike as in common blog application like wordpress, MarkdownBlog works without any Database. This is because MarkdownBlog uses markdown files (*.md) instead. The application provides two different types of page views: One that shows a list of markdowns and one that shows a single file. Further a dropdown navigation is included, which is build dynamicaly according to file structure.
 
-## Running on
-
-- Read 2.2
-- HTML 5
-- PHP 5.4
-- Bootstrap 3.2
-- Parsedown x.x.x
-
-## Tested on
-
-- Google Chrome 37.x
 
 ## Quick start
 
-1. 
+1. Download [markdown.tar](https://github.com/phgamper/markdown_blog/releases) and extract the archive into your servers root directory.
+
+2. Copy your `*.md~` files on the server and link them in the configuration file `config/config.ini` by editing the example in there. 
+
+3. Make sure the server has read and execution access to all linked markdown files.
+
+4.  
 
 
+## Build with
 
-## Documentation
+- HTML 5
+- PHP 5.4
+- [Bootstrap 3.2](http://getbootstrap.com/)
+- [Parsedown](http://parsedown.org)
 
-### Navigation structure
+## Tested on
 
-### Views
-
-
-#### List of Markdowns
-
-
-#### Single Markdown
-
-
-### Configuration
+- Google Chrome 38.x
 
 
 ## Releases
