@@ -1,7 +1,7 @@
 <?php
-include_once ('config/config.php');
-include_once ('lib/Autoload.php');
-include_once ('lib/ScanDir.php');
+include_once ('src/config.php');
+include_once (LIB_DIR.'Autoload.php');
+include_once (LIB_DIR.'ScanDir.php');
 ini_set('display_errors', 1);
 $src = Autoload::getInstance(SRC_DIR, false)->getClasses();
 $lib = Autoload::getInstance(LIB_DIR, false)->getClasses();

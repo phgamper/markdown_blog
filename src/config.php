@@ -17,7 +17,7 @@ define('SRC_DIR', 'src/', TRUE);
  * 
  * @global string LIB_DIR path of the library directory
  */
-define('LIB_DIR', 'lib/', TRUE);
+define('LIB_DIR', 'src/lib/', TRUE);
 
 /**
  *
