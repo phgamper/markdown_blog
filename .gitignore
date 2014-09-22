@@ -11,3 +11,6 @@
 # cache & logs
 *.log
 *.bak
+
+# VIM 
+*.swp
