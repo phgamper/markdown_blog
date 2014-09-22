@@ -6,7 +6,7 @@ class Footer implements View
 
     public function __construct()
     {
-        $this->config = parse_ini_file(CONFIG_DIR . 'footer.ini', true);
+        $this->config = parse_ini_file(CONFIG_DIR . 'general.ini', true);
         Head::getInstance()->link(CSS_DIR . 'footer.css');
     }
 
@@ -14,12 +14,19 @@ class Footer implements View
     {
         // sitemap
         $sitemap = new NavigationController(new Sitemap(CONFIG_DIR . 'config.ini'));
-        $left = '<p>&copy; blog.md 2014 - created by phgamper - phgamper (at) gmail.com</p>';
-        // impressum
-        $right = '<p class="pull-right"><a href="#">Back to top</a></p>';
+        // legal notice
+        $left = '';
+        if(isset($this->config['legal_notice']))
+        {
+            $left = $this->config['legal_notice'];
+        }
+        $left = '<div class="col-md-9">'.$left.'</div>';
+        $right = '<div class="col-md-3"><p class="pull-right"><a href="#">Back to top</a></p></div>';
+        // license
+        $license = '<p class="license">&copy; <a href="https://github.com/phgamper/markdown_blog" title="MarkdownBlog on github">MarkdownBlog</a> 2014 - GPL v3.0</p>';
         // put it together
         $footer = '<hr>' . $sitemap->display();
-        $footer .= '<footer class="footer">' . $left . $right . '</footer>';
+        $footer .= '<footer class="footer"><div class="row">' . $left . $right . '</div>'.$license.'</footer>';
         return $footer;
     }
 }

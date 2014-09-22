@@ -3,3 +3,17 @@
 .footer {
 	
 }
+
+.license {
+	color: #CCCCCC;
+	font-style: italic;
+}
+
+.license a {
+	color: #CCCCCC;
+	font-weight: bold;
+}
+
+.license a:hover {
+	color: #999999;
+}
