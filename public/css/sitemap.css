@@ -15,7 +15,9 @@
 .sitemap ul {
 	list-style-type: none;
 	margin: 0px;
+	padding: 8px;
 }
+
 
 .sitemap-top-level {
 	float: left;

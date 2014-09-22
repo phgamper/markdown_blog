@@ -32,7 +32,7 @@ class SitemapView implements View
         }
         
         $menu = '<div class="row"><ul>'.$menu.'</ul></div>';
-        $menu = '<div class="row sitemap"><div class="span12">'.$menu.'</div></div>';
+        $menu = '<div class="row sitemap"><div class="col-md-12">'.$menu.'</div></div>';
         return $menu;
     }
 }

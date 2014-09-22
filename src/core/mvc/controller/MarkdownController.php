@@ -9,7 +9,7 @@ class MarkdownController extends AbstractController
     {
         parent::__construct();
         
-        $inifile = CONFIG_DIR.'navigation.ini';
+        $inifile = CONFIG_DIR.'config.ini';
         
         if (file_exists($inifile))
         {

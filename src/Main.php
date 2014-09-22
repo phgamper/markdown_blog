@@ -9,7 +9,7 @@ class Main
         Head::getInstance()->link(CSS_DIR.'style.css');
         Script::getInstance()->link('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
         Script::getInstance()->link('public/bootstrap/js/bootstrap.js');
-        $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'navigation.ini'));
+        $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
         $controller = new MarkdownController();
         
 

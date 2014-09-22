@@ -28,9 +28,9 @@ class MarkdownListView extends AbstractMarkdownView
 
         if (isset($this->config['limit']))
         {
-            $self = $_SERVER['PHP_SELF'] . '?module=home&page=';
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
             $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
+            $self = $_SERVER['PHP_SELF'] . '?'.QueryString::remove('page').'&page=';
             if ($prev > 0)
             {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';

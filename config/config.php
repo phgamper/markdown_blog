@@ -15,15 +15,6 @@ define('SRC_DIR', 'src/', TRUE);
  *
  * Enter description here ...
  * 
- * @global string TEMPLATE_ROOT_PATH absolute path to template root directory
- */
-define('TEMPLATE_ROOT_PATH', 'template/', TRUE);
-
-/**
- *
- *
- * Enter description here ...
- * 
  * @global string LIB_DIR path of the library directory
  */
 define('LIB_DIR', 'lib/', TRUE);
@@ -54,15 +45,6 @@ define('LOG_DIR', 'log/', TRUE);
  */
 define('CSS_DIR', 'public/css/', TRUE);
 
-/**
- *
- *
- * Enter description here ...
- *
- * @global string LIB_DIR path of the library directory
- */
-define('MD_DIR', 'public/md/', TRUE);
-
 
 /**
  * 
@@ -73,11 +55,12 @@ define('MD_DIR', 'public/md/', TRUE);
  */
 define('DEFAULT_LOG_FILE', 'default.log', TRUE);
 
+
 /**
  *
  *
  * Enter description here ...
- * 
+ *
  * @global string NAVIGATION_TYPE defines the type/style of the navigation
  */
 define('NAVIGATION_TYPE', 'dropdown', TRUE);
