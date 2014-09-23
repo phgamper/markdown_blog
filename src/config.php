@@ -83,14 +83,4 @@ define('CSS_DIR', 'public/css/', TRUE);
 define('DEFAULT_LOG_FILE', 'default.log', TRUE);
 
 
-/**
- *
- *
- * Enter description here ...
- *
- * @global string NAVIGATION_TYPE defines the type/style of the navigation
- */
-define('NAVIGATION_TYPE', 'dropdown', TRUE);
-
-
 ?>
