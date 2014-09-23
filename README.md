@@ -1,6 +1,6 @@
 # MarkdownBlog
 
-MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. Its purpose is to provide a easy way to share your thoughts without any Database or special setup needed.
+MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. Its purpose is to provide a easy way to share your thoughts without any database or special setup needed.
 The content of the website can be provided in easy to use [markdown](http://de.wikipedia.org/wiki/Markdown) files `(*.md)` instead. 
 
 ## Features
@@ -13,15 +13,13 @@ The content of the website can be provided in easy to use [markdown](http://de.w
 
 ## Quick start
 
-1. Download [markdown.tar](https://github.com/phgamper/markdown_blog/releases) and extract the archive into your servers root directory.
-
-2. Copy your `*.md~` files on the server and link them in the configuration file `config/config.ini` by editing the example in there. Additional information could be found in the [documentation]().
-
-3. Make sure the server has read and execution access to all linked markdown files.
-
-4. Modify the `config/general.ini` to personalize your blog.
-
+1. Download [markdown.tar](https://github.com/phgamper/markdown_blog/releases) and extract the archive into your server's web folder. 
+2. Modify the `config/general.ini` to personalize your website/blog.
+3. Copy your `*.md` files on the server and provide their location in the `config/config.ini` (just edit the given example in there). 
+4. Make sure the server has read and execution access to all linked markdown files.
 5. Share your thoughts and enjoy!
+
+For detailed information see the [documentation](https://github.com/phgamper/markdown_blog/blob/master/doc.md).
 
 ## Build with
 
