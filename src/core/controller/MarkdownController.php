@@ -79,7 +79,7 @@ class MarkdownController extends AbstractController
             case is_file($path):
             {
                 $this->model = new Markdown($path);
-                $this->view = new MarkdownView($this->model, $config);
+                $this->view = new MarkdownSingleView($this->model, $config);
                 break;
             }
             default:
