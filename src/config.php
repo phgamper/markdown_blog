@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/**
  * This file is part of the MarkdownBlog project.
  * It provides general config for the projects' backend including sourcecode locations
  * and so on.

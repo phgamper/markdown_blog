@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/**
  * This file is part of the MarkdownBlog project.
  * It is the entry page for the project and is responsible for the proper loading
  * of all needed libraries.

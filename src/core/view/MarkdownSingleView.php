@@ -2,7 +2,7 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It sets up the backend and instanciates all needed components.
+ * This view shows a page only containing a single formated markdown file.
  * 
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
@@ -25,27 +25,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-class Main
+class MarkdownSingleView extends AbstractMarkdownView
 {
 
-    public function __construct()
+    public function __construct(Markdown $model, $config)
     {
-        Head::getInstance()->link('public/bootstrap/css/bootstrap.min.css');
-        Head::getInstance()->link(CSS_DIR.'style.css');
-        Script::getInstance()->link('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
-        Script::getInstance()->link('public/bootstrap/js/bootstrap.js');
-        $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
-        $controller = new MarkdownController();
-        
+        parent::__construct($model, $config);
+    }
 
-        // display all
-        $string = '';
-        $string = $navigation->display();
-        $string .= $controller->display();
-        $head = Head::getInstance()->toString();
-        $script = Script::getInstance()->toString();
-        //include FRAME_ROOT_PATH . 'script.php';
-        echo '<!DOCTYPE html><html lang="en">'.$head.'<body>'.$string.$script.'</body></html>';
+    public function content()
+    {
+        return '<div class="row markdown"><div class="col-md-12">' . $this->model->get() . '</div></div>';
     }
 }
 
