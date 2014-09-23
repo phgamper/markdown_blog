@@ -34,6 +34,7 @@ For detailed information see the [documentation](https://github.com/phgamper/mar
 - Safari on iOS 8
 - Google Chrome for iOS 37.x
 - Google Chrome for Android 37.x
+- Mozilla Firefox for Ubuntu 31.0
 
 ## Releases
 
