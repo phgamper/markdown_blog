@@ -31,7 +31,8 @@ class Footer implements View
 
     public function __construct()
     {
-        $this->config = parse_ini_file(CONFIG_DIR . 'general.ini', true);
+        $ini = parse_ini_file(CONFIG_DIR . 'general.ini', true);
+        $this->config = isset($ini['footer']) ? $ini['footer'] : array();
         Head::getInstance()->link(CSS_DIR . 'footer.css');
     }
 
