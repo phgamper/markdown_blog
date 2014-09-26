@@ -29,6 +29,7 @@
 class Script
 {
     private $scripts = array();
+    private $inlines = array();
     
     private static $instance = null;
     
@@ -66,6 +67,16 @@ class Script
     }
     
     /**
+     * inlines a script directly into the HTML code
+     * 
+     * @param $script   script to inline
+     */
+    public function inline($script)
+    {
+        $this->inlines[] = $script;
+    }
+    
+    /**
      * empty the script list
      */
     public function flush()
@@ -85,6 +96,10 @@ class Script
         {
             $js .= '<script src="'.$j.'"></script>';
         }        
+        foreach ($this->inlines as $i)
+        {
+            $js .= '<script>'.$i.'</script>';
+        }
         return $js; 
     }
 }

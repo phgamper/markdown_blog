@@ -30,10 +30,20 @@ class Main
 
     public function __construct()
     {
+        $ini = parse_ini_file(CONFIG_DIR . 'general.ini', true);
+        $config = isset($ini['general']) ? $ini['general'] : array();
+        
         Head::getInstance()->link('public/bootstrap/css/bootstrap.min.css');
         Head::getInstance()->link(CSS_DIR.'style.css');
         Script::getInstance()->link('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
         Script::getInstance()->link('public/bootstrap/js/bootstrap.js');
+        if(isset($config['highlight']) && $config['highlight'])
+        {
+            $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
+            Head::getInstance()->link(CSS_DIR.'scheme/'.$style);
+            Script::getInstance()->link('public/js/highlight.js');
+            Script::getInstance()->inline('$(document).ready(function() {$(\'pre code\').each(function(i, block) {hljs.highlightBlock(block);});});');
+        }
         $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
         $controller = new MarkdownController();
         

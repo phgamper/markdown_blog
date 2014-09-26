@@ -24,7 +24,8 @@ For detailed information see the [documentation](https://github.com/phgamper/mar
 ## Build with
 
 - [Parsedown](http://parsedown.org)
-- [Bootstrap 3.2](http://getbootstrap.com/)
+- [highlight.js](https://highlightjs.org)
+- [Bootstrap 3.2](http://getbootstrap.com)
 - HTML 5
 - PHP 5.4
 
