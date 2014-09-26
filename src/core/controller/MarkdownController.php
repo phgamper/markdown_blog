@@ -45,7 +45,7 @@ class MarkdownController extends AbstractController
 
     protected function actionListener()
     {
-        $config = $this->config[$this->entity];
+        $config = isset($this->config[$this->entity]) ? $this->config[$this->entity] : array();
         
         if (isset($_GET['value']) && isset($config['paths']))
         {
@@ -65,7 +65,7 @@ class MarkdownController extends AbstractController
             }
             else
             {
-                $path = 'error.md';
+                $path = ERROR_MD;
             }
         
         switch (true)

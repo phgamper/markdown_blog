@@ -1,3 +1,7 @@
+# keep content and config as they are
+content/*
+config/*
+
 # git and project settings
 .git
 .buildpath

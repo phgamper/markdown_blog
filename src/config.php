@@ -74,6 +74,15 @@ define('CSS_DIR', 'public/css/', TRUE);
 
 
 /**
+ *
+ * Enter description here ...
+ *
+ * @global path to error.md
+ */
+define('ERROR_MD', 'src/error.md', TRUE);
+
+
+/**
  * 
  * * Enter description here ...
  * 
