@@ -1,6 +1,6 @@
 # keep content and config as they are
 content/*
-config/*
+*.ini
 
 # git and project settings
 .git
