@@ -1,0 +1,43 @@
+; sample configuration for the website structure
+; ---------------------
+
+; html file configuration sample  
+; [home]
+; name = "home"
+; path = "content/sample.html"
+; type = "html"
+; footer = true
+; logger = true
+; simple file for display
+;
+; [about]
+; name = "about"
+; path = "content/about.md"
+; type = "md"
+; footer = true
+; logger = true
+
+; list all *.md contained in a directory
+; [blog]
+; name = "blog"
+; path = "content/blog/"
+; type = "md"
+; limit = 3
+; footer = true
+; logger = true
+
+; Dropdown in navigation
+; [University]
+; name = "University"
+; footer = true
+; logger = true
+; a single markdown file
+; names[] = "First semester"
+; paths[] = "content/first.md"
+; types[] = "md"
+; a list of html files
+; names[] = "Second semester"
+; paths[] = "content/second/"
+; types[] = "html"
+
+; add more entries here ...

@@ -22,8 +22,8 @@ The content of the website can be provided in easy to use [markdown](http://de.w
 ## Quick start
 
 1. Download [markdown.tar](https://github.com/phgamper/markdown_blog/releases) and extract the archive into your server's web folder. 
-2. Modify the `config/general.ini` to personalize your website/blog.
-3. Copy your `*.md` files on the server and provide their location in the `config/config.ini` (just edit the given example in there). 
+2. Modify the `config/general.ini` to personalize your website/blog. A sample configuration is provided in the `config/general.ini.sample`.
+3. Copy your `*.md` files on the server and provide their location in the `config/config.ini`. Again a example is given. 
 4. Make sure the server has read and execution access to all linked markdown files.
 5. Share your thoughts and enjoy!
 
