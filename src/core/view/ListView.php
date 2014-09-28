@@ -48,7 +48,7 @@ class ListView extends AbstractView
         
         foreach ($this->model->getList($start, $limit) as $md)
         {
-            $string .= '<div class="row markdown"><div class="col-md-12">' . $md . '</div></div>';
+            $string .= '<div class="row markdown list"><div class="col-md-12">' . $md . '</div></div>';
         }
 
         if (isset($this->config['limit']))

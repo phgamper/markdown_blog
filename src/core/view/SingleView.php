@@ -35,7 +35,7 @@ class SingleView extends AbstractView
 
     public function content()
     {
-        return '<div class="row markdown"><div class="col-md-12">' . $this->model->get() . '</div></div>';
+        return '<div class="row markdown signle"><div class="col-md-12">' . $this->model->get() . '</div></div>';
     }
 }
 

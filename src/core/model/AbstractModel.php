@@ -152,7 +152,7 @@ abstract class AbstractModel implements IModel
                 }
                 $right = '<div class="col-md-8 pull-right text-right">' . substr($right, 3) . '</div>';
             }
-            $head = '<div class="row">' . $left . $right . '</div>';
+            $head = '<div class="row markdown-head">' . $left . $right . '</div>';
         }
         return $head;
     }

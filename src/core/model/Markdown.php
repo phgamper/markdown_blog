@@ -70,33 +70,7 @@ class Markdown extends AbstractModel
             return '';
         }
     }
-    
-    protected function head($tags)
-    {
-        $head = '';
-    
-        if(!empty($tags))
-        {
-            $author = isset($tags['author']) ? $tags['author'] : '';
-            $published = isset($tags['published']) ? $tags['published'] : '';
-            $left = '<p>'.$published.' | ' .$author. '</p>';
-            $left = '<div class="col-md-4">'.$left.'</div>';
-            $right = '';
-            if(isset($tags['categories']))
-            {
-                $href = '#'; // TODO serach for categories $_SERVER['PHP_SELF'].$_S
-                foreach($tags['categories'] as $c)
-                {
-                    //$right .= ' | <a href="'.$href.'&tag='.$c.'">#'.trim($c).'</a>';
-                    $right .= ' | #'.trim($c);
-                }    
-                $right = '<div class="col-md-8 pull-right text-right">'.substr($right, 3).'</div>';
-            }
-            $head = '<div class="row">'.$left.$right.'</div>';
-        }
-        return $head;
-    }
-}
+ }
 
 ?>
 
