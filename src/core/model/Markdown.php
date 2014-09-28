@@ -25,53 +25,16 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Markdown implements IModel
+class Markdown extends AbstractModel
 {
     public $path;
     public $count = 0;
 
     public function __construct($path)
     {
-        $this->path = $path;
-        Head::getInstance()->link(CSS_DIR . 'markdown.css');
+        parent::__construct($path, '.md');
     }
-
-    /**
-     * TODO maybe use template method pattern
-     *
-     * This function loads all respectively specified files contained in the
-     * folder
-     * stored in $this->path, parses them into a HTML string and returns it.
-     *
-     * @param unknown $start
-     *            - offset where to start, if given
-     * @param unknown $limit
-     *            - maximum number of files to parse, if given
-     */
-    public function getList($start = 0, $limit = null)
-    {
-        $list = array();
-        $files = ScanDir::getFilesOfType($this->path, '.md');
-        $this->count = count($files);
-        rsort($files);
-        $limit = is_null($limit) ? count($files) : $limit;
-        
-        for ($i = $start; $i < count($files) && $i - $start < $limit; $i ++)
-        {
-            $list[] = $this->parse($this->path . $files[$i]);
-        }
-        return $list;
-    }
-
-    /**
-     * This function loads the file specified in $this->path, parses it into
-     * a HTML string and returns it.
-     */
-    public function get()
-    {
-        return $this->parse($this->path);
-    }
-
+    
     /**
      * This function parse the given file into HTML and outputs a string
      * containing its content.
@@ -86,18 +49,52 @@ class Markdown implements IModel
         {
             if ($fh = fopen($file, 'r'))
             {
-                return Parsedown::instance()->parse(fread($fh, filesize($file)));
+                $tags = $this->parseTags($fh);
+                if (!rewind($fh))
+                {
+                    throw new Exception('Could not rewind ' . $file);
+                }
+                $content = $this->head($tags) . Parsedown::instance()->parse(fread($fh, filesize($file)));
+                fclose($fh);
+                return $content;
             }
             else
             {
-                throw new Exception('Can not open '.$file);
+                throw new Exception('Can not open ' . $file);
             }
         }
         catch (Exception $e)
         {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("' . $file . '")'), $e->getMessage());
+            Logger::getInstance()->add(
+                new Error('An unexpected error has occurred.', 'Markdown::parse("' . $file . '")'), $e->getMessage());
             return '';
         }
+    }
+    
+    protected function head($tags)
+    {
+        $head = '';
+    
+        if(!empty($tags))
+        {
+            $author = isset($tags['author']) ? $tags['author'] : '';
+            $published = isset($tags['published']) ? $tags['published'] : '';
+            $left = '<p>'.$published.' | ' .$author. '</p>';
+            $left = '<div class="col-md-4">'.$left.'</div>';
+            $right = '';
+            if(isset($tags['categories']))
+            {
+                $href = '#'; // TODO serach for categories $_SERVER['PHP_SELF'].$_S
+                foreach($tags['categories'] as $c)
+                {
+                    //$right .= ' | <a href="'.$href.'&tag='.$c.'">#'.trim($c).'</a>';
+                    $right .= ' | #'.trim($c);
+                }    
+                $right = '<div class="col-md-8 pull-right text-right">'.substr($right, 3).'</div>';
+            }
+            $head = '<div class="row">'.$left.$right.'</div>';
+        }
+        return $head;
     }
 }
 
