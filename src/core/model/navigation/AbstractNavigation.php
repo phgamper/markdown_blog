@@ -31,6 +31,10 @@ abstract class AbstractNavigation
     
     public abstract function getView();
 
+    /**
+     * 
+     * @return  - the items as structured array
+     */
     public function getItems()
     {
         return $this->items;

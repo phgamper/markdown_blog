@@ -82,19 +82,22 @@ class Markdown implements IModel
      */
     public function parse($file)
     {
-        $string = '';
-        $fh = fopen($file, 'r');
-        
-        if ($fh)
+        try
         {
-            $string = Parsedown::instance()->parse(fread($fh, filesize($file)));
+            if ($fh = fopen($file, 'r'))
+            {
+                return Parsedown::instance()->parse(fread($fh, filesize($file)));
+            }
+            else
+            {
+                throw new Exception('Can not open '.$file);
+            }
         }
-        else
+        catch (Exception $e)
         {
-            Logger::getInstance()->add(new Error('Can not open ' . $file, 'Markdown::parse("' . $file . '")'));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("' . $file . '")'), $e->getMessage());
+            return '';
         }
-        
-        return $string;
     }
 }
 

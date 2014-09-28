@@ -25,6 +25,7 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+
 include_once ('src/config.php');
 include_once (LIB_DIR . 'Autoload.php');
 include_once (LIB_DIR . 'ScanDir.php');
@@ -40,7 +41,7 @@ if (isset($_POST['post']))
     include ($include);
 }
 
-set_error_handler("exception_error_handler");
+set_error_handler("error_handler", E_ALL);
 
 new Main();
 
@@ -50,10 +51,22 @@ function __autoload($class)
     include_once ($classes[$class]);
 }
 
-function exception_error_handler($errno, $errstr, $errfile, $errline)
+// TODO maybe not how it should be done ...
+function error_handler($errno, $errstr, $errfile, $errline)
 {
-    // TODO write into log
-    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+    switch ($errno)
+    {
+        case E_NOTICE:
+        {
+            throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+            break;
+        }
+        default:
+        {
+            $msg = $errno . ' - ' . $errstr . ' - ' . $errfile . ' - ' . $errline;
+            Logger::getInstance()->addLog(new Log(new Error('An unexpected error has been catched by the error_handler.', 'index.php::error_handler()', $msg)));
+        }
+    }
 }
 
 ?>

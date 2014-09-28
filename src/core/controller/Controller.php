@@ -132,14 +132,13 @@ class Controller extends AbstractController
                 default:
                 {
                     // should never happen
-                    throw new ErrorException('An unexpected error has occured!');
+                    throw new ErrorException('Something is completely broken!');
                 }
             }
         }
         catch (ErrorException $e)
         {
-            Logger::getInstance()->addLog(
-                new Log(new Error($e->getMessage(), 'Controller::actionListener()', $e->getMessage())));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
             $this->model = new Markdown(ERROR_MD);
             $this->view = new SingleView($this->model, array('logger' => true));
         }
@@ -149,7 +148,6 @@ class Controller extends AbstractController
             $this->model = new Markdown(ERROR_MD);
             $this->view = new SingleView($this->model, array('logger' => true));
         }
-        Logger::getInstance()->writeLog();
     }
 }
 

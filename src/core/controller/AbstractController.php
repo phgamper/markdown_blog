@@ -43,7 +43,9 @@ abstract class AbstractController
 
     public function display()
     {
-        return $this->view->show();
+        $string = $this->view->show();
+        Logger::getInstance()->writeLog();
+        return $string;
     }
     
     /**

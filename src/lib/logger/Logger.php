@@ -28,7 +28,6 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class Logger
 {
     private $msgs = array();
@@ -72,7 +71,8 @@ class Logger
     /**
      * adds a Log to the loglist
      *
-     * @param Log $log to add
+     * @param Log $log
+     *            to add
      */
     public function addLog(Log $log)
     {
@@ -121,10 +121,10 @@ class Logger
      */
     public function toString()
     {
-        $string = self::alertblock('Info');
-        $string .= self::alertblock('Success');
-        $string .= self::alertblock('Warning');
-        $string .= self::alertblock('Error');
+        $string = self::alertblock('Info', 'info');
+        $string .= self::alertblock('Success', 'success');
+        $string .= self::alertblock('Warning', 'warning');
+        $string .= self::alertblock('Error', 'danger');
         return $string;
     }
 
@@ -135,15 +135,15 @@ class Logger
      *            type passed
      * @return string to print
      */
-    private function alertblock($alert)
+    private function alertblock($alert, $class)
     {
         $has = false;
         $string = '';
         
         if (!empty($this->msgs))
         {
-            $string .= '<div class="alert alert-' . strtolower($alert) .
-                 ' alert-block"><button type="button" class="close" data-dismiss="alert">x</button><ul>';
+            $string .= '<div class="alert alert-block bg-' . $class .
+                 '"><button type="button" class="close" data-dismiss="alert">x</button><ul>';
             
             foreach ($this->msgs as $key => $msg)
             {
