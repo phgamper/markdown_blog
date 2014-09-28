@@ -18,7 +18,7 @@ If a list of markdowns is provided the files will be displayed in a blog like la
 ### Single Markdown
 
 ## Supported file types
-
+It is recomended to store your local files in a folder called ```content```
 ### Markdown
 ### HTML
 The generated websites can contain plain HTML and even with Twitter Bootstrap style elements.
