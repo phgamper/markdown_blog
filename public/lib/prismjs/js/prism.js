@@ -1,4 +1,4 @@
-/* http://prismjs.com/download.html?themes=prism-okaidia&languages=markup+css+css-extras+clike+javascript+java+php+php-extras+bash+c+cpp+python+sql+ruby+csharp+haskell+latex+apacheconf+git&plugins=line-numbers */
+/* http://prismjs.com/download.html?themes=prism&languages=markup+css+css-extras+clike+javascript+java+php+php-extras+bash+c+cpp+python+sql+ruby+csharp+aspnet+haskell+ini+latex+apacheconf+git */
 self = (typeof window !== 'undefined')
 	? window   // if in browser
 	: (
@@ -786,6 +786,55 @@ Prism.languages.csharp = Prism.languages.extend('clike', {
 	'number': /\b-?(0x)?\d*\.?\d+\b/g
 });
 ;
+Prism.languages.aspnet = Prism.languages.extend('markup', {
+	'page-directive tag': {
+		pattern: /<%\s*@.*%>/gi,
+		inside: {
+			'page-directive tag': /<%\s*@\s*(?:Assembly|Control|Implements|Import|Master|MasterType|OutputCache|Page|PreviousPageType|Reference|Register)?|%>/ig,
+			rest: Prism.languages.markup.tag.inside
+		}
+	},
+	'directive tag': {
+		pattern: /<%.*%>/gi,
+		inside: {
+			'directive tag': /<%\s*?[$=%#:]{0,2}|%>/gi,
+			rest: Prism.languages.csharp
+		}
+	}
+});
+
+// match directives of attribute value foo="<% Bar %>"
+Prism.languages.insertBefore('inside', 'punctuation', {
+	'directive tag': Prism.languages.aspnet['directive tag']
+}, Prism.languages.aspnet.tag.inside["attr-value"]);
+
+Prism.languages.insertBefore('aspnet', 'comment', {
+	'asp comment': /<%--[\w\W]*?--%>/g
+});
+
+// script runat="server" contains csharp, not javascript
+Prism.languages.insertBefore('aspnet', Prism.languages.javascript ? 'script' : 'tag', {
+	'asp script': {
+		pattern: /<script(?=.*runat=['"]?server['"]?)[\w\W]*?>[\w\W]*?<\/script>/ig,
+		inside: {
+			tag: {
+				pattern: /<\/?script\s*(?:\s+[\w:-]+(?:=(?:("|')(\\?[\w\W])*?\1|\w+))?\s*)*\/?>/gi,
+				inside: Prism.languages.aspnet.tag.inside
+			},
+			rest: Prism.languages.csharp || {}
+		}
+	}
+});
+
+// Hacks to fix eager tag matching finishing too early: <script src="<% Foo.Bar %>"> => <script src="<% Foo.Bar %>
+if ( Prism.languages.aspnet.style ) {
+	Prism.languages.aspnet.style.inside.tag.pattern = /<\/?style\s*(?:\s+[\w:-]+(?:=(?:("|')(\\?[\w\W])*?\1|\w+))?\s*)*\/?>/gi;
+	Prism.languages.aspnet.style.inside.tag.inside = Prism.languages.aspnet.tag.inside;
+}
+if ( Prism.languages.aspnet.script ) {
+	Prism.languages.aspnet.script.inside.tag.pattern = Prism.languages.aspnet['asp script'].inside.tag.pattern
+	Prism.languages.aspnet.script.inside.tag.inside = Prism.languages.aspnet.tag.inside;
+};
 Prism.languages.haskell= {
 	'comment': {
 		pattern: /(^|[^-!#$%*+=\?&@|~.:<>^\\])(--[^-!#$%*+=\?&@|~.:<>^\\].*(\r?\n|$)|{-[\w\W]*?-})/gm,
@@ -819,6 +868,17 @@ Prism.languages.haskell= {
 	'punctuation' : /[{}[\];(),.:]/g
 };
 ;
+Prism.languages.ini= {
+	'comment': /^\s*;.*$/gm,
+	'important': /\[.*?\]/gm,
+	'constant': /^\s*[^\s\=]+?(?=[ \t]*\=)/gm,
+	'attr-value': {
+		pattern: /\=.*/gm, 
+		inside: {
+			'punctuation': /^[\=]/g
+		}
+	}
+};;
 Prism.languages.latex = {
 	'comment': /%.*?(\r?\n|$)$/m,
 	'string': /(\$)(\\?.)*?\1/g,
@@ -941,27 +1001,3 @@ Prism.languages.git = {
 	'commit_sha1': /^commit \w{40}$/m
 };
 ;
-Prism.hooks.add('after-highlight', function (env) {
-	// works only for <code> wrapped inside <pre data-line-numbers> (not inline)
-	var pre = env.element.parentNode;
-	if (!pre || !/pre/i.test(pre.nodeName) || pre.className.indexOf('line-numbers') === -1) {
-		return;
-	}
-
-	var linesNum = (1 + env.code.split('\n').length);
-	var lineNumbersWrapper;
-
-	lines = new Array(linesNum);
-	lines = lines.join('<span></span>');
-
-	lineNumbersWrapper = document.createElement('span');
-	lineNumbersWrapper.className = 'line-numbers-rows';
-	lineNumbersWrapper.innerHTML = lines;
-
-	if (pre.hasAttribute('data-start')) {
-		pre.style.counterReset = 'linenumber ' + (parseInt(pre.getAttribute('data-start'), 10) - 1);
-	}
-
-	env.element.appendChild(lineNumbersWrapper);
-
-});;
