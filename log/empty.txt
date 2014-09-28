@@ -1,1 +1,1 @@
-This folder must exist to ensure the propper functionality of t   he logger.
+This folder must exist to ensure the propper functionality of the logger.
