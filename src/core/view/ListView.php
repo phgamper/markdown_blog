@@ -2,7 +2,7 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides a view that displays formatted markdown files as a list.
+ * It provides a view that displays formatted markdown/html files as a list.
  * 
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
@@ -25,10 +25,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-class MarkdownListView extends AbstractMarkdownView
+class ListView extends AbstractView
 {
 
-    public function __construct(Markdown $model, $config)
+    public function __construct(IModel $model, $config)
     {
         parent::__construct($model, $config);
     }

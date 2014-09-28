@@ -25,10 +25,9 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 include_once ('src/config.php');
-include_once (LIB_DIR.'Autoload.php');
-include_once (LIB_DIR.'ScanDir.php');
+include_once (LIB_DIR . 'Autoload.php');
+include_once (LIB_DIR . 'ScanDir.php');
 ini_set('display_errors', 1);
 $src = Autoload::getInstance(SRC_DIR, false)->getClasses();
 $lib = Autoload::getInstance(LIB_DIR, false)->getClasses();
@@ -36,16 +35,25 @@ $classes = array_merge($src, $lib);
 
 if (isset($_POST['post']))
 {
-  $include = $_POST['post'];
-  unset($_POST['post']);
-  include ($include);
+    $include = $_POST['post'];
+    unset($_POST['post']);
+    include ($include);
 }
+
+set_error_handler("exception_error_handler");
 
 new Main();
 
 function __autoload($class)
 {
-  global $classes;
-  include_once ($classes[$class]);
+    global $classes;
+    include_once ($classes[$class]);
 }
+
+function exception_error_handler($errno, $errstr, $errfile, $errline)
+{
+    // TODO write into log
+    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+}
+
 ?>

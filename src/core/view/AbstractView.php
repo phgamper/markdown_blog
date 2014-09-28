@@ -2,7 +2,7 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * This view shows a page only containing a single formated markdown file.
+ * It is the interface for all possible markdown/html file orders.
  * 
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
@@ -25,17 +25,40 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-class MarkdownSingleView extends AbstractMarkdownView
+abstract class AbstractView implements View
 {
+    protected $config;
 
-    public function __construct(Markdown $model, $config)
+    public function __construct(IModel $model, $config)
     {
-        parent::__construct($model, $config);
+        $this->model = $model;
+        $this->config = $config;
     }
 
-    public function content()
+    public function show()
     {
-        return '<div class="row markdown"><div class="col-md-12">' . $this->model->get() . '</div></div>';
+        $string = '<div class="row"><div class="col-md-12">' . $this->content() . '</div></div>';
+        $string .= $this->footer();
+        // append logger output on top
+        if (isset($this->config['logger']) && $this->config['logger'])
+        {
+            $string = Logger::getInstance()->toString() . $string;
+        }
+        return '<div class="container">' . $string . '</div>';
+    }
+
+    protected abstract function content();
+
+    protected function footer()
+    {
+        $footer = '';
+        
+        if (isset($this->config['footer']) && $this->config['footer'])
+        {
+            $f = new Footer();
+            $footer = $f->show();
+        }
+        return $footer;
     }
 }
 

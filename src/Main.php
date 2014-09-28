@@ -45,7 +45,7 @@ class Main
             Script::getInstance()->inline('$(document).ready(function() {$(\'pre code\').each(function(i, block) {hljs.highlightBlock(block);});});');
         }
         $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
-        $controller = new MarkdownController();
+        $controller = new Controller();
         
 
         // display all

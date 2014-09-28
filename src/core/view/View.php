@@ -27,6 +27,9 @@
 
 interface View
 {
+    /**
+     * This function outputs the HTML string generated during building the view.
+     */
     public function show();
 }
 
