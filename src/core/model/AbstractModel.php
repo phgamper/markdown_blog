@@ -75,16 +75,6 @@ abstract class AbstractModel implements IModel
     }
 
     /**
-     * This function parse the given file into HTML and outputs a string
-     * containing its content.
-     *
-     *
-     * @param unknown $file
-     *            - file to parse
-     */
-    public abstract function parse($file);
-
-    /**
      * This function reads the tags from the file, if they have been provided
      */
     protected function parseTags($fh)
