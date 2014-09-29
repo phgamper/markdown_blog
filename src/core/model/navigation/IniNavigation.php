@@ -59,6 +59,18 @@ class IniNavigation extends AbstractNavigation
                 {
                     $items[$key][$k] = $v;
                 }
+                else if (!is_numeric($k) && $k == "paths")
+                {
+                    $items[$key]['dropdown'][$k] = $v;
+                }
+                else if (!is_numeric($k) && $k == "names")
+                {
+                    $items[$key]['dropdown'][$k] = $v;
+                }
+                else if (!is_numeric($k) && $k == "types")
+                {
+                    $items[$key]['dropdown'][$k] = $v;
+                }
                 else
                 {
                     $items[$key][$key][$k] = $v;
