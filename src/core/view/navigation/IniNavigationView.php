@@ -53,12 +53,12 @@ class IniNavigationView implements View
             
             if (!empty($value['dropdown']))
             {
-                foreach ($value['dropdown']['names'] as $i => $subValue)
+                foreach ($value['dropdown'] as $i => $v)
                 {
                     $a_class = 'dropdown-toggle" data-toggle="dropdown';
                     $caret = '<b class="caret"></b>';
                     $href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
-                    $submenu .= '<li><a href="' . $href . '">' . $subValue . '</a></li>';
+                    $submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
                 }
                 $li_class .= 'dropdown';
                 $submenu = '<ul class="dropdown-menu" role="menu">' . $submenu . '</ul>';

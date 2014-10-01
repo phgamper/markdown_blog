@@ -31,13 +31,16 @@
 ; name = "University"
 ; footer = true
 ; logger = true
+;
 ; a single markdown file
-; names[] = "First semester"
-; paths[] = "content/first.md"
-; types[] = "md"
+; first.name = "First semester"
+; first.path = "content/first.md"
+; first.type = "md"
+;
 ; a list of html files
-; names[] = "Second semester"
-; paths[] = "content/second/"
-; types[] = "html"
+; second.name = "Second semester"
+; second.path = "content/second/"
+; second.type = "html"
+; second.limit = 3
 
 ; add more entries here ...

@@ -28,6 +28,7 @@ class Controller extends AbstractController
 {
     protected $entity;
     protected $config;
+    protected $parser;
 
     public function __construct()
     {
@@ -37,7 +38,9 @@ class Controller extends AbstractController
         
         if (file_exists($inifile))
         {
-            $this->config = parse_ini_file($inifile, true);
+            $this->parser = new IniParser();
+            $this->parser->use_array_object = false;
+            $this->config = $this->parser->parse($inifile);
         }
         
         self::actionListener();
@@ -57,45 +60,34 @@ class Controller extends AbstractController
                 throw new Exception('The requested URL is not available.');
             }
             // try to resolve URL
-            if (isset($_GET['value']) && isset($config['paths']))
+            if (isset($_GET['value']))
             {
                 // if a dropdown is present
-                if (array_key_exists($v = $_GET['value'], $config['paths']))
+                if (array_key_exists($v = $_GET['value'], $config))
                 {
-                    $path = $config['paths'][$v];
+                    $config = $config[$v];
                 }
                 else
                 {
                     throw new Exception('The requested URL is not available.');
                 }
-                if (array_key_exists($v = $_GET['value'], $config['types']))
-                {
-                    $type = $config['types'][$v];
-                }
-                else
-                {
-                    throw new ErrorException('There is an error in the configuration file!');
-                }
+            }
+            
+            if (isset($config['path']))
+            {
+                $path = $config['path'];
             }
             else
             {
-                // if no dropdown is present
-                if (isset($config['path']))
-                {
-                    $path = $config['path'];
-                }
-                else
-                {
-                    throw new Exception('The requested URL is not available.');
-                }
-                if (isset($config['type']))
-                {
-                    $type = $config['type'];
-                }
-                else
-                {
-                    throw new ErrorException('There is an error in the configuration file!');
-                }
+                throw new Exception('The requested URL is not available.');
+            }
+            if (isset($config['type']))
+            {
+                $type = $config['type'];
+            }
+            else
+            {
+                throw new ErrorException('There is an error in the configuration file!');
             }
             
             // evaluate model to use
@@ -138,7 +130,8 @@ class Controller extends AbstractController
         }
         catch (ErrorException $e)
         {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
+            Logger::getInstance()->add(
+                new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
             $this->model = new Markdown(ERROR_MD);
             $this->view = new SingleView($this->model, array('logger' => true));
         }

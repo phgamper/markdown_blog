@@ -45,10 +45,10 @@ class SitemapView implements View
 
 			if(!empty($value['dropdown']))	
 			{
-				foreach ($value['dropdown']['names'] as $i => $subValue)
+				foreach ($value['dropdown'] as $i => $v)
 				{
 					$href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
-					$submenu .= '<li><a href="' . $href . '">' . $subValue . '</a></li>';
+					$submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
 				}
                 $submenu = '<ul>' . $submenu . '</ul>';
             }

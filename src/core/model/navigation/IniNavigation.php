@@ -28,10 +28,13 @@
 
 class IniNavigation extends AbstractNavigation
 {
-
-    public function __construct($ini)
+    protected $parser;
+    
+    public function __construct($file)
     {
-        $this->items = $this->init($ini);
+        $this->parser = new IniParser();
+        $this->parser->use_array_object = false;
+        $this->init($file);
     }
 
     public function getView()
@@ -39,46 +42,29 @@ class IniNavigation extends AbstractNavigation
         return new IniNavigationView($this);
     }
 
-    protected function init($ini)
+    protected function init($file)
     {
-        $items = array();
-        $ini = parse_ini_file($ini, true);
-        
+        $this->items = array();
+        $ini = $this->parser->parse($file);
         foreach ($ini as $key => $value)
         {
-            $items[$key] = array();
-            $items[$key]['dropdown'] = array();
+            $this->items[$key] = array();
+            $this->items[$key]['dropdown'] = array();
             
             foreach ($value as $k => $v)
             {
-                if (!is_numeric($k) && $k == "name")
+                if (is_array($v))
                 {
-                    $items[$key][$k] = $v;
-                }
-                else if (!is_numeric($k) && $k == "path")
-                {
-                    $items[$key][$k] = $v;
-                }
-                else if (!is_numeric($k) && $k == "paths")
-                {
-                    $items[$key]['dropdown'][$k] = $v;
-                }
-                else if (!is_numeric($k) && $k == "names")
-                {
-                    $items[$key]['dropdown'][$k] = $v;
-                }
-                else if (!is_numeric($k) && $k == "types")
-                {
-                    $items[$key]['dropdown'][$k] = $v;
+                    $this->items[$key]['dropdown'][$k] = $v; 
                 }
                 else
                 {
-                    $items[$key][$key][$k] = $v;
+                    $this->items[$key][$k] = $v;
                 }
             }
         }
         
-        return $items;
+        return $this->items;
     }
 }
 
