@@ -79,54 +79,70 @@ abstract class AbstractModel implements IModel
      */
     protected function parseTags($fh)
     {
-        $tags = array();
-        $meta = false;
-        
-        while (!feof($fh))
+        try
         {
-            $line = fgets($fh);
+            $tags = array();
+            $meta = false;
             
-            // opening tag
-            if (!$meta && preg_match('/^(\<\!\-\-).*/', $line))
+            while (!feof($fh))
             {
-                $meta = true;
-            }
-            // closing tag
-            if ($meta && preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line))
-            {
-                $meta = false;
-            }
-            // search for meta tags
-            if ($meta)
-            {
-                // author
-                if (preg_match('/^\s*(author)\s*(=).*/i', $line))
+                $line = fgets($fh);
+                
+                // opening tag
+                if (!$meta && preg_match('/^(\<\!\-\-).*/', $line))
                 {
-                    $tags['author'] = trim(substr($line, strpos($line, '=') + 1));
+                    $tags['meta'] = array();
+                    $meta = true;
                 }
-                // published
-                if (preg_match('/^\s*(published)\s*(=).*/i', $line))
+                // closing tag
+                if ($meta && preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line))
                 {
-                    $tags['published'] = trim(substr($line, strpos($line, '=') + 1));
+                    $meta = false;
                 }
-                // categories
-                if (preg_match('/^\s*(categories)\s*(=).*/i', $line))
+                // search for meta tags
+                if ($meta)
                 {
-                    $tags['categories'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
+                    // author
+                    if (preg_match('/^\s*(author)\s*(=).*/i', $line))
+                    {
+                        $tags['author'] = trim(substr($line, strpos($line, '=') + 1));
+                    }
+                    // published
+                    if (preg_match('/^\s*(published)\s*(=).*/i', $line))
+                    {
+                        $tags['published'] = trim(substr($line, strpos($line, '=') + 1));
+                    }
+                    // categories
+                    if (preg_match('/^\s*(categories)\s*(=).*/i', $line))
+                    {
+                        $tags['categories'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
+                    }
+                    // meta
+                    if (preg_match('/^\s*(meta)\s*(=).*/i', $line))
+                    {
+                        $e = explode('=>', trim(substr($line, strpos($line, '=') + 1)), 2);
+                        $tags['meta'][trim($e[0])] = trim($e[1]);
+                    }
+                }
+                else
+                {
+                    break;
                 }
             }
-            else
-            {
-                break;
-            }
+            return $tags;
         }
-        return $tags;
+        catch (Exception $e)
+        {
+            Logger::getInstance()->add(
+                new Error('An unexpected error has occurred.', 'AbstractModel::parseTags()', $e->getMessage()));
+            return array();
+        }
     }
 
     /**
-     * This function builds the head containing the meta information 
-     * 
-     * @param unknown $tags
+     * This function builds the head containing the meta information
+     *
+     * @param unknown $tags            
      * @return string
      */
     protected function head($tags)
@@ -153,6 +169,14 @@ abstract class AbstractModel implements IModel
                 $right = '<div class="col-md-8 pull-right text-right">' . substr($right, 3) . '</div>';
             }
             $head = '<div class="row markdown-head">' . $left . $right . '</div>';
+            // adding meta tags
+            if(isset($tags['meta']))
+            {
+                foreach ($tags['meta'] as $name => $content)
+                {
+                    Head::getInstance()->addMeta($name, $content);
+                }                
+            }
         }
         return $head;
     }
