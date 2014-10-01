@@ -25,6 +25,7 @@ If a list of markdowns is provided the files will be displayed in a blog like la
 ## Supported file types
 It is recomended to store your local files in a folder called ```content```
 ### Markdown
+Syntax highlighting can be enabled by adding the language of the code snippet behind the code element. ``` ` ` ` bash ```
 ### HTML
 The generated websites can contain plain HTML and even with Twitter Bootstrap style elements.
 

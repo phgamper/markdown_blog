@@ -32,6 +32,7 @@ For detailed information see the [documentation](https://github.com/phgamper/mar
 ## Build with
 
 - [Parsedown](http://parsedown.org)
+- [IniParser](https://github.com/austinhyde/IniParser)
 - [prismjs](http://prismjs.com/index.html)
 - [Bootstrap 3.2](http://getbootstrap.com)
 - HTML 5
