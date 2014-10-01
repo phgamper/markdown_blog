@@ -47,7 +47,14 @@ class SitemapView implements View
 			{
 				foreach ($value['dropdown'] as $i => $v)
 				{
-					$href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
+				    if($v['type'] == 'href')
+				    {
+				        $href = $v['path'].'" target="_blank';
+				    }
+				    else
+				    {
+				        $href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
+				    }
 					$submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
 				}
                 $submenu = '<ul>' . $submenu . '</ul>';

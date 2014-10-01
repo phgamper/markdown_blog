@@ -9,13 +9,19 @@
 ; footer = true
 ; logger = true
 ; simple file for display
-;
+
 ; [about]
 ; name = "about"
 ; path = "content/about.md"
 ; type = "md"
 ; footer = true
 ; logger = true
+
+; include external links into navigation
+; [google]
+; name = "Search on Google"
+; path = "https://google.ch"
+; type = "link"
 
 ; list all *.md contained in a directory
 ; [blog]
@@ -36,11 +42,15 @@
 ; first.name = "First semester"
 ; first.path = "content/first.md"
 ; first.type = "md"
+; first.footer = true
+; first.logger = true
 ;
 ; a list of html files
 ; second.name = "Second semester"
 ; second.path = "content/second/"
 ; second.type = "html"
 ; second.limit = 3
+; second.footer = true
+; second.logger = true
 
 ; add more entries here ...
