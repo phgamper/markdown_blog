@@ -29,31 +29,31 @@
 class QueryString
 {
 
-    public static function remove($search)
+    public static function remove($search, $query)
     {
-        $query = $_SERVER['QUERY_STRING'];
-        
+        // improve performance        
         if (isset($_GET[$search]))
         {
-            $query = str_replace('&' . $search . '=' . $_GET[$search], '', $query);
-            $query = str_replace($search . '=' . $_GET[$search], '', $query);
-            $query = substr($query, -1) == '&' ? $query = substr($query, 0, -1) : $query;
+            $e = explode('&', $query);
+            $query ='';
+            foreach ($e as $v)
+            {
+                if(trim(substr($v, 0, strpos($v, '='))) != $search)
+                {
+                    $query .= '&'.$v;
+                }
+            }
+            // remove the first &
+            $query = substr($query, 1);
         }
         return $query;
     }
 
-    public static function removeAll(array $search)
+    public static function removeAll(array $search, $query)
     {
-        $query = $_SERVER['QUERY_STRING'];
-        
-        foreach ($search as $value)
+        foreach($search as $s)
         {
-            if (isset($_GET[$value]))
-            {
-                $query = str_replace('&' . $value . '=' . $_GET[$value], '', $query);
-                $query = str_replace($value . '=' . $_GET[$value], '', $query);
-                $query = substr($query, -1) == '&' ? $query = substr($query, 0, -1) : $query;
-            }
+            $query = self::remove($s, $query);
         }
         return $query;
     }

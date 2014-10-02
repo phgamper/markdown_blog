@@ -49,15 +49,17 @@ abstract class AbstractModel implements IModel
      *            - offset where to start, if given
      * @param unknown $limit
      *            - maximum number of files to parse, if given
+     * @param array $filter
+     *            - array of filter criteria
      */
-    public function getList($start = 0, $limit = null)
+    public function getList($start = 0, $limit = null, array $filter = array())
     {
         $list = array();
         $files = ScanDir::getFilesOfType($this->path, $this->mime);
+        $this->filter($files, $filter);
         $this->count = count($files);
         rsort($files);
         $limit = is_null($limit) ? count($files) : $limit;
-        
         for ($i = $start; $i < count($files) && $i - $start < $limit; $i ++)
         {
             $list[] = $this->parse($this->path . $files[$i]);
@@ -115,7 +117,7 @@ abstract class AbstractModel implements IModel
                     // categories
                     if (preg_match('/^\s*(categories)\s*(=).*/i', $line))
                     {
-                        $tags['categories'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
+                        $tags['category'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
                     }
                     // meta
                     if (preg_match('/^\s*(meta)\s*(=).*/i', $line))
@@ -140,6 +142,67 @@ abstract class AbstractModel implements IModel
     }
 
     /**
+     * This function filters according to the given criteria.
+     *
+     * @param array $files
+     *            - files being filtered, array passed by reference
+     * @param array $criteria
+     *            - array of filter criteria
+     * @throws Exception
+     * @return string
+     */
+    public function filter(array &$files, array $criteria)
+    {
+        if (!empty($criteria))
+        {
+            try
+            {
+                foreach ($files as $i => $name)
+                {
+                    if ($fh = fopen($this->path . $name, 'r'))
+                    {
+                        $tags = $this->parseTags($fh);
+                        fclose($fh);
+                        foreach ($criteria as $key => $value)
+                        {
+                            if (isset($tags[$key]))
+                            {
+                                if (is_array($tags[$key]))
+                                {
+                                    if (in_array($value, $tags[$key]))
+                                    {
+                                        continue; // check next criteria
+                                    }
+                                }
+                                else
+                                {
+                                    if ($tags[$key] == $value)
+                                    {
+                                        continue; // check next criteria
+                                    }
+                                }
+                            }
+                            // at least one criteria does not match
+                            unset($files[$i]);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception('Can not open ' . $file);
+                    }
+                }
+            }
+            catch (Exception $e)
+            {
+                Logger::getInstance()->add(
+                    new Error('Could not filter according the given criteria', 'AbstractModel::filter("' . $file . '")'), 
+                    $e->getMessage());
+            }
+        }
+    }
+
+    /**
      * This function builds the head containing the meta information
      *
      * @param unknown $tags            
@@ -156,26 +219,24 @@ abstract class AbstractModel implements IModel
             $left = '<p>' . $published . ' | ' . $author . '</p>';
             $left = '<div class="col-md-4">' . $left . '</div>';
             $right = '';
-            if (isset($tags['categories']))
+            if (isset($tags['category']))
             {
-                $href = '#'; // TODO serach for categories
-                             // $_SERVER['PHP_SELF'].$_S
-                foreach ($tags['categories'] as $c)
+                $href = $_SERVER['PHP_SELF'] . '?' . QueryString::removeAll(array('tag', 'page'), $_SERVER['QUERY_STRING']);
+                foreach ($tags['category'] as $c)
                 {
-                    // $right .= ' | <a
-                    // href="'.$href.'&tag='.$c.'">#'.trim($c).'</a>';
-                    $right .= ' | #' . trim($c);
+                    $right .= ' | <a href="' . $href . '&tag=' . $c . '">#' . trim($c) . '</a>';
+                    // $right .= ' | #' . trim($c);
                 }
                 $right = '<div class="col-md-8 pull-right text-right">' . substr($right, 3) . '</div>';
             }
             $head = '<div class="row markdown-head">' . $left . $right . '</div>';
             // adding meta tags
-            if(isset($tags['meta']))
+            if (isset($tags['meta']))
             {
                 foreach ($tags['meta'] as $name => $content)
                 {
                     Head::getInstance()->addMeta($name, $content);
-                }                
+                }
             }
         }
         return $head;

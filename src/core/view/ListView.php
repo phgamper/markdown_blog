@@ -45,8 +45,10 @@ class ListView extends AbstractView
             $limit = $this->config['limit'];
             $start = isset($_GET['page']) && $_GET['page'] > 0 ? $limit * ($_GET['page'] - 1) : 0;
         }
-        
-        foreach ($this->model->getList($start, $limit) as $md)
+        // enabling filtering if hashtag is given        
+        $filter = isset($_GET['tag']) ? array('category' => $_GET['tag']) : array();
+                
+        foreach ($this->model->getList($start, $limit, $filter) as $md)
         {
             $string .= '<div class="row markdown list"><div class="col-md-12">' . $md . '</div></div>';
         }
@@ -55,7 +57,7 @@ class ListView extends AbstractView
         {
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
             $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
-            $self = $_SERVER['PHP_SELF'] . '?'.QueryString::remove('page').'&page=';
+            $self = $_SERVER['PHP_SELF'] . '?'.QueryString::remove('page', $_SERVER['QUERY_STRING']).'&page=';
             if ($prev > 0)
             {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';

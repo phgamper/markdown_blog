@@ -32,8 +32,9 @@ interface IModel{
      * 
      * @param unknown $start    - offset where to start, if given
      * @param unknown $limit    - maximum number of files to parse, if given
+     * @param array $filter     - array of filter criteria 
      */
-    public function getList($start, $limit);
+    public function getList($start, $limit, array $filter);
 
     /**
      * This function loads the file specified in $this->path, parses it into
