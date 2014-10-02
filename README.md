@@ -24,6 +24,8 @@ The content of the website can be provided in easy to use [markdown](http://de.w
   - Grouping topics in a dynamicly generated dropdown menue.
 - Full responsive design due to the use of Twitter Bootstrap.
 - Syntax highlighting for both HTML and markdown
+- Group using hashtags
+- Enable/disable pagination 
 
 ## Quick start
 
