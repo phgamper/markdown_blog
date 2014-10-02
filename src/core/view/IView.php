@@ -25,7 +25,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-interface View
+interface IView
 {
     /**
      * This function outputs the HTML string generated during building the view.

@@ -22,11 +22,16 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 @CHARSET "UTF-8";
 
-.footer {
-	
+footer {
+	background-color: #fafafa;
+	border-top: 1px solid #E5E5E5;
+	padding: 24px;
+	width: 100%;
+}
+
+footer .row {
 }
 
 .license {

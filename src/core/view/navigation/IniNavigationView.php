@@ -25,7 +25,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-class IniNavigationView implements View
+class IniNavigationView implements IView
 {
     private $config;
 

@@ -25,7 +25,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-class Footer implements View
+class Footer implements IView
 {
     protected $config;
 
@@ -46,14 +46,13 @@ class Footer implements View
         {
             $left = $this->config['legal_notice'];
         }
-        $left = '<div class="col-md-9">'.$left.'</div>';
-        $right = '<div class="col-md-3"><p class="pull-right"><a href="#">Back to top</a></p></div>';
+        $left = '<div class="col-md-6 col-md-offset-2">'.$left.'</div>';
+        $right = '<div class="col-md-2"><p class="pull-right"><a href="#">Back to top</a></p></div>';
         // license
         $license = '<p class="license">&copy; <a href="https://github.com/phgamper/markdown_blog" title="MarkdownBlog on github">MarkdownBlog</a> 2014 - GPL v3.0</p>';
+        $license = '<div class="row"><div class="col-md-8 col-md-offset-2">'.$license.'</div></div>';
         // put it together
-        $footer = '<hr>' . $sitemap->display();
-        $footer .= '<footer class="footer"><div class="row">' . $left . $right . '</div>'.$license.'</footer>';
-        return $footer;
+        return '<footer>'.$sitemap->display().'<div class="footer-inner row">' . $left . $right . '</div>'.$license.'</footer>';
     }
 }
 

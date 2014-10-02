@@ -29,7 +29,6 @@
     -------------------------------------------------- */
 .sitemap {
 	text-decoration: none;
-	font-size: 9pt;
 	margin-bottom: 32px;
 }
 
@@ -40,7 +39,7 @@
 .sitemap ul {
 	list-style-type: none;
 	margin: 0px;
-	padding: 8px;
+	padding: 0px;
 }
 
 
@@ -48,12 +47,13 @@
 	float: left;
 }
 
-.sitemap-top-level p {
+.sitemap-top-level h5 {
 	font-weight: bold;
 }
 
 .sitemap-sub-level {
-	margin: 8px 16px 16px 16px
+	font-size: 9pt;
+	margin: 16px 32px 32px 32px
 }
 
 /* RESPONSIVE CSS

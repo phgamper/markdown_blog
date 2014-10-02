@@ -26,7 +26,7 @@
  */
 
 
-class SitemapView implements View
+class SitemapView implements IView
 {
 
     public function __construct(IniNavigation $model)
@@ -60,12 +60,12 @@ class SitemapView implements View
                 $submenu = '<ul>' . $submenu . '</ul>';
             }
             $href = $_SERVER['PHP_SELF'] . '?module=' . $key;
-            $li = '<a href="' . $href . '" class=""><p>' . $value['name'] . '</p></a>';
+            $li = '<a href="' . $href . '" class=""><h5>' . $value['name'] . '</h5></a>';
             $menu .= '<li class="sitemap-top-level"><div class="sitemap-sub-level">' . $li . $submenu . '</div></li>';
         }
         
         $menu = '<div class="row"><ul>'.$menu.'</ul></div>';
-        $menu = '<div class="row sitemap"><div class="col-md-12">'.$menu.'</div></div>';
+        $menu = '<div class="row sitemap"><div class="col-md-10 col-md-offset-2">'.$menu.'</div></div>';
         return $menu;
     }
 }

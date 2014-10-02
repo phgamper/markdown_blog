@@ -25,7 +25,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-abstract class AbstractView implements View
+abstract class AbstractView implements IView
 {
     protected $config;
 
@@ -38,13 +38,12 @@ abstract class AbstractView implements View
     public function show()
     {
         $string = '<div class="row"><div class="col-md-12">' . $this->content() . '</div></div>';
-        $string .= $this->footer();
         // append logger output on top
         if (isset($this->config['logger']) && $this->config['logger'])
         {
             $string = Logger::getInstance()->toString() . $string;
         }
-        return '<div class="container">' . $string . '</div>';
+        return '<div class="container">' . $string . '</div>'.$this->footer();
     }
 
     protected abstract function content();
