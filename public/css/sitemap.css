@@ -29,7 +29,10 @@
     -------------------------------------------------- */
 .sitemap {
 	text-decoration: none;
-	margin-bottom: 32px;
+	margin-bottom: 24px;
+}
+.sitemap-inner {
+	border-bottom: 1px solid #E5E5E5;
 }
 
 .sitemap p {

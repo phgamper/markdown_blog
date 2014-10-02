@@ -65,7 +65,7 @@ class SitemapView implements IView
         }
         
         $menu = '<div class="row"><ul>'.$menu.'</ul></div>';
-        $menu = '<div class="row sitemap"><div class="col-md-10 col-md-offset-2">'.$menu.'</div></div>';
+        $menu = '<div class="row sitemap"><div class="sitemap-inner col-md-8 col-md-offset-2">'.$menu.'</div></div>';
         return $menu;
     }
 }
