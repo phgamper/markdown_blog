@@ -1,35 +1,43 @@
 # MarkdownBlog
 
 
-## Configuration
+## 1 Configuration
 
-### Configuration files
+### 1.1 Configuration files
 #### i) general.ini
-In this configuration file the most important information for your website are stored.
+In this configuration file the most important information for your website are stored. The individual attributes should be pretty self-explanatory or at least enought meaningful by looking at the following sample.
 ``` ini
-; configuration of the HTML head 
+; configuration of the page head 
 [head]
 title = "SampleBlog"
 favicon = "public/img/favicon.png"
-	
-; search engine optimization
-seo[] = ""
 
-; footer configuration
+; configuration of the page footer
 [footer]
-; legal_notice = ""
+legal_notice = "maintained by phgamper | phgamper [at] gmail.com"
 
 ; further configuration
 [general]
-; name of the shown on the left in the navigation
+; brand of the page shown on the left in the navigation
 page_name = "SampleBlog"
 ; enable / disable syntax highlighting
 highlight = true
-; style sheet defining syntax highlighting scheme
+; style sheet defining the syntax highlighting scheme
 scheme = "okaidia.css"
 ```
 #### ii) config.ini
-This configuration file defines the navigation structure of your website.
+This configuration file defines the navigation structure of your website. An item of the navigation is represented by an identifier in brackets followed by attributes related to it, i.e.
+``` ini
+; ...
+[home]
+name = "Home"
+; ...
+```
+Some of the attributes are mandatory some are not. Those one that must be set, are ```name```, ```path``` and ```type```. The former defines the description of the button and may contain any UTF-8 character, while the latter specifies the type of the content file to parse. The second is a bit more involved. If a path to a file is given, MarkdownBlog will simply parse and include its content. If a path to a directory is given, MarkdownBlog will parse all files contained in the folder and include them in a blog like manner. Valid types are ```html``` for linking HTML file/s, ```md``` for linking markdown file/s and ```href``` for linking to an external location. All remaining attributes are optional. Namely those are ```limit``` which enables pagination after a specified number of entries, ```footer``` which indicates the footer to be shown or not, and ```logger``` which enables/disables the logger.
+
+Missing or wrong defined mandatory attributes result in showing an error page, while the absence or incorrectness of optional attributes only result in default behavior, e.g. not showing the footer. Syntax errors lead to an error page as well as they might cause the navigation is not displayed properly.
+
+All of above named attributes may be combined with each other as desired. A sample configuration with most possible combination is shown below.
 ``` ini
 ; sample configuration for the website structure
 ; ---------------------
@@ -87,15 +95,13 @@ second.logger = true
 ```
 
 #### iii) error.md
-This markdown file is displayed in case of an error. You may edit it to provide your Visitor a better experience.
+As stated in the section above, it might happen that something goes wrong. MarkdownBlog includes an error handling that deals with such cases, i.e. those include URL modification, configuration file errors, permission errors, etc. The following markdown file is displayed in case of an error. Certainly it could be adapted to one's personal wishes. 
 ``` markup
 # Oh - that is bad!
 Something has gone wrong.
 *Sorry for the inconvenience!*
-
-Please try to fix this by reentering the website.
 ```
-### Search Engine Optimization
+### 1.2 Search Engine Optimization
 #### i) meta-tags
 MarkdownBlog allows to customize the ```HTML meta tags``` per page by simply providing them as key-value pairs in the content header. For more details see *supported content file types* 
 ``` markup
@@ -109,10 +115,10 @@ MarkdownBlog allows to customize the ```HTML meta tags``` per page by simply pro
 -->
 ```
 
-## Supported Navigation items
+## 2 Supported Navigation items
 MarkdownBlog provides four different kind of navigation elements, namely those are the simple linking, directory's content linking, external linking and finally grouping multiple of them in a dropdown. 
  
-### i) simple linking
+### 2.1 simple linking
 
 #### Sample configuration
 ``` ini
@@ -125,7 +131,7 @@ footer = true
 logger = true
 ```
 
-### ii) directory's content linking 
+### 2.2 directory's content linking 
 If a list of markdowns is provided the files will be displayed in a blog like layout with a defined number of entries per page. The elements will appear ordered after their filename. So if you name the individual files like ```2014-09-24_sample_post``` and ```2014-09-28_another_important_thought``` the post of the 2014-09-28 will appear first followed by the second post.
 ``` markup
 /
@@ -133,14 +139,14 @@ If a list of markdowns is provided the files will be displayed in a blog like la
 |   |-- 2014-09-28_sample_post.md
 |   |-- 2014-09-24_another_important_thought.md
 ```
-#### Pagination
+#### i) Pagination
 Assuming the blog is growing and soon there are a lot more posts in the ```content ``` directory from the example above. Parsing all the files would take some time, thus it might be desirable to have pagination enabled. MarkdownBlog ```enables``` pagination if limit is set > 0 in the configuration file. Setting the limit less or equal zero will ```disable``` pagination.
 ``` ini
 ; ...
 limit = 3
 ; ...
 ```
-#### Categories
+#### ii) Categories
 
 #### Sample configuration
 ``` ini
@@ -153,7 +159,7 @@ footer = true
 logger = true
 ```
 
-### iii) external linking 
+### 2.3 external linking 
 
 #### Sample configuration
 ``` ini
@@ -164,7 +170,7 @@ type = "href"
 ```
 
 
-### iv) dropdown grouping
+### 2.4 dropdown grouping
 
 #### Sample configuration
 ``` ini
@@ -189,11 +195,11 @@ n.path = "https://google.ch"
 n.type = "href"
 ```
 
-## Supported content file types
-It is recomended to store your local files in a folder called ```content```
-### Markdown
+## 3 Supported content file types
+It is recommended to store your local files in a folder called ```content```
+### 3.1 Markdown
 Syntax highlighting can be enabled by adding the language of the code snippet behind the code element. ``` ` ` ` bash ```
-### HTML
+### 3.2 HTML
 The generated websites can contain plain HTML and even with Twitter Bootstrap style elements.
-### Linking
+### 3.3 Linking
 
