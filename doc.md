@@ -203,11 +203,13 @@ limit = 3
 Considering again the example from above, a user often wishes to filter by certain keywords. MarkdownBlog implements an easy to use filtering by hashtags. Similar to the ability of defining the meta tags, it is possible to assign each post to as many categories as desired. Therefore it exists the predefined placeholder ```category``` in the document header, which takes a semicolon separated string that finally is exploded into a set of categories assigned on top of the entry. Clicking on such a tag triggers the page only showing posts assigned to even this category.
 
 Generally the usage of this feature should not result in any exceptional behaviour, except for syntax errors in the document header. Since the category tag is optional, its absence leads to not showing any hashstag at all. Even modifying the URL manually, directs at most in an empty page, if the entered tag would not match any. The following figure provides a sample of how categories are defined.
+``` markup
 <!--
 	...
 	category = gentoo;apple time machine;server;backup
-        ...
+    ...
 -->
+```
 
 #### iii) Sample configuration
 The sample below shows how to configure MarkdownBlog to list the content of a directory in a manner described above. Compared to *simple linking* the ```path``` attribute is slightly different. Further there is an additional attribute ```limit```, which leads to the behavior described in the pagination section. 
@@ -268,12 +270,24 @@ type = "md"
 
 ### 3.1 document header
 
+``` markup
+<!--
+	author = <a href="https://github.com/phgamper" target="_blank">phgamper</a>
+	published = 2014-09-28
+	category = gentoo;apple time machine;server;backup
+    meta = copyright => Philipp Gamper
+    ...
+-->
+```
 
 
 ## 4 Security Settings
 
 ### 4.1 Web root folder
- 
+
+``` apacheconf
+DocumentRoot "/var/www/localhost/htdocs"
+``` 
 
 ### 4.2 Content root folder
 It is recommended to store your local files in a folder called ```content```.

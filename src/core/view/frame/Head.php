@@ -31,6 +31,7 @@ class Head
     private $config;
     private $sheets = array();
     private $meta = array();
+    private $scripts = array();
     
     private static $instance = null;
     
@@ -105,6 +106,25 @@ class Head
     {
         $this->meta = array();
     }
+    
+    /**
+     * link a JS to the script list
+     *
+     * @param $script   path to js file
+     */
+    public function linkScript($script)
+    {
+        $this->scripts[] = $script;
+    }
+    
+    /**
+     * empty the script list
+     */
+    public function flushScript()
+    {
+        $this->scripts = array();
+    }
+    
 
     /**
      * generate the head as a HTML string 
@@ -129,7 +149,12 @@ class Head
         {
             $css .= '<link href="'.$this->config['favicon'].'" rel="icon" type="image/png">';
         }        
-        $string = '<head>'.$meta.$css.'</head>';        
+        $js = '';
+        foreach ($this->scripts as $j)
+        {
+            $js .= '<script src="'.$j.'"></script>';
+        }
+        $string = '<head>'.$meta.$css.$js.'</head>';        
         return $string; 
     }
 }

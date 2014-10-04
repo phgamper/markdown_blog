@@ -1,8 +1,3 @@
-<!--
-	author = <a href="https://github.com/phgamper" target="_blank">phgamper</a>
-	published = 2014-09-28
--->
-
 # MarkdownBlog
 
 MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. Its purpose is to provide a easy way to share your thoughts without any database or special setup needed.
