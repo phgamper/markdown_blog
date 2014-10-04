@@ -39,15 +39,15 @@ class Main
                 Head::getInstance()->addMeta($k, $v);
             }
         }
-        Head::getInstance()->link('public/lib/bootstrap/css/bootstrap.min.css');
+        Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
         Head::getInstance()->link(CSS_DIR.'style.css');
         Script::getInstance()->link('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
-        Script::getInstance()->link('public/lib/bootstrap/js/bootstrap.js');
+        Script::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
         if(isset($config['highlight']) && $config['highlight'])
         {
             $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
-            Head::getInstance()->link('public/lib/prismjs/css/'.$style);
-            Script::getInstance()->link('public/lib/prismjs/js/prism.js');
+            Head::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/css/'.$style);
+            Script::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/js/prism.js');
         }
         $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
         $controller = new Controller();

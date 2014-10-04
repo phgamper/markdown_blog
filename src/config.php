@@ -52,11 +52,19 @@ define('CONFIG_DIR', '../config/', TRUE);
 
 
 /**
- * Path th the CSS files of the project.
+ * Path to the CSS files of the project.
  * 
- * @global string CSS_DIR path of the log directory
+ * @global string CSS_DIR path of the css directory
  */
 define('CSS_DIR', 'css/', TRUE);
+
+
+/**
+ * Path to the public library directory of the project.
+ * 
+ * @global string PUBLIC_LIB_DIR path to the directory
+ */
+define('PUBLIC_LIB_DIR', 'lib/', TRUE);
 
 
 /**
