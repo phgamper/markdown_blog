@@ -1,28 +1,47 @@
 # MarkdownBlog
 
+> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+
+<!--
+## 0 Index of Contents
+
+   [1 Configuration](#1)
+   
+   [2 Supported Navigation items](#2)
+   
+   [3 Supported content file types](#3)
+   
+   [4 Additional/Special Features](#4)
+   
+   [5 Security Settings](#5)
+-->
+
 ## 1 Configuration
 
-### 1.1 Configuration files
+### 1.1 Configuration files 
 #### i) general.ini
 In this configuration file the most important information for your website are stored. The individual attributes should be pretty self-explanatory or at least enought meaningful by looking at the following sample.
 ``` ini
-; configuration of the page head 
-[head]
-title = "SampleBlog"
-favicon = "public/img/favicon.png"
-
-; configuration of the page footer
-[footer]
-legal_notice = "maintained by phgamper | phgamper [at] gmail.com"
-
-; further configuration
 [general]
-; brand of the page shown on the left in the navigation
+; Page name (shown on the left in the navigation)
 page_name = "SampleBlog"
-; enable / disable syntax highlighting
-highlight = true
-; style sheet defining the syntax highlighting scheme
-scheme = "okaidia.css"
+
+[head]
+; Title displayed in the browser
+title = "SampleBlog"
+; Icon displayed in the browser
+favicon = "img/favicon.png"
+
+; Meta information for search engines etc. 
+; These information will be included in every file if not defined otherwise
+meta.author = "phgamper"
+meta.copyright = "Philipp Gamper"
+meta.description = "Sample project to show the capabilities of the MarkdownBlog"
+meta.keywords = "markdown,sample,blog"
+
+[footer]
+; Content displayed in the footer
+legal_notice = "maintained by phgamper | phgamper [at] gmail.com"
 ```
 #### ii) config.ini
 This configuration file defines the navigation structure of your website. An item of the navigation is represented by an identifier in brackets followed by attributes related to it, i.e.
@@ -41,60 +60,72 @@ All of above named attributes may be combined with each other as desired. A samp
 ; sample configuration for the website structure
 ; ---------------------
 
-; html file configuration  
+; html file configuration sample  
 [home]
 name = "home"
-path = "content/sample.html"
+path = "../content/sample.html"
 type = "html"
-footer = true
-logger = true
+footer = false
 
-; markdown file configuration
-[about]
-name = "about"
-path = "content/about.md"
-type = "md"
-footer = true
-logger = true
-
-; external links configuration
+; include external links into navigation
 [google]
-name = "Search on Google"
-path = "https://google.ch"
+name = "Markdown Blog project"
+path = "https://github.com/phgamper/markdown_blog"
 type = "link"
 
-; directory's content configuration
+; list all *.md contained in a directory
 [blog]
 name = "blog"
-path = "content/blog/"
+path = "../content/blog/"
 type = "md"
 limit = 3
-footer = true
-logger = true
 
-; dropdown configuration
+; Dropdown in navigation
 [University]
 name = "University"
-footer = true
-logger = true
-; a single markdown file
+;a single markdown file
 first.name = "First semester"
-first.path = "content/first.md"
+first.path = "../content/first.md"
 first.type = "md"
-first.footer = true
-first.logger = true
 ; a list of html files
 second.name = "Second semester"
-second.path = "content/second/"
+second.path = "../content/second/"
 second.type = "html"
 second.limit = 3
-second.footer = true
-second.logger = true
+; simple file for display
+[about]
+name = "about"
+path = "../content/about.md"
+type = "md"
+
 ; add more entries here ...
 ```
 
-#### iii) error.md
-As stated in the section above, it might happen that something goes wrong. MarkdownBlog includes an error handling that deals with such cases, i.e. those include URL modification, configuration file errors, permission errors, etc. The following markdown file is displayed in case of an error. Certainly it could be adapted to one's personal wishes. 
+#### iii) defaults.ini
+Unlike the other configuration files ```defaults.ini``` is not located in ```config/``` but in ```src/```. This is because it contains some carefully chosen defaults. And therefore it should not be modified, unless the editor does absolutely know, what he is doing. It's recommended rather to edit ```config/general.ini```, since its definitions have the higher priority and thus overwrite their defaults.         
+``` ini
+; Do not modify this file - it just provides the default configuration. 
+; If you like to edit settings provided in here please change the config/general.ini
+; all attributes of config/general.ini overwrite definitions made in this file.
+
+[head]
+; Default robots config
+meta.robots = "INDEX,FOLLOW"
+meta.viewport = "width=device-width, initial-scale=1.0"
+
+[general]
+; enable / disable syntax highlighting
+highlight = true
+; style sheet defining syntax highlighting scheme
+scheme = "okaidia.css"
+
+[footer]
+; please give our project credit!
+poweredby = 'Proudly powered by <a href="https://github.com/phgamper/markdown_blog" title="MarkdownBlog on github">MarkdownBlog</a> 2014 - GPL v3.0'
+```
+
+#### iv) error.md
+As stated in the section above, it might happen that something goes wrong. MarkdownBlog includes an error handling that deals with such cases, i.e. those include URL modification, configuration file errors, permission errors, etc. The following markdown file is displayed in case of an error. Certainly it could be adapted to one's personal wishes.
 ``` markup
 # Oh - that is bad!
 Something has gone wrong.
@@ -115,10 +146,10 @@ MarkdownBlog allows to customize the ```HTML meta tags``` per page by simply pro
 ```
 
 ## 2 Supported Navigation items
-MarkdownBlog provides four different kind of navigation elements, i.e. the simple linking, directory's content linking, external linking and finally grouping multiple of them in a dropdown. 
+MarkdownBlog provides five different kind of navigation elements, i.e. the simple linking, remote linking, directory's content linking, external linking and finally grouping multiple of them in a dropdown. 
  
 ### 2.1 simple linking
-The simple linking approach provides, like stated by its name, the opportunity to simply include a single document no matter whether it is a HTML or a markdown file. The only restriction is, that a HTML document must not contain tags describing any non-structural tags like html, head, body, footer, etc., since they are still defined by the MarkdownBlog itself. The following sample configuration should be prety self-explanatory.
+The *simple linking* approach provides, like stated by its name, the opportunity to simply include a single document no matter whether it is a HTML or a markdown file. The only restriction is, that a HTML document must not contain tags describing any non-structural tags like html, head, body, footer, etc., since they are still defined by the MarkdownBlog itself. The following sample configuration should be prety self-explanatory.
 #### i) Sample configuration
 ``` ini
 ; simple linking sample
@@ -126,11 +157,21 @@ The simple linking approach provides, like stated by its name, the opportunity t
 name = "Home"
 path = "README.md"
 type = "md"
-footer = true
-logger = true
 ```
 
-### 2.2 directory's content linking 
+### 2.2 remote linking
+The *remote linking* works pretty similar to the *simple linking*. Its only difference is, that the document have not to be stored locally. The additional attribute ```link``` is optional and is used to include a reference to the remote content on top. Note, that *remote linking* only works for markdown and not for HTML files. Again the following sample configuration should be pretty self-explanatory.
+#### i) Sample configuration
+``` ini
+; remote linking sample
+[remote]
+name = "MarkdownBlog"
+path = "https://raw.githubusercontent.com/phgamper/markdown_blog/master/README.md"
+type = "remote"
+link = "https://github.com/phgamper/markdown
+```
+
+### 2.3 directory's content linking 
 If a list of markdowns is provided the files will be displayed in a blog like layout with a defined number of entries per page. The elements will appear ordered after their filename. So if you name the individual files like ```2014-09-24_sample_post``` and ```2014-09-28_another_important_thought``` as shown in the following figure, the post of the 2014-09-28 will appear first followed by the second post.
 ``` markup
 /
@@ -167,7 +208,7 @@ footer = true
 logger = true
 ```
 
-### 2.3 external linking 
+### 2.4 external linking 
 As the name implies, *external linking* provides the possibility to integrate any URL of choice into the navigation. Therefore ```path``` is used to specify the URL and ```type``` must be set to ```href```. A sample configuration is provided below. 
 #### Sample configuration
 ``` ini
@@ -177,29 +218,29 @@ path = "https://sample.ch"
 type = "href"
 ```
 
-### 2.4 dropdown grouping
-
+### 2.5 dropdown grouping
+As stated at the beginning of section 2, Markdown allows grouping multiple of the above discussed navigation elements in a dropdown. This is done by adding a prefix, e.g. ```first.```. The rest should be clear by considering the sample configuration below. 
 #### Sample configuration
 ``` ini
-; dropdown grouping sample configuration
-[wurst]
-name = "hallo"
-path = "README.md"
-type = "md"
-footer = true
-logger = true
-
-first.name = "first"
-first.path = "content/first.md"
+; Dropdown in navigation
+[University]
+name = "University"
+;a single markdown file
+first.name = "First semester"
+first.path = "../content/first.md"
 first.type = "md"
-first.footer = true
-first.logger = true
+; a list of html files
+second.name = "Second semester"
+second.path = "../content/second/"
+second.type = "html"
+second.limit = 3
+; simple file for display
+[about]
+name = "about"
+path = "../content/about.md"
+type = "md"
 
-; ... more items goes here
-
-n.name = "google.ch"
-n.path = "https://google.ch"
-n.type = "href"
+; add more entries here ...
 ```
 
 ## 3 Supported content file types

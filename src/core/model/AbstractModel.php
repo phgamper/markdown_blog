@@ -214,10 +214,16 @@ abstract class AbstractModel implements IModel
         
         if (!empty($tags))
         {
-            $author = isset($tags['author']) ? $tags['author'] : '';
-            $published = isset($tags['published']) ? $tags['published'] : '';
-            $left = '<p>' . $published . ' | ' . $author . '</p>';
-            $left = '<div class="col-md-4">' . $left . '</div>';
+            $left = '';
+            if(isset($tags['published']))
+            {
+                $left .= $tags['published'];
+            }
+            if(isset($tags['author']))
+            {
+                $left = $left ? $left . ' | ' . $tags['author']: $tags['author'];
+            }
+            $left = $left ? '<div class="col-md-4"><p>' .$left . '</p></div>' : '';
             $right = '';
             if (isset($tags['category']))
             {
@@ -229,7 +235,7 @@ abstract class AbstractModel implements IModel
                 }
                 $right = '<div class="col-md-8 pull-right text-right">' . substr($right, 3) . '</div>';
             }
-            $head = '<div class="row markdown-head">' . $left . $right . '</div>';
+            $head = $left.$right ? '<div class="row markdown-head">' . $left . $right . '</div>' : '';
             // adding meta tags
             if (isset($tags['meta']))
             {
