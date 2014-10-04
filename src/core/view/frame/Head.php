@@ -36,10 +36,7 @@ class Head
     
     private function __construct()
     {
-        $this->parser = new IniParser();
-        $this->parser->use_array_object = false;
-        $ini = array_merge_recursive($this->parser->parse(SRC_DIR . 'defaults.ini'), $this->parser->parse(CONFIG_DIR . 'general.ini'));
-        if(isset($ini['head']))
+        $ini = IniParser::parseMerged(array(SRC_DIR . 'defaults.ini', CONFIG_DIR . 'general.ini'));        if(isset($ini['head']))
         {
             $this->config = $ini['head']; 
         }

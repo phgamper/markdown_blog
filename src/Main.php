@@ -30,7 +30,7 @@ class Main
 
     public function __construct()
     {
-        $ini = array_merge_recursive(parse_ini_file(SRC_DIR . 'defaults.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
+        $ini = IniParser::parseMerged(array(SRC_DIR . 'defaults.ini', CONFIG_DIR . 'general.ini'));
         $config = isset($ini['general']) ? $ini['general'] : array();
         Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
         Head::getInstance()->link(CSS_DIR.'style.css');

@@ -118,7 +118,43 @@ class IniParser {
         $this->file = $file;
         return $this;
     }
-
+    
+    public static function parseMerged(array $files)
+    {
+        $ini = array();
+        if(!empty($files))
+        {
+            $parser = new IniParser();
+            $parser->use_array_object = false;
+            $ini = $parser->parse($files[0]);
+            unset($files[0]);
+            foreach($files as $f)
+            {
+                $ini = $parser->array_merge_recursive_distinct($ini, $parser->parse($f));
+            }
+        }
+        return $ini;
+    }
+    
+    private function array_merge_recursive_distinct ( array &$array1, array &$array2 )
+    {
+        $merged = $array1;
+    
+        foreach ( $array2 as $key => &$value )
+        {
+            if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) )
+            {
+                $merged [$key] = self::array_merge_recursive_distinct ( $merged [$key], $value );
+            }
+            else
+            {
+                $merged [$key] = $value;
+            }
+        }
+    
+        return $merged;
+    }
+    
     /**
      * Parse sections and inheritance.
      * @param  array  $simple_parsed
