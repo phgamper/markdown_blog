@@ -24,14 +24,13 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class Footer implements IView
 {
     protected $config;
 
     public function __construct()
     {
-        $ini = parse_ini_file(CONFIG_DIR . 'general.ini', true);
+        $ini = array_merge_recursive(parse_ini_file(SRC_DIR . 'defaults.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
         $this->config = isset($ini['footer']) ? $ini['footer'] : array();
         Head::getInstance()->link(CSS_DIR . 'footer.css');
     }
@@ -42,17 +41,22 @@ class Footer implements IView
         $sitemap = new NavigationController(new Sitemap(CONFIG_DIR . 'config.ini'));
         // legal notice
         $left = '';
-        if(isset($this->config['legal_notice']))
+        if (isset($this->config['legal_notice']))
         {
             $left = $this->config['legal_notice'];
         }
-        $left = '<div class="col-md-6 col-md-offset-2">'.$left.'</div>';
+        $left = '<div class="col-md-6 col-md-offset-2">' . $left . '</div>';
         $right = '<div class="col-md-2"><p class="pull-right"><a href="#">Back to top</a></p></div>';
-        // license
-        $license = '<p class="license">&copy; <a href="https://github.com/phgamper/markdown_blog" title="MarkdownBlog on github">MarkdownBlog</a> 2014 - GPL v3.0</p>';
-        $license = '<div class="row"><div class="col-md-8 col-md-offset-2">'.$license.'</div></div>';
+        // powered by
+        $poweredby = '';
+        if (isset($this->config['poweredby']))
+        {
+            $poweredby = '<p class="poweredby">' . $this->config['poweredby'] . '</p>';
+            $poweredby = '<div class="row"><div class="col-md-8 col-md-offset-2">' . $poweredby . '</div></div>';
+        }
         // put it together
-        return '<footer>'.$sitemap->display().'<div class="footer-inner row">' . $left . $right . '</div>'.$license.'</footer>';
+        return '<footer>' . $sitemap->display() . '<div class="footer-inner row">' . $left . $right . '</div>' .
+             $poweredby . '</footer>';
     }
 }
 

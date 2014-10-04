@@ -2,7 +2,8 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It is the interface for all possible markdown/html file orders.
+ * This view shows a page only containing a single formated markdown file hosted
+ * on a remote server.
  * 
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
@@ -25,39 +26,24 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-abstract class AbstractView implements IView
+class RemoteMarkdownView extends AbstractView
 {
-    protected $config;
 
     public function __construct(IModel $model, $config)
     {
-        $this->model = $model;
-        $this->config = $config;
+        parent::__construct($model, $config);
     }
 
-    public function show()
+    public function content()
     {
-        $string = '<div class="row"><div class="col-md-12">' . $this->content() . '</div></div>';
-        // append logger output on top
-        if (!(isset($this->config['logger']) && !$this->config['logger']))
+        $panel = '';
+        if(isset($this->config['link']))
         {
-            $string = Logger::getInstance()->toString() . $string;
+            $panel = '<a href="'.$this->config['link'].'">'.$this->config['link'].'</a>';
+            $panel = '<div class="panel panel-default"><div class="panel-body">'.$panel.'</div></div>';
+            $panel = '<div class="row"><div class="col-md-12">' . $panel . '</div></div>';
         }
-        return '<div class="container">' . $string . '</div>'.$this->footer();
-    }
-
-    protected abstract function content();
-
-    protected function footer()
-    {
-        $footer = '';
-        
-        if (!(isset($this->config['footer']) && !$this->config['footer']))
-        {
-            $f = new Footer();
-            $footer = $f->show();
-        }
-        return $footer;
+        return $panel.'<div class="row markdown signle"><div class="col-md-12">' . $this->model->get() . '</div></div>';
     }
 }
 

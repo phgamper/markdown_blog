@@ -98,6 +98,11 @@ class Controller extends AbstractController
                     $this->model = new Markdown($path);
                     break;
                 }
+                case 'remote':
+                {
+                    $this->model = new MarkdownRemote($path);
+                    break;
+                }
                 case 'html':
                 {
                     $this->model = new HyperTextMarkup($path);
@@ -119,6 +124,12 @@ class Controller extends AbstractController
                 case is_file($path):
                 {
                     $this->view = new SingleView($this->model, $config);
+                    break;
+                }
+                case preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", 
+                    $path):
+                {
+                    $this->view = new RemoteMarkdownView($this->model, $config);
                     break;
                 }
                 default:

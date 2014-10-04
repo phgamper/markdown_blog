@@ -1,6 +1,5 @@
 # MarkdownBlog
 
-
 ## 1 Configuration
 
 ### 1.1 Configuration files
@@ -213,3 +212,5 @@ The generated websites can contain plain HTML and even with Twitter Bootstrap st
 
 ## 4 Additional/Special Features
 ### 4.1 document header
+
+## 5 Security Settings

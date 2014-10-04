@@ -32,16 +32,16 @@ footer {
 	width: 100%;
 }
 
-.license {
+.poweredby {
 	color: #CCCCCC;
 	font-style: italic;
 }
 
-.license a {
+.poweredby a {
 	color: #CCCCCC;
 	font-weight: bold;
 }
 
-.license a:hover {
+.poweredby a:hover {
 	color: #999999;
 }
