@@ -30,7 +30,7 @@ class Footer implements IView
 
     public function __construct()
     {
-        $ini = array_merge(parse_ini_file(CONFIG_DIR . 'default.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
+        $ini = array_merge_recursive(parse_ini_file(SRC_DIR . 'defaults.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
         $this->config = isset($ini['footer']) ? $ini['footer'] : array();
         Head::getInstance()->link(CSS_DIR . 'footer.css');
     }

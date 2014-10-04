@@ -36,11 +36,20 @@ class Head
     
     private function __construct()
     {
-        $ini = array_merge(parse_ini_file(CONFIG_DIR . 'default.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
+        $this->parser = new IniParser();
+        $this->parser->use_array_object = false;
+        $ini = array_merge_recursive($this->parser->parse(SRC_DIR . 'defaults.ini'), $this->parser->parse(CONFIG_DIR . 'general.ini'));
         if(isset($ini['head']))
         {
             $this->config = $ini['head']; 
-        } 
+        }
+        if(isset($this->config['meta']))
+        {
+            foreach ($this->config['meta'] as $k => $v)
+            {
+                self::addMeta($k, $v);
+            }
+        }
     }
     
     private function __clone()

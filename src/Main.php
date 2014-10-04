@@ -30,15 +30,8 @@ class Main
 
     public function __construct()
     {
-        $ini = array_merge(parse_ini_file(CONFIG_DIR . 'default.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
+        $ini = array_merge_recursive(parse_ini_file(SRC_DIR . 'defaults.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
         $config = isset($ini['general']) ? $ini['general'] : array();
-        if(isset($config['meta']))
-        {
-            foreach ($config['meta'] as $k => $v)
-            {
-                Head::getInstance()->addMeta($k, $v);
-            }
-        }
         Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
         Head::getInstance()->link(CSS_DIR.'style.css');
         Script::getInstance()->link('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
