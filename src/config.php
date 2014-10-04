@@ -29,67 +29,57 @@
 date_default_timezone_set('Europe/Zurich');
 
 /**
- *
- *
- * Enter description here ...
+ * Path to the sourcecode directory.
+ * Attention: Make sure that this directory is well secured to prevent potential attacks on your webserver.
  * 
  * @global string SRC_DIR path of the classroot directory
  */
-define('SRC_DIR', 'src/', TRUE);
+define('SRC_DIR', '../src/', TRUE);
 
 /**
- *
- *
- * Enter description here ...
+ * Path to the external libraries used by the MarkdownBlog project.
  * 
  * @global string LIB_DIR path of the library directory
  */
-define('LIB_DIR', 'src/lib/', TRUE);
+define('LIB_DIR', '../src/lib/', TRUE);
 
 /**
- *
- *
- * Enter description here ...
+ * Path to the configuration directory of the MarkdownBlog project.
  * 
- * @global string CSS_DIR path of the config directory
+ * @global string CONFIG_DIR path of the config directory
  */
-define('CONFIG_DIR', 'config/', TRUE);
+define('CONFIG_DIR', '../config/', TRUE);
 
 
 /**
- * 
- * Enter description here ...
- * 
- * @global string LOG_DIR path of the log directory
- */
-define('LOG_DIR', 'log/', TRUE);
-
-/**
- * 
- * Enter description here ...
+ * Path th the CSS files of the project.
  * 
  * @global string CSS_DIR path of the log directory
  */
-define('CSS_DIR', 'public/css/', TRUE);
+define('CSS_DIR', 'css/', TRUE);
 
 
 /**
- *
- * Enter description here ...
+ * The page that is displayed in case of an error.
  *
  * @global path to error.md
  */
-define('ERROR_MD', 'src/error.md', TRUE);
+define('ERROR_MD', '../src/error.md', TRUE);
 
 
 /**
+ * Path for the log files of the project.
  * 
- * * Enter description here ...
+ * @global string LOG_DIR path of the log directory
+ */
+define('LOG_DIR', '../log/', TRUE);
+
+/**
+ * The default log file of the project.
  * 
  * @global string DEFAULT_LOG_FILE name of the default logfile
  * 
  */
 define('DEFAULT_LOG_FILE', 'default.log', TRUE);
-
 
 ?>
