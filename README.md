@@ -1,12 +1,6 @@
 <!--
 	author = <a href="https://github.com/phgamper" target="_blank">phgamper</a>
 	published = 2014-09-28
-	categories = markdown blog;readme
-	meta = description => README.md of MarkdownBlog
-	meta = keywords => markdown,readme
-	meta = author => phgamper
-	meta = copyright => GPL v3.0 License
-	meta = viewport => width=device-width, initial-scale=1.0
 -->
 
 # MarkdownBlog

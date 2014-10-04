@@ -32,7 +32,13 @@ class Main
     {
         $ini = parse_ini_file(CONFIG_DIR . 'general.ini', true);
         $config = isset($ini['general']) ? $ini['general'] : array();
-        
+        if(isset($config['meta']))
+        {
+            foreach ($config['meta'] as $k => $v)
+            {
+                Head::getInstance()->addMeta($k, $v);
+            }
+        }
         Head::getInstance()->link('public/lib/bootstrap/css/bootstrap.min.css');
         Head::getInstance()->link(CSS_DIR.'style.css');
         Script::getInstance()->link('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');

@@ -3,12 +3,18 @@
 title = "SampleBlog"
 favicon = "public/img/favicon.png"
 	
-; search engine optimization
-seo[] = ""
+; html meta tags
+meta.author = "phgamper"
+meta.copyright = "Philipp Gamper"
+meta.description = "README.md of MarkdownBlog"
+meta.keywords = "markdown,readme"
+meta.robots = ""
+meta.viewport = "width=device-width, initial-scale=1.0"
+
 
 ; footer configuration
 [footer]
-; legal_notice = ""
+legal_notice = "maintained by phgamper | phgamper [at] gmail.com"
 
 ; further configuration
 [general]
