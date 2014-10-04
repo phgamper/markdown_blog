@@ -48,15 +48,16 @@
 
 .sitemap-top-level {
 	float: left;
+	margin: 16px 32px 32px 32px;
 }
 
 .sitemap-top-level h5 {
 	font-weight: bold;
+	color: #428bca;
 }
 
 .sitemap-sub-level {
 	font-size: 9pt;
-	margin: 16px 32px 32px 32px
 }
 
 /* RESPONSIVE CSS

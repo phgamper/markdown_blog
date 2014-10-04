@@ -60,8 +60,15 @@ class SitemapView implements IView
                 $submenu = '<ul>' . $submenu . '</ul>';
             }
             $href = $_SERVER['PHP_SELF'] . '?module=' . $key;
-            $li = '<a href="' . $href . '" class=""><h5>' . $value['name'] . '</h5></a>';
-            $menu .= '<li class="sitemap-top-level"><div class="sitemap-sub-level">' . $li . $submenu . '</div></li>';
+            if ($submenu)
+            {
+                $li = '<h5>' . $value['name'] . '</h5>';
+            }
+            else
+            {
+                $li = '<h5><a href="' . $href . '">'.$value['name'].'</a></h5>';
+            }
+            $menu .= '<li class="sitemap-top-level">'. $li. '<div class="sitemap-sub-level">' . $submenu . '</div></li>';
         }
         
         $menu = '<div class="row"><ul>'.$menu.'</ul></div>';
