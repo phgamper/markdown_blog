@@ -36,8 +36,7 @@ class Head
     
     private function __construct()
     {
-        $ini = parse_ini_file(CONFIG_DIR.'general.ini', true);
-        
+        $ini = array_merge(parse_ini_file(CONFIG_DIR . 'default.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
         if(isset($ini['head']))
         {
             $this->config = $ini['head']; 

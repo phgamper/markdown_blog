@@ -32,8 +32,7 @@ class IniNavigationView implements IView
     public function __construct(IniNavigation $model)
     {
         $this->model = $model;
-        $ini = parse_ini_file(CONFIG_DIR . 'general.ini', true);
-        
+        $ini = array_merge(parse_ini_file(CONFIG_DIR . 'default.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
         if (isset($ini['general']))
         {
             $this->config = $ini['general'];

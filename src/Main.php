@@ -30,7 +30,7 @@ class Main
 
     public function __construct()
     {
-        $ini = parse_ini_file(CONFIG_DIR . 'general.ini', true);
+        $ini = array_merge(parse_ini_file(CONFIG_DIR . 'default.ini', true), parse_ini_file(CONFIG_DIR . 'general.ini', true));
         $config = isset($ini['general']) ? $ini['general'] : array();
         if(isset($config['meta']))
         {
