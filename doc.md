@@ -110,17 +110,17 @@ MarkdownBlog allows to customize the ```HTML meta tags``` per page by simply pro
 	meta = description => README.md of MarkdownBlog
 	meta = keywords => markdown,readme
 	meta = author => phgamper
-	meta = copyright => GPL v3.0 License
+	meta = copyright => Philipp Gamper 
 	meta = viewport => width=device-width, initial-scale=1.0
 -->
 ```
 
 ## 2 Supported Navigation items
-MarkdownBlog provides four different kind of navigation elements, namely those are the simple linking, directory's content linking, external linking and finally grouping multiple of them in a dropdown. 
+MarkdownBlog provides four different kind of navigation elements, i.e. the simple linking, directory's content linking, external linking and finally grouping multiple of them in a dropdown. 
  
 ### 2.1 simple linking
-
-#### Sample configuration
+The simple linking approach provides, like stated by its name, the opportunity to simply include a single document no matter whether it is a HTML or a markdown file. The only restriction is, that a HTML document must not contain tags describing any non-structural tags like html, head, body, footer, etc., since they are still defined by the MarkdownBlog itself. The following sample configuration should be prety self-explanatory.
+#### i) Sample configuration
 ``` ini
 ; simple linking sample
 [home]
@@ -132,12 +132,12 @@ logger = true
 ```
 
 ### 2.2 directory's content linking 
-If a list of markdowns is provided the files will be displayed in a blog like layout with a defined number of entries per page. The elements will appear ordered after their filename. So if you name the individual files like ```2014-09-24_sample_post``` and ```2014-09-28_another_important_thought``` the post of the 2014-09-28 will appear first followed by the second post.
+If a list of markdowns is provided the files will be displayed in a blog like layout with a defined number of entries per page. The elements will appear ordered after their filename. So if you name the individual files like ```2014-09-24_sample_post``` and ```2014-09-28_another_important_thought``` as shown in the following figure, the post of the 2014-09-28 will appear first followed by the second post.
 ``` markup
 /
 |-- content/
-|   |-- 2014-09-28_sample_post.md
 |   |-- 2014-09-24_another_important_thought.md
+|   |-- 2014-09-28_sample_post.md
 ```
 #### i) Pagination
 Assuming the blog is growing and soon there are a lot more posts in the ```content ``` directory from the example above. Parsing all the files would take some time, thus it might be desirable to have pagination enabled. MarkdownBlog ```enables``` pagination if limit is set > 0 in the configuration file. Setting the limit less or equal zero will ```disable``` pagination.
@@ -147,10 +147,19 @@ limit = 3
 ; ...
 ```
 #### ii) Categories
+Considering again the example from above, a user often wishes to filter by certain keywords. MarkdownBlog implements an easy to use filtering by hashtags. Similar to the ability of defining the meta tags, it is possible to assign each post to as many categories as desired. Therefore it exists the predefined placeholder ```category``` in the document header, which takes a semicolon separated string that finally is exploded into a set of categories assigned on top of the entry. Clicking on such a tag triggers the page only showing posts assigned to even this category.
 
-#### Sample configuration
+Generally the usage of this feature should not result in any exceptional behaviour, except for syntax errors in the document header. Since the category tag is optional, its absence leads to not showing any hashstag at all. Even modifying the URL manually, directs at most in an empty page, if the entered tag would not match any. The following figure provides a sample of how categories are defined.
+<!--
+	...
+	category = gentoo;apple time machine;server;backup
+        ...
+-->
+#### iii) Sample configuration
+The sample below shows how to configure MarkdownBlog to list the content of a directory in a manner described above. Compared to *simple linking* the ```path``` attribute is slightly different. Further there is an additional attribute ```limit```, which leads to the behavior described in the pagination section. 
 ``` ini
 ; directory's content linking sample configuration
+[blog]
 name = "list"
 path = "content/"
 type = "md"
@@ -160,7 +169,7 @@ logger = true
 ```
 
 ### 2.3 external linking 
-
+As the name implies, *external linking* provides the possibility to integrate any URL of choice into the navigation. Therefore ```path``` is used to specify the URL and ```type``` must be set to ```href```. A sample configuration is provided below. 
 #### Sample configuration
 ``` ini
 ; external linking sample configuration 
@@ -168,7 +177,6 @@ name = "Sample.ch"
 path = "https://sample.ch"
 type = "href"
 ```
-
 
 ### 2.4 dropdown grouping
 
@@ -203,3 +211,5 @@ Syntax highlighting can be enabled by adding the language of the code snippet be
 The generated websites can contain plain HTML and even with Twitter Bootstrap style elements.
 ### 3.3 Linking
 
+## 4 Additional/Special Features
+### 4.1 document header

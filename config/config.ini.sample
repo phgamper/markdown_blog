@@ -6,16 +6,13 @@
 ; name = "home"
 ; path = "content/sample.html"
 ; type = "html"
-; footer = true
-; logger = true
 ; simple file for display
 
 ; [about]
 ; name = "about"
 ; path = "content/about.md"
 ; type = "md"
-; footer = true
-; logger = true
+; logger = false
 
 ; include external links into navigation
 ; [google]
@@ -29,28 +26,21 @@
 ; path = "content/blog/"
 ; type = "md"
 ; limit = 3
-; footer = true
-; logger = true
+; footer = false
 
 ; Dropdown in navigation
 ; [University]
 ; name = "University"
-; footer = true
-; logger = true
 ;
 ; a single markdown file
 ; first.name = "First semester"
 ; first.path = "content/first.md"
 ; first.type = "md"
-; first.footer = true
-; first.logger = true
 ;
 ; a list of html files
 ; second.name = "Second semester"
 ; second.path = "content/second/"
 ; second.type = "html"
 ; second.limit = 3
-; second.footer = true
-; second.logger = true
 
 ; add more entries here ...

@@ -39,7 +39,7 @@ abstract class AbstractView implements IView
     {
         $string = '<div class="row"><div class="col-md-12">' . $this->content() . '</div></div>';
         // append logger output on top
-        if (isset($this->config['logger']) && $this->config['logger'])
+        if (!(isset($this->config['logger']) && !$this->config['logger']))
         {
             $string = Logger::getInstance()->toString() . $string;
         }
@@ -52,7 +52,7 @@ abstract class AbstractView implements IView
     {
         $footer = '';
         
-        if (isset($this->config['footer']) && $this->config['footer'])
+        if (!(isset($this->config['footer']) && !$this->config['footer']))
         {
             $f = new Footer();
             $footer = $f->show();
