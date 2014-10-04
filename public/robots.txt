@@ -1,0 +1,9 @@
+# Allow / disallow webcrawlers etc. to visit this page
+# See http://www.robotstxt.org for documentation on how to use the robots.txt file
+
+# Aggresive chinese web crawler
+User-agent: EasouSpider
+Disallow: /
+
+User-agent: Mozilla 5.0 (EasouSpider)
+Disallow: /
