@@ -32,16 +32,16 @@ class Main
     {
         $ini = IniParser::parseMerged(array(SRC_DIR . 'defaults.ini', CONFIG_DIR . 'general.ini'));
         $config = isset($ini['general']) ? $ini['general'] : array();
-        Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
-        Head::getInstance()->link(CSS_DIR.'style.css');
-        Script::getInstance()->link('https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js');
-        Script::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
         if(isset($config['highlight']) && $config['highlight'])
         {
             $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
             Head::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/css/'.$style);
             Script::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/js/prism.js');
         }
+        Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
+        Head::getInstance()->link(CSS_DIR.'style.css');
+        Script::getInstance()->link('https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
+        Script::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
         $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
         $controller = new Controller();
         

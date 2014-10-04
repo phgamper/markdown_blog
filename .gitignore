@@ -1,4 +1,5 @@
 # keep content and config as they are
+content/*
 public/content/*
 config/*.ini
 
