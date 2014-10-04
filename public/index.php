@@ -26,7 +26,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-include_once ('src/config.php');
+include_once ('../src/config.php');
 include_once (LIB_DIR . 'Autoload.php');
 include_once (LIB_DIR . 'ScanDir.php');
 ini_set('display_errors', 1);
