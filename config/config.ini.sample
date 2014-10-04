@@ -4,29 +4,22 @@
 ; html file configuration sample  
 ; [home]
 ; name = "home"
-; path = "content/sample.html"
+; path = "../content/sample.html"
 ; type = "html"
-; simple file for display
-
-; [about]
-; name = "about"
-; path = "content/about.md"
-; type = "md"
-; logger = false
+; footer = false
 
 ; include external links into navigation
 ; [google]
-; name = "Search on Google"
-; path = "https://google.ch"
+; name = "Markdown Blog project"
+; path = "https://github.com/phgamper/markdown_blog"
 ; type = "link"
 
 ; list all *.md contained in a directory
 ; [blog]
 ; name = "blog"
-; path = "content/blog/"
+; path = "../content/blog/"
 ; type = "md"
 ; limit = 3
-; footer = false
 
 ; Dropdown in navigation
 ; [University]
@@ -34,13 +27,19 @@
 ;
 ; a single markdown file
 ; first.name = "First semester"
-; first.path = "content/first.md"
+; first.path = "../content/first.md"
 ; first.type = "md"
 ;
 ; a list of html files
 ; second.name = "Second semester"
-; second.path = "content/second/"
+; second.path = "../content/second/"
 ; second.type = "html"
 ; second.limit = 3
+
+; simple file for display
+; [about]
+; name = "about"
+; path = "../content/about.md"
+; type = "md"
 
 ; add more entries here ...

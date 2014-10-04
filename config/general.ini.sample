@@ -1,26 +1,20 @@
-; configuration of the HTML head 
+[general]
+; Page name (shown on the left in the navigation)
+page_name = "SampleBlog"
+
 [head]
+; Title displayed in the browser
 title = "SampleBlog"
-favicon = "public/img/favicon.png"
-	
-; html meta tags
+; Icon displayed in the browser
+favicon = "img/favicon.png"
+
+; Meta information for search engines etc. 
+; These information will be included in every file if not defined otherwise
 meta.author = "phgamper"
 meta.copyright = "Philipp Gamper"
-meta.description = "README.md of MarkdownBlog"
-meta.keywords = "markdown,readme"
-meta.robots = ""
-meta.viewport = "width=device-width, initial-scale=1.0"
+meta.description = "Sample project to show the capabilities of the MarkdownBlog"
+meta.keywords = "markdown,sample,blog"
 
-
-; footer configuration
 [footer]
+; Content displayed in the footer
 legal_notice = "maintained by phgamper | phgamper [at] gmail.com"
-
-; further configuration
-[general]
-; name of the shown on the left in the navigation
-page_name = "SampleBlog"
-; enable / disable syntax highlighting
-highlight = true
-; style sheet defining syntax highlighting scheme
-scheme = "okaidia.css"
