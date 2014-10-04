@@ -118,7 +118,7 @@ class Head
         }
         foreach ($this->sheets as $href => $rel)
         {
-            $css .= '<link href="'.$href.'" rel="'.$rel.'">';
+            $css .= '<link href="'.$href.'" rel="'.$rel.'" type="text/css">';
         } 
         if(isset($this->config['favicon']))
         {
