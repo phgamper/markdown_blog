@@ -51,7 +51,7 @@ abstract class AbstractView implements IView
     protected function footer()
     {
         $footer = '';
-        
+
         if (!(isset($this->config['footer']) && !$this->config['footer']))
         {
             $f = new Footer();

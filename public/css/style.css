@@ -22,30 +22,38 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
- 
+
 body {
-	margin: auto;
-	padding-top: 70px;
-	color: #5a5a5a;
+    margin: auto;
+    padding-top: 70px;
+    color: #5a5a5a;
 }
 
 .container{
-	max-width:1024px;	
+    max-width: 1024px;	
+    min-height: 640px; 
 }
 
 a:hover,a:focus {
-	text-decoration: none;
+    text-decoration: none;
 }
 
+
 /* RESPONSIVE CSS
-    -------------------------------------------------- */
+-------------------------------------------------- */
+@media (max-height : 950px) {
+    .container {
+        min-height: 0px;
+    }
+}
+
 @media ( max-width : 979px) {
-	
+
 }
 
 @media ( max-width : 767px) {
-	
-	body {
-		font-size: 11pt;	
-	}
+
+    body {
+        font-size: 11pt;	
+    }
 }
