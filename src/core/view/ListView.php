@@ -58,7 +58,9 @@ class ListView extends AbstractView
             $i = 0;
             while ($it->valid() && $i < $break)
             {
-                $column .= '<div class="row"><div class="col-md-12 list-item">' . $it->current() . '</div></div>';
+                $head = $this->head($this->model->parseTags($it->key()));
+                $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current() . '</div></div>';
+                $column .= '<div class="row"><div class="col-md-12 list-item">' . $head . $body . '</div></div>';
                 $it->next();
                 $i ++;
             }

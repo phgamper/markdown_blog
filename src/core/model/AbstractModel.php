@@ -61,7 +61,8 @@ abstract class AbstractModel implements IModel
         $limit = is_null($limit) ? count($files) : $limit;
         for ($i = $start; $i < count($files) && $i - $start < $limit; $i ++)
         {
-            $list[] = $this->parse($this->path . $files[$i]);
+            $file = $this->path . $files[$i];
+            $list[$file] = $this->parse($file);
         }
         return $list;
     }
@@ -77,60 +78,72 @@ abstract class AbstractModel implements IModel
 
     /**
      * This function reads the tags from the file, if they have been provided
+     *
+     * @param unknown $file
+     *            - file to parse
      */
-    protected function parseTags($fh)
+    public function parseTags($file)
     {
         try
         {
-            $tags = array();
-            $meta = false;
-            
-            while (!feof($fh))
+            if ($fh = fopen($file, 'r'))
             {
-                $line = fgets($fh);
                 
-                // opening tag
-                if (!$meta && preg_match('/^(\<\!\-\-).*/', $line))
+                $tags = array();
+                $meta = false;
+                
+                while (!feof($fh))
                 {
-                    $tags['meta'] = array();
-                    $meta = true;
-                }
-                // closing tag
-                if ($meta && preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line))
-                {
-                    $meta = false;
-                }
-                // search for meta tags
-                if ($meta)
-                {
-                    // author
-                    if (preg_match('/^\s*(author)\s*(=).*/i', $line))
+                    $line = fgets($fh);
+                    
+                    // opening tag
+                    if (!$meta && preg_match('/^(\<\!\-\-).*/', $line))
                     {
-                        $tags['author'] = trim(substr($line, strpos($line, '=') + 1));
+                        $tags['meta'] = array();
+                        $meta = true;
                     }
-                    // published
-                    if (preg_match('/^\s*(published)\s*(=).*/i', $line))
+                    // closing tag
+                    if ($meta && preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line))
                     {
-                        $tags['published'] = trim(substr($line, strpos($line, '=') + 1));
+                        $meta = false;
                     }
-                    // categories
-                    if (preg_match('/^\s*(categories)\s*(=).*/i', $line))
+                    // search for meta tags
+                    if ($meta)
                     {
-                        $tags['category'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
+                        // author
+                        if (preg_match('/^\s*(author)\s*(=).*/i', $line))
+                        {
+                            $tags['author'] = trim(substr($line, strpos($line, '=') + 1));
+                        }
+                        // published
+                        if (preg_match('/^\s*(published)\s*(=).*/i', $line))
+                        {
+                            $tags['published'] = trim(substr($line, strpos($line, '=') + 1));
+                        }
+                        // categories
+                        if (preg_match('/^\s*(categories)\s*(=).*/i', $line))
+                        {
+                            $tags['category'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
+                        }
+                        // meta
+                        if (preg_match('/^\s*(meta)\s*(=).*/i', $line))
+                        {
+                            $e = explode('=>', trim(substr($line, strpos($line, '=') + 1)), 2);
+                            $tags['meta'][trim($e[0])] = trim($e[1]);
+                        }
                     }
-                    // meta
-                    if (preg_match('/^\s*(meta)\s*(=).*/i', $line))
+                    else
                     {
-                        $e = explode('=>', trim(substr($line, strpos($line, '=') + 1)), 2);
-                        $tags['meta'][trim($e[0])] = trim($e[1]);
+                        break;
                     }
                 }
-                else
-                {
-                    break;
-                }
+                fclose($fh);
+                return $tags;
             }
-            return $tags;
+            else
+            {
+                throw new Exception('Can not open ' . $file);
+            }
         }
         catch (Exception $e)
         {
@@ -158,37 +171,29 @@ abstract class AbstractModel implements IModel
             {
                 foreach ($files as $i => $name)
                 {
-                    if ($fh = fopen($this->path . $name, 'r'))
+                    $tags = $this->parseTags($this->path . $name);
+                    foreach ($criteria as $key => $value)
                     {
-                        $tags = $this->parseTags($fh);
-                        fclose($fh);
-                        foreach ($criteria as $key => $value)
+                        if (isset($tags[$key]))
                         {
-                            if (isset($tags[$key]))
+                            if (is_array($tags[$key]))
                             {
-                                if (is_array($tags[$key]))
+                                if (in_array($value, $tags[$key]))
                                 {
-                                    if (in_array($value, $tags[$key]))
-                                    {
-                                        continue; // check next criteria
-                                    }
-                                }
-                                else
-                                {
-                                    if ($tags[$key] == $value)
-                                    {
-                                        continue; // check next criteria
-                                    }
+                                    continue; // check next criteria
                                 }
                             }
-                            // at least one criteria does not match
-                            unset($files[$i]);
-                            break;
+                            else
+                            {
+                                if ($tags[$key] == $value)
+                                {
+                                    continue; // check next criteria
+                                }
+                            }
                         }
-                    }
-                    else
-                    {
-                        throw new Exception('Can not open ' . $file);
+                        // at least one criteria does not match
+                        unset($files[$i]);
+                        break;
                     }
                 }
             }
@@ -199,52 +204,6 @@ abstract class AbstractModel implements IModel
                     $e->getMessage());
             }
         }
-    }
-
-    /**
-     * This function builds the head containing the meta information
-     *
-     * @param unknown $tags            
-     * @return string
-     */
-    protected function head($tags)
-    {
-        $head = '';
-        
-        if (!empty($tags))
-        {
-            $left = '';
-            if(isset($tags['published']))
-            {
-                $left .= $tags['published'];
-            }
-            if(isset($tags['author']))
-            {
-                $left = $left ? $left . ' | ' . $tags['author']: $tags['author'];
-            }
-            $left = $left ? '<div class="col-md-4"><p>' .$left . '</p></div>' : '';
-            $right = '';
-            if (isset($tags['category']))
-            {
-                $href = $_SERVER['PHP_SELF'] . '?' . QueryString::removeAll(array('tag', 'page'), $_SERVER['QUERY_STRING']);
-                foreach ($tags['category'] as $c)
-                {
-                    $right .= ' | <a href="' . $href . '&tag=' . $c . '">#' . trim($c) . '</a>';
-                    // $right .= ' | #' . trim($c);
-                }
-                $right = '<div class="col-md-8 pull-right text-right">' . substr($right, 3) . '</div>';
-            }
-            $head = $left.$right ? '<div class="row markdown-head">' . $left . $right . '</div>' : '';
-            // adding meta tags
-            if (isset($tags['meta']))
-            {
-                foreach ($tags['meta'] as $name => $content)
-                {
-                    Head::getInstance()->addMeta($name, $content);
-                }
-            }
-        }
-        return $head;
     }
 }
 

@@ -39,7 +39,6 @@ class Markdown extends AbstractModel
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     *
      * @param unknown $file
      *            - file to parse
      */
@@ -49,12 +48,7 @@ class Markdown extends AbstractModel
         {
             if ($fh = fopen($file, 'r'))
             {
-                $tags = $this->parseTags($fh);
-                if (!rewind($fh))
-                {
-                    throw new Exception('Could not rewind ' . $file);
-                }
-                $content = $this->head($tags) . Parsedown::instance()->parse(fread($fh, filesize($file)));
+                $content = Parsedown::instance()->parse(fread($fh, filesize($file)));
                 fclose($fh);
                 return $content;
             }

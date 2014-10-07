@@ -44,10 +44,66 @@ abstract class AbstractView implements IView
         {
             $string = Logger::getInstance()->toString() . $string;
         }
-        return '<div class="container">' . $string . '</div>'.$this->footer();
+        if(isset($this->config['max-width']))
+        {
+            return '<div class="container" style="max-width: '.$this->config['max-width'].';">' . $string . '</div>'.$this->footer();
+        }
+        else 
+        {
+            return '<div class="container">' . $string . '</div>'.$this->footer();
+        }
     }
 
     protected abstract function content();
+    
+    /**
+     * This function builds the head containing the meta information
+     *
+     * TODO move HTML to View, just provide a function to get the tags
+     *
+     * @param unknown $tags            
+     * @return string
+     */
+    protected function head($tags)
+    {
+        $head = '';
+        
+        if (!empty($tags))
+        {
+            $left = '';
+            if (isset($tags['published']))
+            {
+                $left .= $tags['published'];
+            }
+            if (isset($tags['author']))
+            {
+                $left = $left ? $left . ' | ' . $tags['author'] : $tags['author'];
+            }
+            $left = $left ? '<div class="col-md-5"><p>' . $left . '</p></div>' : '';
+            $right = '';
+            if (isset($tags['category']))
+            {
+                $href = $_SERVER['PHP_SELF'] . '?' .
+                     QueryString::removeAll(array('tag','page'), $_SERVER['QUERY_STRING']);
+                foreach ($tags['category'] as $c)
+                {
+                    $right .= ' | <a href="' . $href . '&tag=' . $c . '">#' . trim($c) . '</a>';
+                    // $right .= ' | #' . trim($c);
+                }
+                $right = '<div class="col-md-7 pull-right text-right">' . substr($right, 3) . '</div>';
+            }
+            $head = $left . $right ? '<div class="row content-head">' . $left . $right . '</div>' : '';
+            // adding meta tags
+            if (isset($tags['meta']))
+            {
+                foreach ($tags['meta'] as $name => $content)
+                {
+                    Head::getInstance()->addMeta($name, $content);
+                }
+            }
+        }
+        return $head;
+    }
 
     protected function footer()
     {

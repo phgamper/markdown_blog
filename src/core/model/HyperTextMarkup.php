@@ -49,12 +49,7 @@ class HyperTextMarkup extends AbstractModel
         {
             if ($fh = fopen($file, 'r'))
             {
-                $tags = $this->parseTags($fh);
-                if (!rewind($fh))
-                {
-                    throw new Exception('Could not rewind ' . $file);
-                }
-                $content = $this->head($tags) . fread($fh, filesize($file));
+                $content = fread($fh, filesize($file));
                 fclose($fh);
                 return $content;
             }
