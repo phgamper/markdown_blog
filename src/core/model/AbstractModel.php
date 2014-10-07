@@ -35,7 +35,6 @@ abstract class AbstractModel implements IModel
     {
         $this->path = $path;
         $this->mime = $mime;
-        Head::getInstance()->link(CSS_DIR . 'markdown.css');
     }
 
     /**

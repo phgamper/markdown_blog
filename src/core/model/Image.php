@@ -2,7 +2,8 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It is the interface for all possible markdown/html file orders.
+ * It provides the central part of the application and is responsible for loading 
+ * and parsing the image files.
  * 
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
@@ -24,42 +25,40 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
-abstract class AbstractView implements IView
+class Image extends AbstractModel
 {
-    protected $config;
+    public $path;
+    public $count = 0;
 
-    public function __construct(IModel $model, $config)
+    public function __construct($path)
     {
-        $this->model = $model;
-        $this->config = $config;
-        Head::getInstance()->link(CSS_DIR . 'content.css');
+        parent::__construct($path, '.jpg');
     }
 
-    public function show()
+    /**
+     * This function parse the given file into HTML and outputs a string
+     * containing its content.
+     *
+     *
+     * @param unknown $file
+     *            - file to parse
+     */
+    public function parse($file)
     {
-        $string = '<div class="row"><div class="col-md-12">' . $this->content() . '</div></div>';
-        // append logger output on top
-        if (!(isset($this->config['logger']) && !$this->config['logger']))
+        try
         {
-            $string = Logger::getInstance()->toString() . $string;
+            $photo = HTMLBuilder::a_img($file, $file, '', false); //'data-gallery="gallery"');
+            $photo = '<div class="thumbnail">' . $photo . '</div>';
+            return $photo;
         }
-        return '<div class="container">' . $string . '</div>'.$this->footer();
-    }
-
-    protected abstract function content();
-
-    protected function footer()
-    {
-        $footer = '';
-
-        if (!(isset($this->config['footer']) && !$this->config['footer']))
+        catch (Exception $e)
         {
-            $f = new Footer();
-            $footer = $f->show();
+            Logger::getInstance()->add(
+                new Error('An unexpected error has occurred.', 'Markdown::parse("' . $file . '")'), $e->getMessage());
+            return '';
         }
-        return $footer;
     }
 }
 
 ?>
+

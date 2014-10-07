@@ -108,6 +108,11 @@ class Controller extends AbstractController
                     $this->model = new HyperTextMarkup($path);
                     break;
                 }
+                case 'img':
+                {
+                    $this->model = new Image($path);
+                    break;
+                }
                 default:
                 {
                     throw new ErrorException('There is an error in the configuration file!');

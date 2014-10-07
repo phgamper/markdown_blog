@@ -24,7 +24,6 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class ListView extends AbstractView
 {
 
@@ -39,25 +38,39 @@ class ListView extends AbstractView
         $pager = '';
         $limit = null;
         $start = 0;
-
+        
         if (isset($this->config['limit']))
         {
             $limit = $this->config['limit'];
             $start = isset($_GET['page']) && $_GET['page'] > 0 ? $limit * ($_GET['page'] - 1) : 0;
         }
-        // enabling filtering if hashtag is given        
+        // enabling filtering if hashtag is given
         $filter = isset($_GET['tag']) ? array('category' => $_GET['tag']) : array();
-                
-        foreach ($this->model->getList($start, $limit, $filter) as $md)
-        {
-            $string .= '<div class="row markdown list"><div class="col-md-12">' . $md . '</div></div>';
-        }
+        // detect number of columns to show
+        $cols = isset($this->config['columns']) && $this->config['columns'] > 0 ? $this->config['columns'] : 1;
+        $width = floor(12 / $cols);
+        $it = new ArrayIterator($this->model->getList($start  * $cols, $limit * $cols, $filter));
+        $break = ceil($it->count() / $cols);
 
+        while ($it->valid())
+        {
+            $column = '';
+            $i = 0;
+            while ($it->valid() && $i < $break)
+            {
+                $column .= '<div class="row"><div class="col-md-12 list-item">' . $it->current() . '</div></div>';
+                $it->next();
+                $i ++;
+            }
+            $string .= '<div class="col-md-' . $width . ' list-column">' . $column . '</div>';
+        }
+        $string = '<div class="row list">' . $string . '</div>';
+        
         if (isset($this->config['limit']))
         {
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
             $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
-            $self = $_SERVER['PHP_SELF'] . '?'.QueryString::remove('page', $_SERVER['QUERY_STRING']).'&page=';
+            $self = $_SERVER['PHP_SELF'] . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
             if ($prev > 0)
             {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';
@@ -69,7 +82,6 @@ class ListView extends AbstractView
             $pager = '<ul class="pager">' . $pager . '</ul>';
             $pager = '<div class="row"><div class="col-md-12">' . $pager . '</div></div>';
         }
-        
         
         return $string . $pager;
     }

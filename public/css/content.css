@@ -1,6 +1,6 @@
 /**
  * This file is part of the MarkdownBlog project.
- * It is the style sheet for the markdown content.
+ * It is the style sheet for the content content.
  *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
  * Its purpose is to provide a easy way to share your thoughts without any Database
@@ -23,37 +23,37 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-.markdown h1{
+.content h1{
 	padding: 32px 0 12px 0;
 }
 
-.markdown h2{
+.content h2{
 	padding: 24px 0 12px 0;
 }
 
-.markdown h3{
+.content h3{
 	padding: 16px 0 12px 0;
 }
 
-.markdown h4{
+.content h4{
 	padding: 12px 8px 4px 8px;
 }
 
-.markdown h5{
+.content h5{
 	padding: 12px 8px 4px 8px;
 }
 
 
-.markdown pre{
+.content pre{
 	margin: 12px 0px;
 }
 
-.markdown {
+.content {
 	font-size: 11pt;
 }
 
 
-.markdown-head{
+.content-head{
 	border-top: 1px solid #AAAAAA;
 }
 
@@ -62,10 +62,10 @@
 }
 
 
-.list {
+.list-item {
 	margin-bottom: 48px;
 }
 
-.markdown img{
+.content img{
 	max-width: 90%;
 }
