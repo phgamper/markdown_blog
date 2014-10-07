@@ -34,6 +34,10 @@ abstract class AbstractView implements IView
         $this->model = $model;
         $this->config = $config;
         Head::getInstance()->link(CSS_DIR . 'content.css');
+        if (isset($this->config['style']))
+        {
+            Head::getInstance()->link($this->config['style']);
+        }
     }
 
     public function show()
@@ -44,10 +48,10 @@ abstract class AbstractView implements IView
             $string = Logger::getInstance()->toString() . $string;
         }
         if (isset($this->config['max-width'])) {
-            return '<div class="container" style="max-width: ' . $this->config['max-width'] . ';">' . $string . '</div>' .
+            return '<div class="container content" style="max-width: ' . $this->config['max-width'] . ';">' . $string . '</div>' .
                  $this->footer();
         } else {
-            return '<div class="container">' . $string . '</div>' . $this->footer();
+            return '<div class="container content">' . $string . '</div>' . $this->footer();
         }
     }
 
