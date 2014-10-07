@@ -25,7 +25,6 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class RemoteMarkdownView extends AbstractView
 {
 
@@ -37,13 +36,12 @@ class RemoteMarkdownView extends AbstractView
     public function content()
     {
         $panel = '';
-        if(isset($this->config['link']))
-        {
-            $panel = '<a href="'.$this->config['link'].'">'.$this->config['link'].'</a>';
-            $panel = '<div class="panel panel-default"><div class="panel-body">'.$panel.'</div></div>';
+        if (isset($this->config['link'])) {
+            $panel = '<a href="' . $this->config['link'] . '">' . $this->config['link'] . '</a>';
+            $panel = '<div class="panel panel-default"><div class="panel-body">' . $panel . '</div></div>';
             $panel = '<div class="row"><div class="col-md-12">' . $panel . '</div></div>';
         }
-        return $panel.'<div class="row markdown signle"><div class="col-md-12">' . $this->model->get() . '</div></div>';
+        return $panel . '<div class="row markdown signle"><div class="col-md-12">' . $this->model->get() . '</div></div>';
     }
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the MarkdownBlog project.
  * It is the interface for the reference types that pass information about the occurred issue to the logger.
@@ -25,8 +26,11 @@
  */
 abstract class Logable
 {
+
     protected $msg;
+
     protected $logmsg;
+
     protected $trigger;
 
     public abstract function toString();

@@ -24,23 +24,18 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
-
 class QueryString
 {
 
     public static function remove($search, $query)
     {
-        // improve performance        
-        if (isset($_GET[$search]))
-        {
+        // improve performance
+        if (isset($_GET[$search])) {
             $e = explode('&', $query);
-            $query ='';
-            foreach ($e as $v)
-            {
-                if(trim(substr($v, 0, strpos($v, '='))) != $search)
-                {
-                    $query .= '&'.$v;
+            $query = '';
+            foreach ($e as $v) {
+                if (trim(substr($v, 0, strpos($v, '='))) != $search) {
+                    $query .= '&' . $v;
                 }
             }
             // remove the first &
@@ -51,8 +46,7 @@ class QueryString
 
     public static function removeAll(array $search, $query)
     {
-        foreach($search as $s)
-        {
+        foreach ($search as $s) {
             $query = self::remove($s, $query);
         }
         return $query;

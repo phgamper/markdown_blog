@@ -27,7 +27,9 @@
  */
 class Image extends AbstractModel
 {
+
     public $path;
+
     public $count = 0;
 
     public function __construct($path)
@@ -45,14 +47,11 @@ class Image extends AbstractModel
      */
     public function parse($file)
     {
-        try
-        {
-            $photo = HTMLBuilder::a_img($file, $file, '', false); //'data-gallery="gallery"');
+        try {
+            $photo = HTMLBuilder::a_img($file, $file, '', false); // 'data-gallery="gallery"');
             $photo = '<div class="thumbnail">' . $photo . '</div>';
             return $photo;
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             Logger::getInstance()->add(
                 new Error('An unexpected error has occurred.', 'Markdown::parse("' . $file . '")'), $e->getMessage());
             return '';

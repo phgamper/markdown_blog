@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * This file is part of the MarkdownBlog project.
@@ -25,22 +25,21 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class Script
 {
+
     private $scripts = array();
+
     private $inlines = array();
-    
+
     private static $instance = null;
-    
+
     private function __construct()
-    {
-    }
-    
+    {}
+
     private function __clone()
-    {
-    }
-    
+    {}
+
     /**
      * returns the instance created by its first invoke.
      *
@@ -48,34 +47,35 @@ class Script
      */
     public static function getInstance()
     {
-        if (null === self::$instance)
-        {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
-    
+        
         return self::$instance;
     }
-    
+
     /**
      * link a JS to the script list
      *
-     * @param $script   path to js file
+     * @param $script path
+     *            to js file
      */
     public function link($script)
     {
         $this->scripts[] = $script;
     }
-    
+
     /**
      * inlines a script directly into the HTML code
-     * 
-     * @param $script   script to inline
+     *
+     * @param $script script
+     *            to inline
      */
     public function inline($script)
     {
         $this->inlines[] = $script;
     }
-    
+
     /**
      * empty the script list
      */
@@ -85,22 +85,20 @@ class Script
     }
 
     /**
-     * generate the script list as a HTML string 
-     * 
+     * generate the script list as a HTML string
+     *
      * @return string to print
      */
     public function toString()
     {
         $js = '<!-- Le javascript -->';
-        foreach ($this->scripts as $j)
-        {
-            $js .= '<script src="'.$j.'"></script>';
-        }        
-        foreach ($this->inlines as $i)
-        {
-            $js .= '<script>'.$i.'</script>';
+        foreach ($this->scripts as $j) {
+            $js .= '<script src="' . $j . '"></script>';
         }
-        return $js; 
+        foreach ($this->inlines as $i) {
+            $js .= '<script>' . $i . '</script>';
+        }
+        return $js;
     }
 }
 

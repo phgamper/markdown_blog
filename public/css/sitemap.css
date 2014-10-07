@@ -22,7 +22,6 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 @CHARSET "UTF-8";
 
 /* SITEMAP CSS
@@ -31,6 +30,7 @@
 	text-decoration: none;
 	margin-bottom: 24px;
 }
+
 .sitemap-inner {
 	border-bottom: 1px solid #E5E5E5;
 }
@@ -44,7 +44,6 @@
 	margin: 0px;
 	padding: 0px;
 }
-
 
 .sitemap-top-level {
 	float: left;
@@ -79,9 +78,7 @@
 	.sitemap-sub-level {
 		margin: 8px 16px 16px 16px
 	}
-	
 	.sitemap-top-level {
-	float: none;
-}
-	
+		float: none;
+	}
 }

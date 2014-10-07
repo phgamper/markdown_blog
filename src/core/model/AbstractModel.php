@@ -27,8 +27,11 @@
  */
 abstract class AbstractModel implements IModel
 {
+
     public $path;
+
     public $count = 0;
+
     protected $mime;
 
     public function __construct($path, $mime)
@@ -59,8 +62,7 @@ abstract class AbstractModel implements IModel
         $this->count = count($files);
         rsort($files);
         $limit = is_null($limit) ? count($files) : $limit;
-        for ($i = $start; $i < count($files) && $i - $start < $limit; $i ++)
-        {
+        for ($i = $start; $i < count($files) && $i - $start < $limit; $i ++) {
             $file = $this->path . $files[$i];
             $list[$file] = $this->parse($file);
         }
@@ -84,69 +86,53 @@ abstract class AbstractModel implements IModel
      */
     public function parseTags($file)
     {
-        try
-        {
-            if ($fh = fopen($file, 'r'))
-            {
+        try {
+            if ($fh = fopen($file, 'r')) {
                 
                 $tags = array();
                 $meta = false;
                 
-                while (!feof($fh))
-                {
+                while (! feof($fh)) {
                     $line = fgets($fh);
                     
                     // opening tag
-                    if (!$meta && preg_match('/^(\<\!\-\-).*/', $line))
-                    {
+                    if (! $meta && preg_match('/^(\<\!\-\-).*/', $line)) {
                         $tags['meta'] = array();
                         $meta = true;
                     }
                     // closing tag
-                    if ($meta && preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line))
-                    {
+                    if ($meta && preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line)) {
                         $meta = false;
                     }
                     // search for meta tags
-                    if ($meta)
-                    {
+                    if ($meta) {
                         // author
-                        if (preg_match('/^\s*(author)\s*(=).*/i', $line))
-                        {
+                        if (preg_match('/^\s*(author)\s*(=).*/i', $line)) {
                             $tags['author'] = trim(substr($line, strpos($line, '=') + 1));
                         }
                         // published
-                        if (preg_match('/^\s*(published)\s*(=).*/i', $line))
-                        {
+                        if (preg_match('/^\s*(published)\s*(=).*/i', $line)) {
                             $tags['published'] = trim(substr($line, strpos($line, '=') + 1));
                         }
                         // categories
-                        if (preg_match('/^\s*(categories)\s*(=).*/i', $line))
-                        {
+                        if (preg_match('/^\s*(categories)\s*(=).*/i', $line)) {
                             $tags['category'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
                         }
                         // meta
-                        if (preg_match('/^\s*(meta)\s*(=).*/i', $line))
-                        {
+                        if (preg_match('/^\s*(meta)\s*(=).*/i', $line)) {
                             $e = explode('=>', trim(substr($line, strpos($line, '=') + 1)), 2);
                             $tags['meta'][trim($e[0])] = trim($e[1]);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
                 }
                 fclose($fh);
                 return $tags;
-            }
-            else
-            {
+            } else {
                 throw new Exception('Can not open ' . $file);
             }
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             Logger::getInstance()->add(
                 new Error('An unexpected error has occurred.', 'AbstractModel::parseTags()', $e->getMessage()));
             return array();
@@ -165,28 +151,18 @@ abstract class AbstractModel implements IModel
      */
     public function filter(array &$files, array $criteria)
     {
-        if (!empty($criteria))
-        {
-            try
-            {
-                foreach ($files as $i => $name)
-                {
+        if (! empty($criteria)) {
+            try {
+                foreach ($files as $i => $name) {
                     $tags = $this->parseTags($this->path . $name);
-                    foreach ($criteria as $key => $value)
-                    {
-                        if (isset($tags[$key]))
-                        {
-                            if (is_array($tags[$key]))
-                            {
-                                if (in_array($value, $tags[$key]))
-                                {
+                    foreach ($criteria as $key => $value) {
+                        if (isset($tags[$key])) {
+                            if (is_array($tags[$key])) {
+                                if (in_array($value, $tags[$key])) {
                                     continue; // check next criteria
                                 }
-                            }
-                            else
-                            {
-                                if ($tags[$key] == $value)
-                                {
+                            } else {
+                                if ($tags[$key] == $value) {
                                     continue; // check next criteria
                                 }
                             }
@@ -196,9 +172,7 @@ abstract class AbstractModel implements IModel
                         break;
                     }
                 }
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 Logger::getInstance()->add(
                     new Error('Could not filter according the given criteria', 'AbstractModel::filter("' . $file . '")'), 
                     $e->getMessage());

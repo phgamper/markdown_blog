@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * This file is part of the MarkdownBlog project.
@@ -25,35 +25,38 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class Head
 {
+
     private $config;
+
     private $sheets = array();
+
     private $meta = array();
+
     private $scripts = array();
-    
+
     private static $instance = null;
-    
+
     private function __construct()
     {
-        $ini = IniParser::parseMerged(array(SRC_DIR . 'defaults.ini', CONFIG_DIR . 'general.ini'));        if(isset($ini['head']))
-        {
-            $this->config = $ini['head']; 
+        $ini = IniParser::parseMerged(array(
+            SRC_DIR . 'defaults.ini',
+            CONFIG_DIR . 'general.ini'
+        ));
+        if (isset($ini['head'])) {
+            $this->config = $ini['head'];
         }
-        if(isset($this->config['meta']))
-        {
-            foreach ($this->config['meta'] as $k => $v)
-            {
+        if (isset($this->config['meta'])) {
+            foreach ($this->config['meta'] as $k => $v) {
                 self::addMeta($k, $v);
             }
         }
     }
-    
+
     private function __clone()
-    {
-    }
-    
+    {}
+
     /**
      * returns the instance created by its first invoke.
      *
@@ -61,25 +64,26 @@ class Head
      */
     public static function getInstance()
     {
-        if (null === self::$instance)
-        {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
-    
+        
         return self::$instance;
     }
-    
+
     /**
      * links a CSS to the style sheet list
      *
-     * @param $href path to css file
-     * @param $rel  type of how to link the css
+     * @param $href path
+     *            to css file
+     * @param $rel type
+     *            of how to link the css
      */
     public function link($href, $rel = 'stylesheet')
     {
         $this->sheets[$href] = $rel;
     }
-    
+
     /**
      * empties the style sheets list
      */
@@ -87,18 +91,20 @@ class Head
     {
         $this->sheets = array();
     }
-    
+
     /**
      * adds an meta tag to the HTML head
-     * 
-     * @param unknown $name - name of the meta tag
-     * @param unknown $content - content of the meta tag
+     *
+     * @param unknown $name
+     *            - name of the meta tag
+     * @param unknown $content
+     *            - content of the meta tag
      */
     public function addMeta($name, $content)
     {
         $this->meta[$name] = $content;
     }
-    
+
     /**
      * empties the meta tag list
      */
@@ -106,17 +112,18 @@ class Head
     {
         $this->meta = array();
     }
-    
+
     /**
      * link a JS to the script list
      *
-     * @param $script   path to js file
+     * @param $script path
+     *            to js file
      */
     public function linkScript($script)
     {
         $this->scripts[] = $script;
     }
-    
+
     /**
      * empty the script list
      */
@@ -124,38 +131,33 @@ class Head
     {
         $this->scripts = array();
     }
-    
 
     /**
-     * generate the head as a HTML string 
+     * generate the head as a HTML string
      *
      * @return string to print
      */
     public function toString()
     {
         $css = '';
-        $site = isset($_GET['module']) ? ' - '. $_GET['module']: '';
-        $title = '<title>'.$this->config['title'].$site.'</title>';
-        $meta = '<meta charset="utf-8">'.$title;
-        foreach($this->meta as $name => $content)
-        {
-            $meta .= '<meta name="'.$name.'" content="'.$content.'">';
+        $site = isset($_GET['module']) ? ' - ' . $_GET['module'] : '';
+        $title = '<title>' . $this->config['title'] . $site . '</title>';
+        $meta = '<meta charset="utf-8">' . $title;
+        foreach ($this->meta as $name => $content) {
+            $meta .= '<meta name="' . $name . '" content="' . $content . '">';
         }
-        foreach ($this->sheets as $href => $rel)
-        {
-            $css .= '<link href="'.$href.'" rel="'.$rel.'" type="text/css">';
-        } 
-        if(isset($this->config['favicon']))
-        {
-            $css .= '<link href="'.$this->config['favicon'].'" rel="icon" type="image/png">';
-        }        
+        foreach ($this->sheets as $href => $rel) {
+            $css .= '<link href="' . $href . '" rel="' . $rel . '" type="text/css">';
+        }
+        if (isset($this->config['favicon'])) {
+            $css .= '<link href="' . $this->config['favicon'] . '" rel="icon" type="image/png">';
+        }
         $js = '';
-        foreach ($this->scripts as $j)
-        {
-            $js .= '<script src="'.$j.'"></script>';
+        foreach ($this->scripts as $j) {
+            $js .= '<script src="' . $j . '"></script>';
         }
-        $string = '<head>'.$meta.$css.$js.'</head>';        
-        return $string; 
+        $string = '<head>' . $meta . $css . $js . '</head>';
+        return $string;
     }
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the MarkdownBlog project.
  * It provides a container for Logables and mark them to be written into the log file.
@@ -25,9 +26,13 @@
  */
 class Log
 {
+
     public $msg;
+
     public $TSP;
+
     public $alert;
+
     public $trigger;
 
     public function __construct(Logable $l)

@@ -30,17 +30,18 @@
  */
 class Logger
 {
+
     private $msgs = array();
+
     private $logs = array();
+
     private static $instance = null;
 
     private function __construct()
-    {
-    }
+    {}
 
     private function __clone()
-    {
-    }
+    {}
 
     /**
      * returns the instance created by its first invoke.
@@ -49,8 +50,7 @@ class Logger
      */
     public static function getInstance()
     {
-        if (null === self::$instance)
-        {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
         
@@ -94,12 +94,9 @@ class Logger
     {
         $fh = fopen(LOG_DIR . DEFAULT_LOG_FILE, 'a');
         
-        if ($fh)
-        {
-            foreach ($this->logs as $log)
-            {
-                if (!fwrite($fh, $log->toString()))
-                {
+        if ($fh) {
+            foreach ($this->logs as $log) {
+                if (! fwrite($fh, $log->toString())) {
                     self::add(
                         new Error('Can\'t write to Logfile: ' . LOG_DIR . DEFAULT_LOG_FILE, 'Logger::writeLog( )'));
                     return;
@@ -107,9 +104,7 @@ class Logger
             }
             
             $this->logs = array();
-        }
-        else
-        {
+        } else {
             self::add(new Error('Can\'t open Logfile: ' . LOG_DIR . DEFAULT_LOG_FILE, 'Logger::writeLog( )'));
         }
     }
@@ -140,15 +135,12 @@ class Logger
         $has = false;
         $string = '';
         
-        if (!empty($this->msgs))
-        {
+        if (! empty($this->msgs)) {
             $string .= '<div class="alert alert-block bg-' . $class .
                  '"><button type="button" class="close" data-dismiss="alert">x</button><ul>';
             
-            foreach ($this->msgs as $key => $msg)
-            {
-                if ($msg instanceof $alert)
-                {
+            foreach ($this->msgs as $key => $msg) {
+                if ($msg instanceof $alert) {
                     $has = true;
                     $string .= '<li>' . $msg->toString() . '</li>';
                     unset($this->msgs[$key]);

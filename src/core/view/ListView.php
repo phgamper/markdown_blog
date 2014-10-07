@@ -39,25 +39,24 @@ class ListView extends AbstractView
         $limit = null;
         $start = 0;
         
-        if (isset($this->config['limit']))
-        {
+        if (isset($this->config['limit'])) {
             $limit = $this->config['limit'];
             $start = isset($_GET['page']) && $_GET['page'] > 0 ? $limit * ($_GET['page'] - 1) : 0;
         }
         // enabling filtering if hashtag is given
-        $filter = isset($_GET['tag']) ? array('category' => $_GET['tag']) : array();
+        $filter = isset($_GET['tag']) ? array(
+            'category' => $_GET['tag']
+        ) : array();
         // detect number of columns to show
         $cols = isset($this->config['columns']) && $this->config['columns'] > 0 ? $this->config['columns'] : 1;
         $width = floor(12 / $cols);
-        $it = new ArrayIterator($this->model->getList($start  * $cols, $limit * $cols, $filter));
+        $it = new ArrayIterator($this->model->getList($start * $cols, $limit * $cols, $filter));
         $break = ceil($it->count() / $cols);
-
-        while ($it->valid())
-        {
+        
+        while ($it->valid()) {
             $column = '';
             $i = 0;
-            while ($it->valid() && $i < $break)
-            {
+            while ($it->valid() && $i < $break) {
                 $head = $this->head($this->model->parseTags($it->key()));
                 $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current() . '</div></div>';
                 $column .= '<div class="row"><div class="col-md-12 list-item">' . $head . $body . '</div></div>';
@@ -68,17 +67,14 @@ class ListView extends AbstractView
         }
         $string = '<div class="row list">' . $string . '</div>';
         
-        if (isset($this->config['limit']))
-        {
+        if (isset($this->config['limit'])) {
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
             $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
             $self = $_SERVER['PHP_SELF'] . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
-            if ($prev > 0)
-            {
+            if ($prev > 0) {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';
             }
-            if ($next <= ceil($this->model->count / $limit))
-            {
+            if ($next <= ceil($this->model->count / $limit)) {
                 $pager .= '<li class="next"><a href="' . $self . $next . '">Older &rarr;</a></li>';
             }
             $pager = '<ul class="pager">' . $pager . '</ul>';

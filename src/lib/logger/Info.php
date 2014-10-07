@@ -24,9 +24,9 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class Info extends Logable
 {
+
     const SYMBOL = '(II)';
 
     public function __construct($msg, $trigger, $logmsg = NULL)

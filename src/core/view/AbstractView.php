@@ -24,9 +24,9 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 abstract class AbstractView implements IView
 {
+
     protected $config;
 
     public function __construct(IModel $model, $config)
@@ -40,22 +40,19 @@ abstract class AbstractView implements IView
     {
         $string = '<div class="row"><div class="col-md-12">' . $this->content() . '</div></div>';
         // append logger output on top
-        if (!(isset($this->config['logger']) && !$this->config['logger']))
-        {
+        if (! (isset($this->config['logger']) && ! $this->config['logger'])) {
             $string = Logger::getInstance()->toString() . $string;
         }
-        if(isset($this->config['max-width']))
-        {
-            return '<div class="container" style="max-width: '.$this->config['max-width'].';">' . $string . '</div>'.$this->footer();
-        }
-        else 
-        {
-            return '<div class="container">' . $string . '</div>'.$this->footer();
+        if (isset($this->config['max-width'])) {
+            return '<div class="container" style="max-width: ' . $this->config['max-width'] . ';">' . $string . '</div>' .
+                 $this->footer();
+        } else {
+            return '<div class="container">' . $string . '</div>' . $this->footer();
         }
     }
 
     protected abstract function content();
-    
+
     /**
      * This function builds the head containing the meta information
      *
@@ -68,25 +65,23 @@ abstract class AbstractView implements IView
     {
         $head = '';
         
-        if (!empty($tags))
-        {
+        if (! empty($tags)) {
             $left = '';
-            if (isset($tags['published']))
-            {
+            if (isset($tags['published'])) {
                 $left .= $tags['published'];
             }
-            if (isset($tags['author']))
-            {
+            if (isset($tags['author'])) {
                 $left = $left ? $left . ' | ' . $tags['author'] : $tags['author'];
             }
             $left = $left ? '<div class="col-md-5"><p>' . $left . '</p></div>' : '';
             $right = '';
-            if (isset($tags['category']))
-            {
+            if (isset($tags['category'])) {
                 $href = $_SERVER['PHP_SELF'] . '?' .
-                     QueryString::removeAll(array('tag','page'), $_SERVER['QUERY_STRING']);
-                foreach ($tags['category'] as $c)
-                {
+                     QueryString::removeAll(array(
+                        'tag',
+                        'page'
+                    ), $_SERVER['QUERY_STRING']);
+                foreach ($tags['category'] as $c) {
                     $right .= ' | <a href="' . $href . '&tag=' . $c . '">#' . trim($c) . '</a>';
                     // $right .= ' | #' . trim($c);
                 }
@@ -94,10 +89,8 @@ abstract class AbstractView implements IView
             }
             $head = $left . $right ? '<div class="row content-head">' . $left . $right . '</div>' : '';
             // adding meta tags
-            if (isset($tags['meta']))
-            {
-                foreach ($tags['meta'] as $name => $content)
-                {
+            if (isset($tags['meta'])) {
+                foreach ($tags['meta'] as $name => $content) {
                     Head::getInstance()->addMeta($name, $content);
                 }
             }
@@ -108,9 +101,8 @@ abstract class AbstractView implements IView
     protected function footer()
     {
         $footer = '';
-
-        if (!(isset($this->config['footer']) && !$this->config['footer']))
-        {
+        
+        if (! (isset($this->config['footer']) && ! $this->config['footer'])) {
             $f = new Footer();
             $footer = $f->show();
         }

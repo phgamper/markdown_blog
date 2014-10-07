@@ -27,7 +27,9 @@
  */
 class HyperTextMarkup extends AbstractModel
 {
+
     public $path;
+
     public $count = 0;
 
     public function __construct($path)
@@ -35,7 +37,7 @@ class HyperTextMarkup extends AbstractModel
         parent::__construct($path, '.html');
     }
 
-     /**
+    /**
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
@@ -45,23 +47,18 @@ class HyperTextMarkup extends AbstractModel
      */
     public function parse($file)
     {
-        try
-        {
-            if ($fh = fopen($file, 'r'))
-            {
+        try {
+            if ($fh = fopen($file, 'r')) {
                 $content = fread($fh, filesize($file));
                 fclose($fh);
                 return $content;
-            }
-            else
-            {
+            } else {
                 throw new Exception('Can not open ' . $file);
             }
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("' . $file . '")'), $e->getMessage());
+                new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("' . $file . '")'), 
+                $e->getMessage());
             return '';
         }
     }

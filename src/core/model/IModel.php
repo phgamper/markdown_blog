@@ -23,16 +23,19 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+interface IModel
+{
 
-interface IModel{
-    
     /**
      * This function loads all respectively specified files contained in the folder
      * stored in $this->path, parses them into a HTML string and returns it.
-     * 
-     * @param unknown $start    - offset where to start, if given
-     * @param unknown $limit    - maximum number of files to parse, if given
-     * @param array $filter     - array of filter criteria 
+     *
+     * @param unknown $start
+     *            - offset where to start, if given
+     * @param unknown $limit
+     *            - maximum number of files to parse, if given
+     * @param array $filter
+     *            - array of filter criteria
      */
     public function getList($start, $limit, array $filter);
 
@@ -41,14 +44,16 @@ interface IModel{
      * a HTML string and returns it.
      */
     public function get();
-    
+
     /**
-     * This function parse the given file into HTML and outputs a string containing its content. 
-     * 
-     * @param unknown $file - file to parse
+     * This function parse the given file into HTML and outputs a string containing its content.
+     *
+     *
+     * @param unknown $file
+     *            - file to parse
      */
     public function parse($file);
-    
+
     /**
      * This function reads the tags from the file, if they have been provided
      *

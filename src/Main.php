@@ -24,36 +24,36 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class Main
 {
 
     public function __construct()
     {
-        $ini = IniParser::parseMerged(array(SRC_DIR . 'defaults.ini', CONFIG_DIR . 'general.ini'));
+        $ini = IniParser::parseMerged(array(
+            SRC_DIR . 'defaults.ini',
+            CONFIG_DIR . 'general.ini'
+        ));
         $config = isset($ini['general']) ? $ini['general'] : array();
-        if(isset($config['highlight']) && $config['highlight'])
-        {
+        if (isset($config['highlight']) && $config['highlight']) {
             $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
-            Head::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/css/'.$style);
-            Script::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/js/prism.js');
+            Head::getInstance()->link(PUBLIC_LIB_DIR . 'prismjs/css/' . $style);
+            Script::getInstance()->link(PUBLIC_LIB_DIR . 'prismjs/js/prism.js');
         }
-        Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
-        Head::getInstance()->link(CSS_DIR.'style.css');
+        Head::getInstance()->link(PUBLIC_LIB_DIR . 'bootstrap/css/bootstrap.min.css');
+        Head::getInstance()->link(CSS_DIR . 'style.css');
         Head::getInstance()->linkScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
-        Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
-        $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
+        Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'bootstrap/js/bootstrap.js');
+        $navigation = new NavigationController(new IniNavigation(CONFIG_DIR . 'config.ini'));
         $controller = new Controller();
         
-
         // display all
         $string = '';
         $string = $navigation->display();
         $string .= $controller->display();
         $head = Head::getInstance()->toString();
         $script = Script::getInstance()->toString();
-        //include FRAME_ROOT_PATH . 'script.php';
-        echo '<!DOCTYPE html><html lang="en">'.$head.'<body>'.$string.$script.'</body></html>';
+        // include FRAME_ROOT_PATH . 'script.php';
+        echo '<!DOCTYPE html><html lang="en">' . $head . '<body>' . $string . $script . '</body></html>';
     }
 }
 

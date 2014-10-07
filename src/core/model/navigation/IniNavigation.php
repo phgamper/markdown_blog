@@ -25,11 +25,11 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class IniNavigation extends AbstractNavigation
 {
+
     protected $parser;
-    
+
     public function __construct($file)
     {
         $this->parser = new IniParser();
@@ -46,19 +46,14 @@ class IniNavigation extends AbstractNavigation
     {
         $this->items = array();
         $ini = $this->parser->parse($file);
-        foreach ($ini as $key => $value)
-        {
+        foreach ($ini as $key => $value) {
             $this->items[$key] = array();
             $this->items[$key]['dropdown'] = array();
             
-            foreach ($value as $k => $v)
-            {
-                if (is_array($v))
-                {
-                    $this->items[$key]['dropdown'][$k] = $v; 
-                }
-                else
-                {
+            foreach ($value as $k => $v) {
+                if (is_array($v)) {
+                    $this->items[$key]['dropdown'][$k] = $v;
+                } else {
                     $this->items[$key][$k] = $v;
                 }
             }

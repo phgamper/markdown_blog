@@ -26,8 +26,11 @@
  */
 class Controller extends AbstractController
 {
+
     protected $entity;
+
     protected $config;
+
     protected $parser;
 
     public function __construct()
@@ -36,8 +39,7 @@ class Controller extends AbstractController
         
         $inifile = CONFIG_DIR . 'config.ini';
         
-        if (file_exists($inifile))
-        {
+        if (file_exists($inifile)) {
             $this->parser = new IniParser();
             $this->parser->use_array_object = false;
             $this->config = $this->parser->parse($inifile);
@@ -48,114 +50,98 @@ class Controller extends AbstractController
 
     protected function actionListener()
     {
-        try
-        {
+        try {
             // load the configuration file
-            if (isset($this->config[$this->entity]))
-            {
+            if (isset($this->config[$this->entity])) {
                 $config = $this->config[$this->entity];
-            }
-            else
-            {
+            } else {
                 throw new Exception('The requested URL is not available.');
             }
             // try to resolve URL
-            if (isset($_GET['value']))
-            {
+            if (isset($_GET['value'])) {
                 // if a dropdown is present
-                if (array_key_exists($v = $_GET['value'], $config))
-                {
+                if (array_key_exists($v = $_GET['value'], $config)) {
                     $config = $config[$v];
-                }
-                else
-                {
+                } else {
                     throw new Exception('The requested URL is not available.');
                 }
             }
             
-            if (isset($config['path']))
-            {
+            if (isset($config['path'])) {
                 $path = $config['path'];
-            }
-            else
-            {
+            } else {
                 throw new Exception('The requested URL is not available.');
             }
-            if (isset($config['type']))
-            {
+            if (isset($config['type'])) {
                 $type = $config['type'];
-            }
-            else
-            {
+            } else {
                 throw new ErrorException('There is an error in the configuration file!');
             }
             
             // evaluate model to use
-            switch ($type)
-            {
+            switch ($type) {
                 case 'md':
-                {
-                    $this->model = new Markdown($path);
-                    break;
-                }
+                    {
+                        $this->model = new Markdown($path);
+                        break;
+                    }
                 case 'remote':
-                {
-                    $this->model = new MarkdownRemote($path);
-                    break;
-                }
+                    {
+                        $this->model = new MarkdownRemote($path);
+                        break;
+                    }
                 case 'html':
-                {
-                    $this->model = new HyperTextMarkup($path);
-                    break;
-                }
+                    {
+                        $this->model = new HyperTextMarkup($path);
+                        break;
+                    }
                 case 'img':
-                {
-                    $this->model = new Image($path);
-                    break;
-                }
+                    {
+                        $this->model = new Image($path);
+                        break;
+                    }
                 default:
-                {
-                    throw new ErrorException('There is an error in the configuration file!');
-                }
+                    {
+                        throw new ErrorException('There is an error in the configuration file!');
+                    }
             }
             
-            switch (true)
-            {
+            switch (true) {
                 case is_dir($path):
-                {
-                    $this->view = new ListView($this->model, $config);
-                    break;
-                }
+                    {
+                        $this->view = new ListView($this->model, $config);
+                        break;
+                    }
                 case is_file($path):
-                {
-                    $this->view = new SingleView($this->model, $config);
-                    break;
-                }
+                    {
+                        $this->view = new SingleView($this->model, $config);
+                        break;
+                    }
                 case preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", 
                     $path):
-                {
-                    $this->view = new RemoteMarkdownView($this->model, $config);
-                    break;
-                }
+                    {
+                        $this->view = new RemoteMarkdownView($this->model, $config);
+                        break;
+                    }
                 default:
-                {
-                    // should never happen
-                    throw new ErrorException('Something is completely broken!');
-                }
+                    {
+                        // should never happen
+                        throw new ErrorException('Something is completely broken!');
+                    }
             }
-        }
-        catch (ErrorException $e)
-        {
+        } catch (ErrorException $e) {
             Logger::getInstance()->add(
                 new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
             $this->model = new Markdown(ERROR_MD);
-            $this->view = new SingleView($this->model, array('logger' => true));
-        }
-        catch (Exception $e)
-        {
+            $this->view = new SingleView($this->model, array(
+                'logger' => true
+            ));
+        } catch (Exception $e) {
             Logger::getInstance()->add(new Warning($e->getMessage(), 'Controller::actionListener()'));
             $this->model = new Markdown(ERROR_MD);
-            $this->view = new SingleView($this->model, array('logger' => true));
+            $this->view = new SingleView($this->model, array(
+                'logger' => true
+            ));
         }
     }
 }

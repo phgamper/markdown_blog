@@ -24,10 +24,11 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 final class Autoload
 {
+
     private static $instance = NULL;
+
     private $classes = array();
 
     private function __construct()
@@ -38,8 +39,7 @@ final class Autoload
 
     public static function getInstance()
     {
-        if (self::$instance == NULL)
-        {
+        if (self::$instance == NULL) {
             self::$instance = new self();
         }
         
@@ -51,21 +51,17 @@ final class Autoload
         $ScanDir = new ScanDir($path);
         self::addClasses($ScanDir->getFiles(), $path);
         
-        foreach ($ScanDir->getDirectories() as $dir)
-        {
+        foreach ($ScanDir->getDirectories() as $dir) {
             self::import($path . $dir . "/");
         }
     }
 
     private function addClasses($files, $path)
     {
-        if ($files)
-        {
-            foreach ($files as $file)
-            {
-                if (substr($file, -4) == '.php')
-                {
-                    $classname = substr($file, 0, -4);
+        if ($files) {
+            foreach ($files as $file) {
+                if (substr($file, - 4) == '.php') {
+                    $classname = substr($file, 0, - 4);
                     $this->classes[$classname] = $path . '/' . $file;
                 }
             }

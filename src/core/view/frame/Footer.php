@@ -26,11 +26,15 @@
  */
 class Footer implements IView
 {
+
     protected $config;
 
     public function __construct()
     {
-        $ini = IniParser::parseMerged(array(SRC_DIR . 'defaults.ini', CONFIG_DIR . 'general.ini'));
+        $ini = IniParser::parseMerged(array(
+            SRC_DIR . 'defaults.ini',
+            CONFIG_DIR . 'general.ini'
+        ));
         $this->config = isset($ini['footer']) ? $ini['footer'] : array();
         Head::getInstance()->link(CSS_DIR . 'footer.css');
     }
@@ -41,16 +45,14 @@ class Footer implements IView
         $sitemap = new NavigationController(new Sitemap(CONFIG_DIR . 'config.ini'));
         // legal notice
         $left = '';
-        if (isset($this->config['legal_notice']))
-        {
+        if (isset($this->config['legal_notice'])) {
             $left = $this->config['legal_notice'];
         }
         $left = '<div class="col-md-6 col-md-offset-2">' . $left . '</div>';
         $right = '<div class="col-md-2"><p class="pull-right"><a href="#">Back to top</a></p></div>';
         // powered by
         $poweredby = '';
-        if (isset($this->config['poweredby']))
-        {
+        if (isset($this->config['poweredby'])) {
             $poweredby = '<p class="poweredby">' . $this->config['poweredby'] . '</p>';
             $poweredby = '<div class="row"><div class="col-md-8 col-md-offset-2">' . $poweredby . '</div></div>';
         }

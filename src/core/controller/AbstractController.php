@@ -24,17 +24,18 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 abstract class AbstractController
 {
+
     protected $entity;
+
     protected $model;
+
     protected $view;
 
     public function __construct()
     {
-        if (!isset($_GET['module']))
-        {
+        if (! isset($_GET['module'])) {
             $_GET['module'] = 'home';
         }
         
@@ -47,7 +48,7 @@ abstract class AbstractController
         Logger::getInstance()->writeLog();
         return $string;
     }
-    
+
     /**
      * This method specifies how to react on user input.
      */

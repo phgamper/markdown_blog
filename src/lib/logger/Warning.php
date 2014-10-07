@@ -26,6 +26,7 @@
  */
 class Warning extends Logable
 {
+
     const SYMBOL = '(WW)';
 
     public function __construct($msg, $trigger, $logmsg = NULL)

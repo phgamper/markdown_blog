@@ -27,8 +27,11 @@
  */
 class ScanDir
 {
+
     private $directories = array();
+
     private $files = array();
+
     private $path;
 
     public function __construct($path = null)
@@ -39,45 +42,37 @@ class ScanDir
 
     private function scanDirectory()
     {
-        try
-        {
-            if (is_dir($this->path))
-            {
+        try {
+            if (is_dir($this->path)) {
                 $scandir = scandir($this->path);
                 
-                foreach ($scandir as $item)
-                {
-                    switch (true)
-                    {
+                foreach ($scandir as $item) {
+                    switch (true) {
                         case ($item == '.'):
-                        {
-                            break;
-                        }
+                            {
+                                break;
+                            }
                         case ($item == '..'):
-                        {
-                            break;
-                        }
+                            {
+                                break;
+                            }
                         case (is_file($this->path . '/' . $item)):
-                        {
-                            $this->files[] = $item;
-                            break;
-                        }
+                            {
+                                $this->files[] = $item;
+                                break;
+                            }
                         case (is_dir($this->path . '/' . $item)):
-                        {
-                            $this->directories[] = $item;
-                            break;
-                        }
+                            {
+                                $this->directories[] = $item;
+                                break;
+                            }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 // TODO
                 Throw new Exception('Directory Not Found!');
             }
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             // TODO catch exception
         }
     }
@@ -86,10 +81,8 @@ class ScanDir
     {
         $scan = new self($path, $mime);
         $files = array();
-        foreach ($scan->getFiles() as $f)
-        {
-            if ($mime == substr($f, -strlen($mime)))
-            {
+        foreach ($scan->getFiles() as $f) {
+            if ($mime == substr($f, - strlen($mime))) {
                 $files[] = $f;
             }
         }

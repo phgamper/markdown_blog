@@ -27,7 +27,9 @@
  */
 class MarkdownRemote extends AbstractModel
 {
+
     public $path;
+
     public $count = 0;
 
     public function __construct($path)

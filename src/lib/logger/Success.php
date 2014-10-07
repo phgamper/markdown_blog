@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the MarkdownBlog project.
  * It is used as reference type to pass information about the success to the logger.
@@ -25,6 +26,7 @@
  */
 class Success extends Logable
 {
+
     const SYMBOL = '(**)';
 
     public function __construct($msg, $trigger, $logmsg = NULL)

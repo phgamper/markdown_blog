@@ -24,17 +24,19 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 class IniNavigationView implements IView
 {
+
     private $config;
 
     public function __construct(IniNavigation $model)
     {
         $this->model = $model;
-        $ini = IniParser::parseMerged(array(SRC_DIR . 'defaults.ini', CONFIG_DIR . 'general.ini'));
-        if (isset($ini['general']))
-        {
+        $ini = IniParser::parseMerged(array(
+            SRC_DIR . 'defaults.ini',
+            CONFIG_DIR . 'general.ini'
+        ));
+        if (isset($ini['general'])) {
             $this->config = $ini['general'];
         }
     }
@@ -43,25 +45,19 @@ class IniNavigationView implements IView
     {
         $menu = '';
         
-        foreach ($this->model->getItems() as $key => $value)
-        {
+        foreach ($this->model->getItems() as $key => $value) {
             $a_class = '';
-            $li_class = $_GET['module'] == $key && !isset($_GET['value']) ? 'active' : '';
+            $li_class = $_GET['module'] == $key && ! isset($_GET['value']) ? 'active' : '';
             $caret = '';
             $submenu = '';
             
-            if (!empty($value['dropdown']))
-            {
-                foreach ($value['dropdown'] as $i => $v)
-                {
+            if (! empty($value['dropdown'])) {
+                foreach ($value['dropdown'] as $i => $v) {
                     $a_class = 'dropdown-toggle" data-toggle="dropdown';
                     $caret = '<b class="caret"></b>';
-                    if($v['type'] == 'href')
-                    {
-                        $href = $v['path'].'" target="_blank';   
-                    }
-                    else
-                    {
+                    if ($v['type'] == 'href') {
+                        $href = $v['path'] . '" target="_blank';
+                    } else {
                         $href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
                     }
                     $submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
@@ -84,8 +80,7 @@ class IniNavigationView implements IView
     {
         $container = '';
         
-        if (isset($this->config['page_name']))
-        {
+        if (isset($this->config['page_name'])) {
             $btn = ' <span class="sr-only">Toggle navigation</span>';
             $btn .= '<span class="icon-bar"></span>';
             $btn .= '<span class="icon-bar"></span>';

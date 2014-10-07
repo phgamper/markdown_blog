@@ -24,55 +24,45 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
-
 class SitemapView implements IView
 {
 
     public function __construct(IniNavigation $model)
     {
         $this->model = $model;
-        Head::getInstance()->link(CSS_DIR.'sitemap.css');
+        Head::getInstance()->link(CSS_DIR . 'sitemap.css');
     }
 
     public function show()
     {
         $menu = '';
         
-        foreach ($this->model->getItems() as $key => $value)
-        {
+        foreach ($this->model->getItems() as $key => $value) {
             $submenu = '';
-
-			if(!empty($value['dropdown']))	
-			{
-				foreach ($value['dropdown'] as $i => $v)
-				{
-				    if($v['type'] == 'href')
-				    {
-				        $href = $v['path'].'" target="_blank';
-				    }
-				    else
-				    {
-				        $href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
-				    }
-					$submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
-				}
+            
+            if (! empty($value['dropdown'])) {
+                foreach ($value['dropdown'] as $i => $v) {
+                    if ($v['type'] == 'href') {
+                        $href = $v['path'] . '" target="_blank';
+                    } else {
+                        $href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
+                    }
+                    $submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
+                }
                 $submenu = '<ul>' . $submenu . '</ul>';
             }
             $href = $_SERVER['PHP_SELF'] . '?module=' . $key;
-            if ($submenu)
-            {
+            if ($submenu) {
                 $li = '<h5>' . $value['name'] . '</h5>';
+            } else {
+                $li = '<h5><a href="' . $href . '">' . $value['name'] . '</a></h5>';
             }
-            else
-            {
-                $li = '<h5><a href="' . $href . '">'.$value['name'].'</a></h5>';
-            }
-            $menu .= '<li class="sitemap-top-level">'. $li. '<div class="sitemap-sub-level">' . $submenu . '</div></li>';
+            $menu .= '<li class="sitemap-top-level">' . $li . '<div class="sitemap-sub-level">' . $submenu .
+                 '</div></li>';
         }
         
-        $menu = '<div class="row"><ul>'.$menu.'</ul></div>';
-        $menu = '<div class="row sitemap"><div class="sitemap-inner col-md-8 col-md-offset-2">'.$menu.'</div></div>';
+        $menu = '<div class="row"><ul>' . $menu . '</ul></div>';
+        $menu = '<div class="row sitemap"><div class="sitemap-inner col-md-8 col-md-offset-2">' . $menu . '</div></div>';
         return $menu;
     }
 }
