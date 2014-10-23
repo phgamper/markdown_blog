@@ -50,7 +50,8 @@ class ListView extends AbstractView
             $limit = $this->config['limit'] * $cols;
             $start = isset($_GET['page']) && $_GET['page'] > 0 ? $limit * ($_GET['page'] - 1) : 0;
         }
-        $it = new ArrayIterator($this->model->getList($start * $cols, $limit, $filter));
+        $reverse = isset($this->config['reverse']) ? $this->config['reverse'] : true;
+        $it = new ArrayIterator($this->model->getList($start, $limit, $filter, $reverse));
         $break = ceil($it->count() / $cols);
         
         while ($it->valid()) {

@@ -54,13 +54,16 @@ abstract class AbstractModel implements IModel
      * @param array $filter
      *            - array of filter criteria
      */
-    public function getList($start = 0, $limit = null, array $filter = array())
+    public function getList($start = 0, $limit = null, array $filter = array(), $reverse = true)
     {
         $list = array();
         $files = ScanDir::getFilesOfType($this->path, $this->mime);
         $this->filter($files, $filter);
         $this->count = count($files);
-        rsort($files);
+        if($reverse)
+        {
+            rsort($files);
+        }
         $limit = is_null($limit) ? count($files) : $limit;
         for ($i = $start; $i < count($files) && $i - $start < $limit; $i ++) {
             $file = $this->path . $files[$i];
