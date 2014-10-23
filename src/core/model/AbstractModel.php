@@ -37,7 +37,7 @@ abstract class AbstractModel implements IModel
     public function __construct($path, $mime)
     {
         $this->path = $path;
-        $this->mime = $mime;
+        $this->mime = strtolower($mime);
     }
 
     /**

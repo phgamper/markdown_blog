@@ -82,7 +82,7 @@ class ScanDir
         $scan = new self($path, $mime);
         $files = array();
         foreach ($scan->getFiles() as $f) {
-            if ($mime == substr($f, - strlen($mime))) {
+            if ($mime == strtolower(substr($f, - strlen($mime)))) {
                 $files[] = $f;
             }
         }
