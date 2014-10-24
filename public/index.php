@@ -33,16 +33,7 @@ ini_set('display_errors', 1);
 $src = Autoload::getInstance(SRC_DIR, false)->getClasses();
 $lib = Autoload::getInstance(LIB_DIR, false)->getClasses();
 $classes = array_merge($src, $lib);
-
-if (isset($_POST['post']))
-{
-    $include = $_POST['post'];
-    unset($_POST['post']);
-    include ($include);
-}
-
 set_error_handler("error_handler", E_ALL);
-
 new Main();
 
 function __autoload($class)
