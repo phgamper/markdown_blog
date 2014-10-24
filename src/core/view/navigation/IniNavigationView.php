@@ -47,7 +47,7 @@ class IniNavigationView implements IView
         
         foreach ($this->model->getItems() as $key => $value) {
             $a_class = '';
-            $li_class = $_GET['module'] == $key && ! isset($_GET['value']) ? 'active' : '';
+            $li_class = $_GET['module'] == $key ? 'active' : '';
             $caret = '';
             $submenu = '';
             
@@ -62,7 +62,7 @@ class IniNavigationView implements IView
                     }
                     $submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
                 }
-                $li_class .= 'dropdown';
+                $li_class .= ' dropdown';
                 $submenu = '<ul class="dropdown-menu" role="menu">' . $submenu . '</ul>';
             }
             $href = $_SERVER['PHP_SELF'] . '?module=' . $key;
