@@ -130,7 +130,8 @@ class IniParser {
             unset($files[0]);
             foreach($files as $f)
             {
-                $ini = $parser->array_merge_recursive_distinct($ini, $parser->parse($f));
+                $out = (array)$parser->parse($f);
+                $ini = $parser->array_merge_recursive_distinct($ini, $out);
             }
         }
         return $ini;
