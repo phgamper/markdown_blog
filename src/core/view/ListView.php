@@ -41,7 +41,7 @@ class ListView extends AbstractView
         
         // enabling filtering if hashtag is given
         $filter = isset($_GET['tag']) ? array(
-            'category' => $_GET['tag']
+            'category' => urlencode($_GET['tag'])
         ) : array();
         // detect number of columns to show
         $cols = isset($this->config['columns']) && $this->config['columns'] > 0 ? $this->config['columns'] : 1;
@@ -71,7 +71,7 @@ class ListView extends AbstractView
         if (!is_null($limit)) {
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
             $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
-            $self = $_SERVER['PHP_SELF'] . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
+            $self = $_SERVER['PHP_SELF'] . '?' . QueryString::remove('page', urlencode($_SERVER['QUERY_STRING'])) . '&page=';
             if ($prev > 0) {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';
             }

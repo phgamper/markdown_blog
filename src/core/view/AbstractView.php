@@ -84,7 +84,7 @@ abstract class AbstractView implements IView
                      QueryString::removeAll(array(
                         'tag',
                         'page'
-                    ), $_SERVER['QUERY_STRING']);
+                    ), urlencode($_SERVER['QUERY_STRING']));
                 foreach ($tags['category'] as $c) {
                     $right .= ' | <a href="' . $href . '&tag=' . $c . '">#' . trim($c) . '</a>';
                     // $right .= ' | #' . trim($c);

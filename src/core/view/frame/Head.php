@@ -140,7 +140,7 @@ class Head
     public function toString()
     {
         $css = '';
-        $site = isset($_GET['module']) ? ' - ' . $_GET['module'] : '';
+        $site = isset($_GET['module']) ? ' - ' . urlencode($_GET['module']) : '';
         $title = '<title>' . $this->config['title'] . $site . '</title>';
         $meta = '<meta charset="utf-8">' . $title;
         foreach ($this->meta as $name => $content) {
