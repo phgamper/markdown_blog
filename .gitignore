@@ -1,7 +1,6 @@
 # keep content and config as they are
 content/*
 public/content/*
-public/content/*
 config/*.ini
 
 # git and project settings
@@ -10,6 +9,7 @@ config/*.ini
 .metadata
 .project
 .settings
+.idea
 
 # security settings
 *.htaccess
