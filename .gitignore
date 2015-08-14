@@ -1,5 +1,6 @@
 # keep content and config as they are
 content/*
+public/content/
 public/content/*
 
 # git and project settings
