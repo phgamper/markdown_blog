@@ -34,8 +34,38 @@ $src = Autoload::getInstance(SRC_DIR, false)->getClasses();
 $lib = Autoload::getInstance(LIB_DIR, false)->getClasses();
 $classes = array_merge($src, $lib);
 set_error_handler("error_handler", E_ALL);
-new Main();
 
+
+/**
+ * setup page and load provided business-casual.php
+ */
+// TODO currently parsed multiple times => maybe make global
+$ini = IniParser::parseMerged(array(
+    SRC_DIR . 'defaults.ini',
+    CONFIG_DIR . 'general.ini'
+));
+$config = isset($ini['general']) ? $ini['general'] : array();
+if (isset($config['highlight']) && $config['highlight']) {
+    $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
+    Head::getInstance($ini)->link(PUBLIC_LIB_DIR.'prismjs/css/'.$style);
+    Script::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/js/prism.js');
+}
+Head::getInstance($ini)->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
+Head::getInstance($ini)->link(CSS_DIR.'style.css');
+Head::getInstance($ini)->linkScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
+Head::getInstance($ini)->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
+
+$navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
+$container = new Controller();
+$footer = new FooterController(new Sitemap(CONFIG_DIR.'config.ini'));
+
+include_once(TEMPLATES_DIR.'business-casual.php');
+
+/**
+ * Function to autoload classes
+ *
+ * @param $class Class to load
+ */
 function __autoload($class)
 {
     global $classes;
@@ -55,7 +85,7 @@ function error_handler($errno, $errstr, $errfile, $errline)
         default:
         {
             $msg = $errno . ' - ' . $errstr . ' - ' . $errfile . ' - ' . $errline;
-            Logger::getInstance()->addLog(new Log(new Error('An unexpected error has been catched by the error_handler.', 'index.php::error_handler()', $msg)));
+            Logger::getInstance()->addLog(new Log(new Error('An unexpected error has been catched by the error_handler.', 'business-casual.php::error_handler()', $msg)));
         }
     }
 }

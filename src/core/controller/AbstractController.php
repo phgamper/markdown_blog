@@ -33,6 +33,8 @@ abstract class AbstractController
 
     protected $view;
 
+    protected $cache = null;
+
     public function __construct()
     {
         if (! isset($_GET['module'])) {
@@ -42,11 +44,18 @@ abstract class AbstractController
         $this->entity = strtolower($_GET['module']);
     }
 
+    public function cache()
+    {
+        $this->cache = $this->view->show();
+    }
+
     public function display()
     {
-        $string = $this->view->show();
+        if(!$this->cache){
+            $this->cache = $this->view->show();
+        }
         Logger::getInstance()->writeLog();
-        return $string;
+        return $this->cache;
     }
 
     /**

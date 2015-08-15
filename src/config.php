@@ -85,4 +85,12 @@ define('LOG_DIR', '../log/', TRUE);
  */
 define('DEFAULT_LOG_FILE', 'default.log', TRUE);
 
+/**
+ * Path to the installed HTML templates
+ *
+ * @global string TEMPLATES_DIR path of the templates directory
+ *
+ */
+define('TEMPLATES_DIR', 'content/templates/');
+
 ?>
