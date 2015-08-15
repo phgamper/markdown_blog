@@ -45,7 +45,8 @@ class Controller extends AbstractController
             $this->config = $this->parser->parse($inifile);
         }
         
-        self::actionListener();
+        $this->actionListener();
+        $this->cache();
     }
 
     protected function actionListener()

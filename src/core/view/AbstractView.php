@@ -47,12 +47,7 @@ abstract class AbstractView implements IView
         if (! (isset($this->config['logger']) && ! $this->config['logger'])) {
             $string = Logger::getInstance()->toString() . $string;
         }
-        if (isset($this->config['max-width'])) {
-            return '<div class="container content" style="max-width: ' . $this->config['max-width'] . ';">' . $string . '</div>' .
-                 $this->footer();
-        } else {
-            return '<div class="container content">' . $string . '</div>' . $this->footer();
-        }
+        return $string;
     }
 
     protected abstract function content();
@@ -100,17 +95,6 @@ abstract class AbstractView implements IView
             }
         }
         return $head;
-    }
-
-    protected function footer()
-    {
-        $footer = '';
-        
-        if (! (isset($this->config['footer']) && ! $this->config['footer'])) {
-            $f = new Footer();
-            $footer = $f->show();
-        }
-        return $footer;
     }
 }
 

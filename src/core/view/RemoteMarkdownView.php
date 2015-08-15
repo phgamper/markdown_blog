@@ -41,7 +41,7 @@ class RemoteMarkdownView extends AbstractView
             $panel = '<div class="panel panel-default"><div class="panel-body">' . $panel . '</div></div>';
             $panel = '<div class="row"><div class="col-md-12">' . $panel . '</div></div>';
         }
-        return $panel . '<div class="row markdown signle"><div class="col-md-12">' . $this->model->get() . '</div></div>';
+        return $panel . '<div class="row markdown"><div class="col-md-12 single">' . $this->model->get() . '</div></div>';
     }
 }
 

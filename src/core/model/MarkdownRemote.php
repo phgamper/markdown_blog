@@ -47,7 +47,7 @@ class MarkdownRemote extends AbstractModel
     }
 
     /**
-     * TODO maybe use template method pattern
+     * TODO maybe use templates method pattern
      *
      * This function loads all respectively specified files contained in the
      * folder

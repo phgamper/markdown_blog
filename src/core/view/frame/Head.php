@@ -38,12 +38,8 @@ class Head
 
     private static $instance = null;
 
-    private function __construct()
+    private function __construct($ini)
     {
-        $ini = IniParser::parseMerged(array(
-            SRC_DIR . 'defaults.ini',
-            CONFIG_DIR . 'general.ini'
-        ));
         if (isset($ini['head'])) {
             $this->config = $ini['head'];
         }
@@ -54,18 +50,17 @@ class Head
         }
     }
 
-    private function __clone()
-    {}
+    private function __clone() {}
 
     /**
      * returns the instance created by its first invoke.
      *
      * @return Head
      */
-    public static function getInstance()
+    public static function getInstance($ini)
     {
         if (null === self::$instance) {
-            self::$instance = new self();
+            self::$instance = new self($ini);
         }
         
         return self::$instance;
@@ -74,10 +69,10 @@ class Head
     /**
      * links a CSS to the style sheet list
      *
-     * @param $href path
-     *            to css file
-     * @param $rel type
-     *            of how to link the css
+     * @param unknown $href
+     *              path to css file
+     * @param unknown $rel
+     *              type of how to link the css
      */
     public function link($href, $rel = 'stylesheet')
     {
@@ -133,31 +128,62 @@ class Head
     }
 
     /**
-     * generate the head as a HTML string
+     * return the meta tags as a HTML string
      *
      * @return string to print
      */
-    public function toString()
+    public function meta()
     {
-        $css = '';
         $site = isset($_GET['module']) ? ' - ' . $_GET['module'] : '';
         $title = '<title>' . $this->config['title'] . $site . '</title>';
         $meta = '<meta charset="utf-8">' . $title;
         foreach ($this->meta as $name => $content) {
             $meta .= '<meta name="' . $name . '" content="' . $content . '">';
         }
+        return $meta;
+    }
+
+    /**
+     * return the link tags as a HTML string
+     *
+     * @return string to print
+     */
+    public function css()
+    {
+        $css = '';
         foreach ($this->sheets as $href => $rel) {
             $css .= '<link href="' . $href . '" rel="' . $rel . '" type="text/css">';
         }
-        if (isset($this->config['favicon'])) {
-            $css .= '<link href="' . $this->config['favicon'] . '" rel="icon" type="image/png">';
-        }
+        return $css;
+    }
+
+    /**
+     * return the script tags as a HTML string
+     *
+     * @return string to print
+     */
+    public function javascript()
+    {
         $js = '';
         foreach ($this->scripts as $j) {
             $js .= '<script src="' . $j . '"></script>';
         }
-        $string = '<head>' . $meta . $css . $js . '</head>';
-        return $string;
+        return $js;
+    }
+    /**
+     * generate the head as a HTML string
+     *
+     * @return string to print
+     */
+    public function toString()
+    {
+        $meta = $this->meta();
+        $css = $this->css();
+        if (isset($this->config['favicon'])) {
+            $css .= '<link href="' . $this->config['favicon'] . '" rel="icon" type="image/png">';
+        }
+        $js = $this->javascript();
+        return $meta.$css.$js;
     }
 }
 

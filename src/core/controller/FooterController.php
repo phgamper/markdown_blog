@@ -2,7 +2,7 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * Interacts with the concrete NavigationView and loads the requested parts form the model.
+ * Interacts with the concrete Footer and loads the requested parts form the model.
  *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
  * Its purpose is to provide a easy way to share your thoughts without any Database
@@ -24,20 +24,11 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class NavigationController extends AbstractController
+class FooterController extends NavigationController
 {
-
-    public function __construct(AbstractNavigation $model)
-    {
-        parent::__construct();
-        $this->model = $model;
-        $this->actionListener();
-        $this->cache();
-    }
-
     protected function actionListener()
     {
-        $this->view = $this->model->getView();
+        $this->view = new Footer($this->model);
     }
 }
 

@@ -92,8 +92,10 @@ class IniNavigationView implements IView
             
             $container .= $btn;
         }
+        $pos = isset($this->config['navbar_pos']) && $this->config['navbar_pos'] == 'float' ? '' : 'navbar-fixed-top';
+
         $container = '<div class="container-fluid">' . $container . $string . '</div>';
-        $container = '<div class="navbar navbar-default navbar-fixed-top" role="navigation">' . $container . '</div>';
+        $container = '<div class="navbar navbar-default '.$pos.'" role="navigation">' . $container . '</div>';
         return $container;
     }
 }

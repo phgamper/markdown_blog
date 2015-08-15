@@ -37,7 +37,7 @@ class SingleView extends AbstractView
     {
         $head = $this->head($this->model->parseTags($this->model->path));
         $body = '<div class="row"><div class="col-md-12 content-body">' . $this->model->get() . '</div></div>';
-        return '<div class="row content signle"><div class="col-md-12">' . $head . $body . '</div></div>';
+        return '<div class="row content"><div class="col-md-12 single">'.$head.$body.'</div></div>';
     }
 }
 
