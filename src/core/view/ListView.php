@@ -52,11 +52,10 @@ class ListView extends AbstractView
         }
         $reverse = isset($this->config['reverse']) ? $this->config['reverse'] : true;
         $it = new ArrayIterator($this->model->getList($start, $limit, $filter, $reverse));
-        $break = ceil($it->count() / $cols);
-        
         while ($it->valid()) {
             $column = '';
             $i = 0;
+            $break = ceil($it->count() / $cols);
             while ($it->valid() && $i < $break) {
                 $head = $this->head($this->model->parseTags($it->key()));
                 $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current() . '</div></div>';
@@ -64,6 +63,7 @@ class ListView extends AbstractView
                 $it->next();
                 $i ++;
             }
+            $cols--;
             $string .= '<div class="col-md-' . $width . ' list-column">' . $column . '</div>';
         }
         $string = '<div class="row list">' . $string . '</div>';
