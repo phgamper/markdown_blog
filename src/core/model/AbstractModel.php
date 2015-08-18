@@ -43,8 +43,7 @@ abstract class AbstractModel implements IModel
     /**
      * TODO maybe use template method pattern
      *
-     * This function loads all respectively specified files contained in the
-     * folder
+     * This function loads all respectively specified files contained in the folder
      * stored in $this->path, parses them into a HTML string and returns it.
      *
      * @param unknown $start
@@ -53,6 +52,7 @@ abstract class AbstractModel implements IModel
      *            - maximum number of files to parse, if given
      * @param array $filter
      *            - array of filter criteria
+     * @return array of
      */
     public function getList($start = 0, $limit = null, array $filter = array(), $reverse = true)
     {
@@ -86,6 +86,7 @@ abstract class AbstractModel implements IModel
      *
      * @param unknown $file
      *            - file to parse
+     * @return parsed tags
      */
     public function parseTags($file)
     {

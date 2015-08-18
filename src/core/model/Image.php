@@ -41,14 +41,14 @@ class Image extends AbstractModel
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     *
      * @param unknown $file
      *            - file to parse
+     * @return parsed image
      */
     public function parse($file)
     {
         try {
-            $photo = HTMLBuilder::a_img($file, $file, '', false); // 'data-gallery="gallery"');
+            $photo = HTMLBuilder::a_img($file, $file, '', false, 'data-gallery="gallery"');
             $photo = '<div class="thumbnail">' . $photo . '</div>';
             return $photo;
         } catch (Exception $e) {
@@ -56,6 +56,36 @@ class Image extends AbstractModel
                 new Error('An unexpected error has occurred.', 'Markdown::parse("' . $file . '")'), $e->getMessage());
             return '';
         }
+    }
+
+
+    /**
+     * This function loads all images contained in the folder stored in $this->path,
+     * generate the bootstrap modal carousel and returns it.
+     *
+     * @param unknown $reverse specify whether to build the carousel in reverse order or not
+     *
+     * @return generated carousel
+     */
+    public function carousel($reverse = true)
+    {
+        $files = ScanDir::getFilesOfType($this->path, $this->mime);
+        $this->count = count($files);
+        if($reverse)
+        {
+            rsort($files);
+        }
+        foreach ($files as &$f) {
+            $f = $this->path.$f;
+        }
+        try {
+            return HTMLBuilder::carousel($files);
+        } catch (Exception $e) {
+            Logger::getInstance()->add(
+                new Error('An unexpected error has occurred.', 'Markdown::carousel( ... )'), $e->getMessage());
+            return '';
+        }
+
     }
 }
 

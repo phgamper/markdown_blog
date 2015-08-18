@@ -26,6 +26,42 @@
  */
 abstract class HTMLBuilder
 {
+    public static function carousel(array $images, $name = 'main-carousel', $lazy = true)
+    {
+        if($lazy){
+            Script::getInstance()->link('lib/lazy-carousel/js/lazy-bootstrap-carousel-v3.js');
+            Script::getInstance()->link('lib/lazy-carousel/js/base.js');
+            Head::getInstance()->link('lib/lazy-carousel/css/base.css');
+        }
+        $items = '';
+        $ind = '';
+        $class = 'active';
+        for($i = 0; $i < count($images); $i++){
+            // Carousel items
+            $items .= '<div class="item '.$class.'">';
+            if($lazy){
+                $items .= '<img lazy-src="'.$images[$i].'" />';
+            }else{
+                $items .= '<img src="'.$images[$i].'" />';
+            }
+            $items .= '</div>';
+
+            // Indicators
+            $ind .= '<li data-target="#'.$name.'" data-slide-to="'.$i.'" class="'.$class.'"></li>';
+            $class = '';
+        }
+        $ind = '<ol class="carousel-indicators">'.$ind.'</ol>';
+
+        $carousel = $ind.'<div class="carousel-inner">'.$items.'</div>';
+        if($lazy){
+            // Image loading icon
+            $carousel .= '<div class="loading hide"><img src="lib/lazy-carousel/img/black.png"/></div>';
+        }
+        // carousel nav
+        $carousel .= '<a class="carousel-control left" href="#main-carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>';
+        $carousel .= '<a class="carousel-control right" href="#main-carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>';
+        return '<div id="main-carousel" class="carousel slide" data-ride="carousel">'.$carousel.'</div>';
+    }
 
     public static function img($src, $class = '', $responsive = true)
     {
