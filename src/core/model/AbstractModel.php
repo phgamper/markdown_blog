@@ -67,7 +67,7 @@ abstract class AbstractModel implements IModel
         $limit = is_null($limit) ? count($files) : $limit;
         for ($i = $start; $i < count($files) && $i - $start < $limit; $i ++) {
             $file = $this->path . $files[$i];
-            $list[$file] = $this->parse($file);
+            $list[$file] = $this->parse($file, $i);
         }
         return $list;
     }
@@ -78,7 +78,8 @@ abstract class AbstractModel implements IModel
      */
     public function get()
     {
-        return $this->parse($this->path);
+        // TODO check the index
+        return $this->parse($this->path, 0);
     }
 
     /**

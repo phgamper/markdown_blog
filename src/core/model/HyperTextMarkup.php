@@ -42,10 +42,11 @@ class HyperTextMarkup extends AbstractModel
      * containing its content.
      *
      *
-     * @param unknown $file
-     *            - file to parse
+     * @param unknown $file - file to parse
+     * @param unknown $index - index of parsed element
+     * @return parsed HTML
      */
-    public function parse($file)
+    public function parse($file, $index)
     {
         try {
             if ($fh = fopen($file, 'r')) {

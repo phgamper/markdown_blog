@@ -51,8 +51,9 @@ interface IModel
      *
      * @param unknown $file
      *            - file to parse
+     * @param unknown $index
      */
-    public function parse($file);
+    public function parse($file, $index);
 
     /**
      * This function reads the tags from the file, if they have been provided

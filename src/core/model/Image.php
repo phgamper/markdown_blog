@@ -41,19 +41,19 @@ class Image extends AbstractModel
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $file
-     *            - file to parse
+     * @param unknown $file - file to parse
+     * @param unknown $index - index of parsed element
      * @return parsed image
      */
-    public function parse($file)
+    public function parse($file, $index)
     {
         try {
-            $photo = HTMLBuilder::a_img($file, $file, '', false, 'data-gallery="gallery"');
-            $photo = '<div class="thumbnail">' . $photo . '</div>';
-            return $photo;
+            $img = '<img index='.$index.' src="'.$file.'" class="owl-jumpTo">';
+            $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="'.$index.'">'.$img.'</a>';
+            return '<div class="thumbnail">'.$a.'</div>';
         } catch (Exception $e) {
             Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::parse("' . $file . '")'), $e->getMessage());
+                new Error('An unexpected error has occurred.', 'Markdown::parse("'.$file.'")'), $e->getMessage());
             return '';
         }
     }
@@ -79,7 +79,7 @@ class Image extends AbstractModel
             $f = $this->path.$f;
         }
         try {
-            return HTMLBuilder::carousel($files);
+            return HTMLBuilder::owl_carousel($files);
         } catch (Exception $e) {
             Logger::getInstance()->add(
                 new Error('An unexpected error has occurred.', 'Markdown::carousel( ... )'), $e->getMessage());

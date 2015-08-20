@@ -85,14 +85,11 @@ class ListView extends AbstractView
         }
 
         if ($this->model instanceof Image){
-            Script::getInstance()->link('lib/bootstrap/js/bootstrap-image-gallery.js');
-            $string = '<div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">' . $string . '</div>';
-            $carousel = '<div class="modal-image"></div>';
-            //$carousel = $this->model->carousel($reverse);
+            $carousel = $this->model->carousel($reverse);
             $carousel = '<div class="modal-dialog"><div class="modal-content">'.$carousel.'</div></div>';
-            $string .=  '<div class="modal modal-gallery hide fade" id="modal-gallery" role="dialog">'.$carousel.'</div>';
+            $carousel = '<div class="modal fade" id="carousel-modal" role="dialog">'.$carousel.'</div>';
+            $string .= $carousel;
         }
-        
         return $string . $pager;
     }
 }

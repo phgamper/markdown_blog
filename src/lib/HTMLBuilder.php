@@ -26,48 +26,24 @@
  */
 abstract class HTMLBuilder
 {
-    public static function carousel(array $images, $name = 'main-carousel', $lazy = true)
-    {
-        if($lazy){
-            Script::getInstance()->link('lib/lazy-carousel/js/lazy-bootstrap-carousel-v3.js');
-            Script::getInstance()->link('lib/lazy-carousel/js/base.js');
-            Head::getInstance()->link('lib/lazy-carousel/css/base.css');
-        }
+    public static function owl_carousel(array $image){
+        Head::getInstance()->link('lib/owl-carousel/css/owl.carousel.css');
+        Head::getInstance()->link('lib/owl-carousel/css/owl.theme.css');
+        Script::getInstance()->link('lib/owl-carousel/js/owl.carousel.js');
+        Head::getInstance()->link('lib/owl-carousel/css/lazy_load.css');
+        Script::getInstance()->link('lib/owl-carousel/js/lazy_load.js');
         $items = '';
-        $ind = '';
-        $class = 'active';
-        for($i = 0; $i < count($images); $i++){
-            // Carousel items
-            $items .= '<div class="item '.$class.'">';
-            if($lazy){
-                $items .= '<img lazy-src="'.$images[$i].'" />';
-            }else{
-                $items .= '<img src="'.$images[$i].'" />';
-            }
-            $items .= '</div>';
-
-            // Indicators
-            $ind .= '<li data-target="#'.$name.'" data-slide-to="'.$i.'" class="'.$class.'"></li>';
-            $class = '';
+        foreach ($image as $i){
+            $items .= '<div class="item"><img class="lazyOwl" data-src="'.$i.'" /></div>';
         }
-        $ind = '<ol class="carousel-indicators">'.$ind.'</ol>';
-
-        $carousel = $ind.'<div class="carousel-inner">'.$items.'</div>';
-        if($lazy){
-            // Image loading icon
-            $carousel .= '<div class="loading hide"><img src="lib/lazy-carousel/img/black.png"/></div>';
-        }
-        // carousel nav
-        $carousel .= '<a class="carousel-control left" href="#main-carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>';
-        $carousel .= '<a class="carousel-control right" href="#main-carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>';
-        return '<div id="main-carousel" class="carousel slide" data-ride="carousel">'.$carousel.'</div>';
+        return '<div id="carousel" class="owl-carousel owl-theme">'.$items.'</div>';
     }
 
-    public static function img($src, $class = '', $responsive = true)
+    public static function img($src, $class = '', $responsive = true, $attr = '')
     {
         $class = 'class="' . $class;
         $noscript = '';
-        $img = '<img src="';
+        $img = '<img '.$attr.' src="';
         
         if ($responsive) {
             $img .= 'public/img/ajax-loader.gif" ';
@@ -80,9 +56,9 @@ abstract class HTMLBuilder
         return $img;
     }
 
-    public static function a_img($src, $href, $class = 'thumbnail', $responsive = true, $toggle = '')
+    public static function a_img($src, $href, $class = 'thumbnail', $responsive = true, $toggle = '', $attr = '')
     {
-        $a_img = self::img($src, $class, $responsive);
+        $a_img = self::img($src, $class, $responsive, $attr);
         $a_img = '<a ' . $toggle . ' href="' . $href . '" >' . $a_img . '</a>';
         return $a_img;
     }
