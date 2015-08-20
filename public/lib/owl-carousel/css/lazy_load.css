@@ -3,3 +3,7 @@
     width: 100%;
     height: auto;
 }
+
+.modal-dialog {
+    width: 750px;
+}
