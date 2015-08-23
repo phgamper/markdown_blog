@@ -110,9 +110,7 @@ class Controller extends AbstractController
             Logger::getInstance()->add(
                 new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
             $this->model = new Markdown(ERROR_MD);
-            $this->view = new SingleView($this->model, array(
-                'logger' => true
-            ));
+            $this->view = new SingleView($this->model, array('name' => 'Error', 'logger' => true));
         } catch (Exception $e) {
             Logger::getInstance()->add(new Warning($e->getMessage(), 'Controller::actionListener()'));
             $this->model = new Markdown(ERROR_MD);

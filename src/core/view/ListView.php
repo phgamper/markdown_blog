@@ -61,7 +61,7 @@ class ListView extends AbstractView
                 $head = $this->head($this->model->parseTags($it->current()['path']));
                 $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current()['html'] . '</div></div>';
                 if (!$this->model instanceof Image){
-                    $href = URLs::getInstance()->uri.'/'.$it->current()['link'];
+                    $href = '/'.URLs::getInstance()->getURI().'/'.$it->current()['link'];
                     // social
                     $social = '';
                     $general = Config::getInstance()->getGeneralItem('general');
@@ -86,7 +86,7 @@ class ListView extends AbstractView
         if (!is_null($limit)) {
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
             $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
-            $self = URLs::getInstance()->uri . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
+            $self = URLs::getInstance()->getURI() . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
             $self = Config::getInstance()->app_root.$self;
             if ($prev > 0) {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';

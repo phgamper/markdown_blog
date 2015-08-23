@@ -26,13 +26,13 @@
  */
 class URLs
 {
-    public $base;
+    private $base;
 
-    public $utf8;
+    private $utf8;
 
-    public $uri;
+    private $uri;
 
-    public $parts;
+    private $parts;
 
     private static $instance = null;
 
@@ -77,6 +77,10 @@ class URLs
      */
     public function module(){
         return $this->parts[0] == '' ?  'home' : strtolower($this->parts[0]);
+    }
+
+    public function getURI(){
+        return $this->uri == '' ? 'home' : rtrim($this->uri,"/");
     }
 
     public function level($level){
