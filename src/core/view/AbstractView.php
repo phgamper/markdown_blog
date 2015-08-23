@@ -80,11 +80,7 @@ abstract class AbstractView implements IView
             $left = $left ? '<div class="col-md-5"><p>' . $left . '</p></div>' : '';
             $right = '';
             if (isset($tags['category'])) {
-                $href = $_SERVER['PHP_SELF'] . '?' .
-                     QueryString::removeAll(array(
-                        'tag',
-                        'page'
-                    ), $_SERVER['QUERY_STRING']);
+                $href = Config::getInstance()->app_root.URLs::getInstance()->getURI() . '?' . QueryString::removeAll(array('tag', 'page'), $_SERVER['QUERY_STRING']);
                 foreach ($tags['category'] as $c) {
                     $right .= ' | <a href="' . $href . '&tag=' . $c . '">#' . trim($c) . '</a>';
                     // $right .= ' | #' . trim($c);

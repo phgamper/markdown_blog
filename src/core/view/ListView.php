@@ -61,7 +61,7 @@ class ListView extends AbstractView
                 $head = $this->head($this->model->parseTags($it->current()['path']));
                 $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current()['html'] . '</div></div>';
                 if (!$this->model instanceof Image){
-                    $href = '/'.URLs::getInstance()->getURI().'/'.$it->current()['link'];
+                    $href = Config::getInstance()->app_root.URLs::getInstance()->getURI().'/'.$it->current()['link'];
                     // social
                     $social = '';
                     $general = Config::getInstance()->getGeneralItem('general');
