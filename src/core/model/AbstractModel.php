@@ -113,6 +113,14 @@ abstract class AbstractModel implements IModel
                     }
                     // search for meta tags
                     if ($meta) {
+                        // name
+                        if (preg_match('/^\s*(name)\s*(=).*/i', $line)) {
+                            $tags['name'] = trim(substr($line, strpos($line, '=') + 1));
+                        }
+                        // description
+                        if (preg_match('/^\s*(description)\s*(=).*/i', $line)) {
+                            $tags['description'] = trim(substr($line, strpos($line, '=') + 1));
+                        }
                         // author
                         if (preg_match('/^\s*(author)\s*(=).*/i', $line)) {
                             $tags['author'] = trim(substr($line, strpos($line, '=') + 1));

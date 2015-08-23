@@ -32,6 +32,8 @@ class Config
 
     public $app_root;
 
+    public $title;
+
     private static $instance = null;
 
     private function __construct()
@@ -47,6 +49,7 @@ class Config
             $this->config = $this->parser->parse(CONFIG_DIR.'config.ini');
         }
         $this->app_root = $this->general['general']['app_root'];
+        $this->title = array_key_exists('title', $this->general['head']) ? $this->general['head']['title'] : '';
     }
 
     private function __clone() {}

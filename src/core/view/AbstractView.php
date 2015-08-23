@@ -38,6 +38,11 @@ abstract class AbstractView implements IView
         {
             Head::getInstance()->link($this->config['style']);
         }
+        Head::getInstance()->addOg('title', Config::getInstance()->title.' - '.$this->config['name']);
+        Head::getInstance()->setTitle(Config::getInstance()->title.' - '.$this->config['name']);
+        if (array_key_exists('description', $this->config)){
+            Head::getInstance()->addOg('description', $this->config['description']);
+        }
     }
 
     public function show()

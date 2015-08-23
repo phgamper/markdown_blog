@@ -36,16 +36,30 @@ class Head
 
     private $scripts = array();
 
+    private $og = array();
+
+    private $title = '';
+
     private static $instance = null;
 
     private function __construct()
     {
         $this->config = Config::getInstance()->getGeneralItem('head');
+        self::setTitle($this->config['title'].' - '.URLs::getInstance()->module());
+        // default meta tags
+        self::addMeta('description', $this->config['description']);
         if (isset($this->config['meta'])) {
             foreach ($this->config['meta'] as $k => $v) {
                 self::addMeta($k, $v);
             }
         }
+        // default og tags
+        $title = $this->config['title'].' - '.URLs::getInstance()->module();
+        self::addOg('title', $title);
+        self::addOg('description', $this->config['description']);
+        self::addOg('url', 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+        self::addOg('image', $this->config['image']);
+        self::addOg('type', 'website');
     }
 
     private function __clone() {}
@@ -64,12 +78,17 @@ class Head
     }
 
     /**
+     *
+     */
+    public function setTitle($title){
+        $this->title = '<title>'.$title.'</title>';
+    }
+
+    /**
      * links a CSS to the style sheet list
      *
-     * @param unknown $href
-     *              path to css file
-     * @param string $rel
-     *              type of how to link the css
+     * @param unknown $href path to css file
+     * @param string $rel type of how to link the css
      */
     public function link($href, $rel = 'stylesheet', $abs = false)
     {
@@ -89,12 +108,29 @@ class Head
     }
 
     /**
-     * adds an meta tag to the HTML head
+     * adds an og tag to the HTML head
      *
-     * @param unknown $name
-     *            - name of the meta tag
-     * @param unknown $content
-     *            - content of the meta tag
+     * @param unknown $name - name of the og tag
+     * @param unknown $content - content of the og tag
+     */
+    public function addOg($name, $content)
+    {
+        $this->og[$name] = $content;
+    }
+
+    /**
+     * empties the og tag list
+     */
+    public function flushOg()
+    {
+        $this->og = array();
+    }
+
+    /**
+     * adds an og tag to the HTML head
+     *
+     * @param unknown $name - name of the meta tag
+     * @param unknown $content - content of the meta tag
      */
     public function addMeta($name, $content)
     {
@@ -112,8 +148,7 @@ class Head
     /**
      * link a JS to the script list
      *
-     * @param $script path
-     *            to js file
+     * @param $script path to js file
      */
     public function linkScript($script, $abs = false)
     {
@@ -129,14 +164,27 @@ class Head
     }
 
     /**
+     * return the og tags as a HTML string
+     *
+     * @return string to print
+     */
+    public function og()
+    {
+        $og = '';
+        foreach ($this->og as $name => $content) {
+            $og .= '<meta property="og:'.$name.'" content="'.$content.'">';
+        }
+        return $og;
+    }
+
+    /**
      * return the meta tags as a HTML string
      *
      * @return string to print
      */
     public function meta()
     {
-        $title = '<title>'.$this->config['title'].URLs::getInstance()->module().'</title>';
-        $meta = '<meta charset="utf-8">' . $title;
+        $meta = '<meta charset="utf-8">';
         foreach ($this->meta as $name => $content) {
             $meta .= '<meta name="' . $name . '" content="' . $content . '">';
         }
@@ -177,13 +225,7 @@ class Head
      */
     public function toString()
     {
-        $meta = $this->meta();
-        $css = $this->css();
-        if (isset($this->config['favicon'])) {
-            $css .= '<link href="' . $this->config['favicon'] . '" rel="icon" type="image/png">';
-        }
-        $js = $this->javascript();
-        return $meta.$css.$js;
+        return $this->meta().$this->title.$this->og().$this->css().$this->javascript();
     }
 }
 

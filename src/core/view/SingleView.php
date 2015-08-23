@@ -27,15 +27,24 @@
 
 class SingleView extends AbstractView
 {
+    private $tags;
 
     public function __construct(IModel $model, $config)
     {
         parent::__construct($model, $config);
+        $this->tags = $this->model->parseTags($this->model->path);
+        if (array_key_exists('name', $this->tags)){
+            $title = Config::getInstance()->title.' - '.$this->config['name'].' > '.$this->tags['name'];
+            Head::getInstance()->addOg('title', $title);
+        }
+        if (array_key_exists('description', $this->tags)){
+            Head::getInstance()->addOg('description', $this->tags['description']);
+        }
     }
 
     public function content()
     {
-        $head = $this->head($this->model->parseTags($this->model->path));
+        $head = $this->head($this->tags);
         $body = '<div class="row"><div class="col-md-12 content-body">' . $this->model->get() . '</div></div>';
         return '<div class="row content"><div class="col-md-12 single">'.$head.$body.'</div></div>';
     }
