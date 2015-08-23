@@ -38,7 +38,6 @@ class IniNavigationView implements IView
     public function show()
     {
         $menu = '';
-        
         foreach ($this->model->getItems() as $key => $value) {
             $a_class = '';
             $li_class = URLs::getInstance()->module() == $key ? 'active' : '';
@@ -63,31 +62,7 @@ class IniNavigationView implements IView
             $li = '<a href="' . $href . '" class="' . $a_class . '">' . $value['name'] . $caret . '</a>';
             $menu .= '<li class="' . $li_class . '">' . $li . $submenu . '</li>';
         }
-        $string = '<ul class="nav navbar-nav">' . $menu . '</ul>';
-        $string = '<div class="navbar-collapse collapse">' . $string . '</div>';
-        return $this->container($string);
-    }
-
-    protected function container($string)
-    {
-        $container = '';
-        
-        if (isset($this->config['page_name'])) {
-            $btn = ' <span class="sr-only">Toggle navigation</span>';
-            $btn .= '<span class="icon-bar"></span>';
-            $btn .= '<span class="icon-bar"></span>';
-            $btn .= '<span class="icon-bar"></span>';
-            $btn = '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">' .
-                 $btn . '</button>';
-            $btn .= '<a class="navbar-brand" href="'.Config::getInstance()->app_root.'">' . $this->config['page_name'] . '</a>';
-            $btn = '<div class="navbar-header">' . $btn . '</div>';
-            
-            $container .= $btn;
-        }
-        $pos = isset($this->config['navbar_pos']) && $this->config['navbar_pos'] == 'float' ? '' : 'navbar-fixed-top';
-        $container = '<div class="container-fluid">' . $container . $string . '</div>';
-        $container = '<div class="navbar navbar-default '.$pos.'" role="navigation">' . $container . '</div>';
-        return $container;
+        return $menu;
     }
 }
 
