@@ -42,6 +42,7 @@ class Controller extends AbstractController
 
     protected function actionListener()
     {
+        // TODO refactor
         try {
             // load the configuration file
             if (isset($this->config[$this->module])) {
@@ -50,76 +51,60 @@ class Controller extends AbstractController
                 throw new Exception('The requested URL is not available.');
             }
             // try to resolve URL
-            if ($submodule = URLs::getInstance()->submodule(1)) {
+            if ($value = URLs::getInstance()->level(1)) {
                 // if a dropdown is present
-                if (array_key_exists($submodule, $config)) {
-                    $config = $config[$submodule];
-                } else {
-                    throw new Exception('The requested URL is not available.');
+                if (array_key_exists($value, $config)) {
+                    $config = $config[$value];
+                    $value = false;
+                    // TODO Hack to support blog in dropdown
+                    $value = URLs::getInstance()->level(2);
                 }
             }
-            
-            if (isset($config['path'])) {
-                $path = $config['path'];
-            } else {
-                throw new Exception('The requested URL is not available.');
-            }
+
             if (isset($config['type'])) {
                 $type = $config['type'];
             } else {
                 throw new ErrorException('There is an error in the configuration file!');
             }
-            
+
+            if (isset($config['path'])) {
+                $path = $value ? $config['path'].'/'.$value.'.'.$config['type'] : $config['path'];
+            } else {
+                throw new Exception('The requested URL is not available.');
+            }
+
             // evaluate model to use
             switch ($type) {
                 case 'md':
-                    {
-                        $this->model = new Markdown($path);
-                        break;
-                    }
+                    $this->model = new Markdown($path);
+                    break;
                 case 'remote':
-                    {
-                        $this->model = new MarkdownRemote($path);
-                        break;
-                    }
+                    $this->model = new MarkdownRemote($path);
+                    break;
                 case 'html':
-                    {
-                        $this->model = new HyperTextMarkup($path);
-                        break;
-                    }
+                    $this->model = new HyperTextMarkup($path);
+                    break;
                 case 'img':
-                    {
-                        $this->model = new Image($path);
-                        break;
-                    }
+                    $this->model = new Image($path);
+                    break;
                 default:
-                    {
-                        throw new ErrorException('There is an error in the configuration file!');
-                    }
+                    throw new ErrorException('There is an error in the configuration file!');
             }
-            
+
             switch (true) {
                 case is_dir($path):
-                    {
-                        $this->view = new ListView($this->model, $config);
-                        break;
-                    }
+                    $this->view = new ListView($this->model, $config);
+                    break;
                 case is_file($path):
-                    {
-                        $this->view = new SingleView($this->model, $config);
-                        break;
-                    }
-                case preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", 
+                    $this->view = new SingleView($this->model, $config);
+                    break;
+                case preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",
                     $path):
-                    {
-                        $this->view = new RemoteMarkdownView($this->model, $config);
-                        break;
-                    }
+                    $this->view = new RemoteMarkdownView($this->model, $config);
+                    break;
                 default:
-                    {
-                        // should never happen
-                        throw new ErrorException('Something is completely broken!');
-                    }
+                    // should never happen
+                    throw new ErrorException('Something is completely broken!');
             }
         } catch (ErrorException $e) {
             Logger::getInstance()->add(

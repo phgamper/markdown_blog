@@ -79,7 +79,7 @@ class URLs
         return $this->parts[0] == '' ?  'home' : strtolower($this->parts[0]);
     }
 
-    public function submodule($level){
+    public function level($level){
         return array_key_exists($level, $this->parts) ? $this->parts[$level] : false;
     }
 }

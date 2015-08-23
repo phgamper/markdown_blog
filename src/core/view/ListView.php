@@ -58,8 +58,13 @@ class ListView extends AbstractView
             $i = 0;
             $break = ceil($item_left / $cols);
             while ($it->valid() && $i < $break) {
-                $head = $this->head($this->model->parseTags($it->key()));
-                $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current() . '</div></div>';
+                $head = $this->head($this->model->parseTags($it->current()['path']));
+                $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current()['html'] . '</div></div>';
+                if (!$this->model instanceof Image){
+                    // TODO refactor, instance of Markdown, ...
+                    $static = '<a class="btn btn-default" href="'.URLs::getInstance()->uri.'/'.$it->current()['link'].'" role="button">Static <i class="fa fa-share-alt"></i></a>';
+                    $body .= '<div class="row"><div class="col-md-12 text-right">'.$static.'</div></div>';
+                }
                 $column .= '<div class="row"><div class="col-md-12 list-item">' . $head . $body . '</div></div>';
                 $it->next();
                 $i ++;
@@ -91,6 +96,8 @@ class ListView extends AbstractView
             $carousel = '<div class="modal fade" id="carousel-modal" role="dialog">'.$carousel.'</div>';
             $string .= $carousel;
         }
+
+
         return $string . $pager;
     }
 }

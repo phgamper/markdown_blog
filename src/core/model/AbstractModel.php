@@ -66,8 +66,10 @@ abstract class AbstractModel implements IModel
         }
         $limit = is_null($limit) ? count($files) : $limit;
         for ($i = $start; $i < count($files) && $i - $start < $limit; $i ++) {
-            $file = $this->path . $files[$i];
-            $list[$file] = $this->parse($file, $i);
+            $item['path'] = $this->path.$files[$i];
+            $item['html'] = $this->parse($item['path'], $i);
+            $item['link'] = preg_replace('/\\.[^.\\s]{2,4}$/', '', $files[$i]);
+            $list[] = $item;
         }
         return $list;
     }

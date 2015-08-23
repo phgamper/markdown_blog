@@ -79,7 +79,7 @@ class IniNavigationView implements IView
             $btn .= '<span class="icon-bar"></span>';
             $btn = '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">' .
                  $btn . '</button>';
-            $btn .= '<a class="navbar-brand" href="' . $_SERVER['PHP_SELF'] . '">' . $this->config['page_name'] . '</a>';
+            $btn .= '<a class="navbar-brand" href="'.Config::getInstance()->app_root.'">' . $this->config['page_name'] . '</a>';
             $btn = '<div class="navbar-header">' . $btn . '</div>';
             
             $container .= $btn;
