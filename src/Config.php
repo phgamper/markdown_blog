@@ -2,9 +2,8 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It works as a dynamic loader for the JavaScript files in the bottom of the page
- * to aviod unnecessary traffic.
- * 
+ * TODO ...
+ *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
  * or special setup needed. 
@@ -25,82 +24,66 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Script
+class Config
 {
+    public $general;
 
-    private $scripts = array();
+    public $config;
 
-    private $inlines = array();
+    public $app_root;
 
     private static $instance = null;
 
     private function __construct()
     {
+        $this->general = IniParser::parseMerged(array(
+            SRC_DIR.'defaults.ini',
+            CONFIG_DIR.'general.ini'
+        ));
+
+        if (file_exists(CONFIG_DIR.'config.ini')) {
+            $this->parser = new IniParser();
+            $this->parser->use_array_object = false;
+            $this->config = $this->parser->parse(CONFIG_DIR.'config.ini');
+        }
+        $this->app_root = $this->general['general']['app_root'];
     }
 
-    private function __clone()
-    {}
+    private function __clone() {}
 
     /**
      * returns the instance created by its first invoke.
      *
-     * @return Script
+     * @return Config
      */
     public static function getInstance()
     {
         if (null === self::$instance) {
             self::$instance = new self();
         }
-        
         return self::$instance;
     }
 
     /**
-     * link a JS to the script list
+     * returns the item of config array according to the given key if exists
+     * returns an empty array() otherwise
      *
-     * @param $script path
-     *            to js file
+     * @param $key of the array element
+     * @return array
      */
-    public function link($script, $abs = false)
-    {
-        $this->scripts[] = $abs ? $script : Config::getInstance()->app_root.$script;
+    public function getConfigItem($key){
+        return array_key_exists($key, $this->config) ? $this->config[$key] : array();
     }
 
     /**
-     * inlines a script directly into the HTML code
+     * returns the item of general array according to the given key if exists
+     * returns an empty array() otherwise
      *
-     * @param $script script
-     *            to inline
+     * @param $key of the array element
+     * @return array
      */
-    public function inline($script)
-    {
-        $this->inlines[] = $script;
-    }
-
-    /**
-     * empty the script list
-     */
-    public function flush()
-    {
-        $this->scripts = array();
-    }
-
-    /**
-     * generate the script list as a HTML string
-     *
-     * @return string to print
-     */
-    public function toString()
-    {
-        $js = '<!-- Le javascript -->';
-        foreach ($this->scripts as $j) {
-            $js .= '<script src="' . $j . '"></script>';
-        }
-        foreach ($this->inlines as $i) {
-            $js .= '<script>' . $i . '</script>';
-        }
-        return $js;
+    public function getGeneralItem($key){
+        return array_key_exists($key, $this->general) ? $this->general[$key] : array();
     }
 }
-
 ?>

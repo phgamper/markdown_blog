@@ -41,7 +41,6 @@ class HyperTextMarkup extends AbstractModel
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     *
      * @param unknown $file - file to parse
      * @param unknown $index - index of parsed element
      * @return parsed HTML

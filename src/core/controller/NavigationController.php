@@ -29,7 +29,6 @@ class NavigationController extends AbstractController
 
     public function __construct(AbstractNavigation $model)
     {
-        parent::__construct();
         $this->model = $model;
         $this->actionListener();
         $this->cache();

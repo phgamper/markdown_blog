@@ -32,13 +32,7 @@ class IniNavigationView implements IView
     public function __construct(IniNavigation $model)
     {
         $this->model = $model;
-        $ini = IniParser::parseMerged(array(
-            SRC_DIR . 'defaults.ini',
-            CONFIG_DIR . 'general.ini'
-        ));
-        if (isset($ini['general'])) {
-            $this->config = $ini['general'];
-        }
+        $this->config = Config::getInstance()->getGeneralItem('general');
     }
 
     public function show()
@@ -47,7 +41,7 @@ class IniNavigationView implements IView
         
         foreach ($this->model->getItems() as $key => $value) {
             $a_class = '';
-            $li_class = $_GET['module'] == $key ? 'active' : '';
+            $li_class = URLs::getInstance()->module() == $key ? 'active' : '';
             $caret = '';
             $submenu = '';
             
@@ -58,21 +52,19 @@ class IniNavigationView implements IView
                     if ($v['type'] == 'href') {
                         $href = $v['path'] . '" target="_blank';
                     } else {
-                        $href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
+                        $href = $this->config['app_root'].$key.'/'.$i;
                     }
                     $submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
                 }
                 $li_class .= ' dropdown';
                 $submenu = '<ul class="dropdown-menu" role="menu">' . $submenu . '</ul>';
             }
-            $href = $_SERVER['PHP_SELF'] . '?module=' . $key;
+            $href = $this->config['app_root'].$key;
             $li = '<a href="' . $href . '" class="' . $a_class . '">' . $value['name'] . $caret . '</a>';
             $menu .= '<li class="' . $li_class . '">' . $li . $submenu . '</li>';
         }
-        
         $string = '<ul class="nav navbar-nav">' . $menu . '</ul>';
         $string = '<div class="navbar-collapse collapse">' . $string . '</div>';
-        
         return $this->container($string);
     }
 
@@ -93,7 +85,6 @@ class IniNavigationView implements IView
             $container .= $btn;
         }
         $pos = isset($this->config['navbar_pos']) && $this->config['navbar_pos'] == 'float' ? '' : 'navbar-fixed-top';
-
         $container = '<div class="container-fluid">' . $container . $string . '</div>';
         $container = '<div class="navbar navbar-default '.$pos.'" role="navigation">' . $container . '</div>';
         return $container;

@@ -2,9 +2,8 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It works as a dynamic loader for the JavaScript files in the bottom of the page
- * to aviod unnecessary traffic.
- * 
+ * TODO ...
+ *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
  * or special setup needed. 
@@ -25,82 +24,75 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Script
+class URLs
 {
+    public $base;
 
-    private $scripts = array();
+    public $utf8;
 
-    private $inlines = array();
+    public $uri;
+
+    public $parts;
 
     private static $instance = null;
 
     private function __construct()
     {
+        self::parseURI();
     }
 
-    private function __clone()
-    {}
+    private function __clone() {}
 
     /**
      * returns the instance created by its first invoke.
      *
-     * @return Script
+     * @return URLs
      */
     public static function getInstance()
     {
         if (null === self::$instance) {
             self::$instance = new self();
         }
-        
         return self::$instance;
     }
 
     /**
-     * link a JS to the script list
-     *
-     * @param $script path
-     *            to js file
+     * TODO
      */
-    public function link($script, $abs = false)
-    {
-        $this->scripts[] = $abs ? $script : Config::getInstance()->app_root.$script;
-    }
-
-    /**
-     * inlines a script directly into the HTML code
-     *
-     * @param $script script
-     *            to inline
-     */
-    public function inline($script)
-    {
-        $this->inlines[] = $script;
-    }
-
-    /**
-     * empty the script list
-     */
-    public function flush()
-    {
-        $this->scripts = array();
-    }
-
-    /**
-     * generate the script list as a HTML string
-     *
-     * @return string to print
-     */
-    public function toString()
-    {
-        $js = '<!-- Le javascript -->';
-        foreach ($this->scripts as $j) {
-            $js .= '<script src="' . $j . '"></script>';
+    public function parseURI() {
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $request = explode('?', $_SERVER['REQUEST_URI']);
+            $this->base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '\/');
+            $this->utf8 = substr(urldecode($request[0]), strlen($this->base) + 1);
+            $this->uri = utf8_decode($this->utf8);
+            if ($this->uri == basename($_SERVER['PHP_SELF'])) {
+                $this->uri = '';
+            }
+            $this->parts = explode('/', $this->uri);
         }
-        foreach ($this->inlines as $i) {
-            $js .= '<script>' . $i . '</script>';
-        }
-        return $js;
+    }
+
+    /**
+     * TODO
+     */
+    public function module(){
+        return $this->parts[0] == '' ?  'home' : strtolower($this->parts[0]);
+    }
+
+    public function submodule($level){
+        return array_key_exists($level, $this->parts) ? $this->parts[$level] : false;
     }
 }
+
+
+/*
+$path['query_utf8'] = urldecode($request_path[1]);
+$path['query'] = utf8_decode(urldecode($request_path[1]));
+$vars = explode('&', $path['query']);
+foreach ($vars as $var) {
+$t = explode('=', $var);
+$path['query_vars'][$t[0]] = $t[1];
+}
+*/
 
 ?>

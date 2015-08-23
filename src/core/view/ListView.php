@@ -73,7 +73,8 @@ class ListView extends AbstractView
         if (!is_null($limit)) {
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
             $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
-            $self = $_SERVER['PHP_SELF'] . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
+            $self = URLs::getInstance()->uri . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
+            $self = Config::getInstance()->app_root.$self;
             if ($prev > 0) {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';
             }

@@ -33,7 +33,7 @@ abstract class AbstractNavigation
 
     /**
      *
-     * @return - the items as structured array
+     * @return unknown - the items as structured array
      */
     public function getItems()
     {

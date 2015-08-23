@@ -26,6 +26,7 @@
  */
 class QueryString
 {
+    //TODO maybe merge with URLs
 
     public static function remove($search, $query)
     {

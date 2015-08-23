@@ -30,12 +30,9 @@ interface IModel
      * This function loads all respectively specified files contained in the folder
      * stored in $this->path, parses them into a HTML string and returns it.
      *
-     * @param unknown $start
-     *            - offset where to start, if given
-     * @param unknown $limit
-     *            - maximum number of files to parse, if given
-     * @param array $filter
-     *            - array of filter criteria
+     * @param unknown $start offset where to start, if given
+     * @param unknown $limit maximum number of files to parse, if given
+     * @param array $filter array of filter criteria
      */
     public function getList($start, $limit, array $filter);
 

@@ -26,23 +26,11 @@
  */
 abstract class AbstractController
 {
-
-    protected $entity;
-
     protected $model;
 
     protected $view;
 
     protected $cache = null;
-
-    public function __construct()
-    {
-        if (! isset($_GET['module'])) {
-            $_GET['module'] = 'home';
-        }
-        
-        $this->entity = strtolower($_GET['module']);
-    }
 
     public function cache()
     {

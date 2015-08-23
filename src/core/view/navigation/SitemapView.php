@@ -26,11 +26,13 @@
  */
 class SitemapView implements IView
 {
+    private $config;
 
     public function __construct(IniNavigation $model)
     {
         $this->model = $model;
-        Head::getInstance()->link(CSS_DIR . 'sitemap.css');
+        $this->config = Config::getInstance()->getGeneralItem('general');
+        Head::getInstance()->link(CSS_DIR.'sitemap.css');
     }
 
     public function show()
@@ -45,13 +47,13 @@ class SitemapView implements IView
                     if ($v['type'] == 'href') {
                         $href = $v['path'] . '" target="_blank';
                     } else {
-                        $href = $_SERVER['PHP_SELF'] . '?module=' . $key . '&value=' . $i;
+                        $href = $this->config['app_root'].$key.'/'.$i;
                     }
-                    $submenu .= '<li><a href="' . $href . '">' . $v['name'] . '</a></li>';
+                    $submenu .= '<li><a href="'.$href.'">'.$v['name'].'</a></li>';
                 }
                 $submenu = '<ul>' . $submenu . '</ul>';
             }
-            $href = $_SERVER['PHP_SELF'] . '?module=' . $key;
+            $href = $this->config['app_root'].$key;
             if ($submenu) {
                 $li = '<h5>' . $value['name'] . '</h5>';
             } else {
@@ -61,7 +63,7 @@ class SitemapView implements IView
                  '</div></li>';
         }
         
-        $menu = '<div class="row"><ul>' . $menu . '</ul></div>';
+        $menu = '<div class="row"><ul>'.$menu.'</ul></div>';
         $menu = '<div class="row sitemap"><div class="sitemap-inner col-md-8 col-md-offset-2">' . $menu . '</div></div>';
         return $menu;
     }

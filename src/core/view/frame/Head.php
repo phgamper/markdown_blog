@@ -40,9 +40,7 @@ class Head
 
     private function __construct($ini)
     {
-        if (isset($ini['head'])) {
-            $this->config = $ini['head'];
-        }
+        $this->config = Config::getInstance()->getGeneralItem('head');
         if (isset($this->config['meta'])) {
             foreach ($this->config['meta'] as $k => $v) {
                 self::addMeta($k, $v);
@@ -57,12 +55,11 @@ class Head
      *
      * @return Head
      */
-    public static function getInstance($ini)
+    public static function getInstance()
     {
         if (null === self::$instance) {
-            self::$instance = new self($ini);
+            self::$instance = new self();
         }
-        
         return self::$instance;
     }
 
@@ -71,12 +68,16 @@ class Head
      *
      * @param unknown $href
      *              path to css file
-     * @param unknown $rel
+     * @param string $rel
      *              type of how to link the css
      */
-    public function link($href, $rel = 'stylesheet')
+    public function link($href, $rel = 'stylesheet', $abs = false)
     {
-        $this->sheets[$href] = $rel;
+        if ($abs) {
+            $this->sheets[$href] = $rel;
+        }else{
+            $this->sheets[Config::getInstance()->app_root.$href] = $rel;
+        }
     }
 
     /**
@@ -114,9 +115,9 @@ class Head
      * @param $script path
      *            to js file
      */
-    public function linkScript($script)
+    public function linkScript($script, $abs = false)
     {
-        $this->scripts[] = $script;
+        $this->scripts[] = $abs ? $script : Config::getInstance()->app_root.$script;
     }
 
     /**
@@ -134,8 +135,7 @@ class Head
      */
     public function meta()
     {
-        $site = isset($_GET['module']) ? ' - ' . $_GET['module'] : '';
-        $title = '<title>' . $this->config['title'] . $site . '</title>';
+        $title = '<title>'.$this->config['title'].URLs::getInstance()->module().'</title>';
         $meta = '<meta charset="utf-8">' . $title;
         foreach ($this->meta as $name => $content) {
             $meta .= '<meta name="' . $name . '" content="' . $content . '">';

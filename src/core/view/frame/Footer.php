@@ -33,12 +33,8 @@ class Footer implements IView
     public function __construct(AbstractNavigation $model)
     {
         $this->model = $model;
-        $ini = IniParser::parseMerged(array(
-            SRC_DIR . 'defaults.ini',
-            CONFIG_DIR . 'general.ini'
-        ));
-        $this->config = isset($ini['footer']) ? $ini['footer'] : array();
-        Head::getInstance()->link(CSS_DIR . 'footer.css');
+        $this->config = Config::getInstance()->getGeneralItem('footer');
+        Head::getInstance()->link(CSS_DIR.'footer.css');
     }
 
     public function show()

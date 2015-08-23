@@ -46,9 +46,9 @@ abstract class AbstractModel implements IModel
      * This function loads all respectively specified files contained in the folder
      * stored in $this->path, parses them into a HTML string and returns it.
      *
-     * @param unknown $start
+     * @param int $start
      *            - offset where to start, if given
-     * @param unknown $limit
+     * @param int $limit
      *            - maximum number of files to parse, if given
      * @param array $filter
      *            - array of filter criteria

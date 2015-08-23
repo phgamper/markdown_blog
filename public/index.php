@@ -26,6 +26,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+
+
 include_once ('../src/config.php');
 include_once (LIB_DIR . 'Autoload.php');
 include_once (LIB_DIR . 'ScanDir.php');
@@ -35,25 +37,25 @@ $lib = Autoload::getInstance(LIB_DIR, false)->getClasses();
 $classes = array_merge($src, $lib);
 set_error_handler("error_handler", E_ALL);
 
+/**
+ * Parse REQUEST_URI to enable pretty URLS
+ */
+URLs::getInstance()->parseURI();
 
 /**
  * setup page and load provided business-casual.php
  */
-// TODO currently parsed multiple times => maybe make global
-$ini = IniParser::parseMerged(array(
-    SRC_DIR . 'defaults.ini',
-    CONFIG_DIR . 'general.ini'
-));
-$config = isset($ini['general']) ? $ini['general'] : array();
+$config = Config::getInstance()->getGeneralItem('general');
 if (isset($config['highlight']) && $config['highlight']) {
     $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
-    Head::getInstance($ini)->link(PUBLIC_LIB_DIR.'prismjs/css/'.$style);
+    Head::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/css/'.$style);
     Script::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/js/prism.js');
 }
-Head::getInstance($ini)->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
-Head::getInstance($ini)->link(CSS_DIR.'style.css');
-Head::getInstance($ini)->linkScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
-Head::getInstance($ini)->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
+
+Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
+Head::getInstance()->link(CSS_DIR.'style.css');
+Head::getInstance()->linkScript('https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js', true);
+Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
 
 $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
 $container = new Controller();

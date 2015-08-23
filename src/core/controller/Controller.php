@@ -26,8 +26,7 @@
  */
 class Controller extends AbstractController
 {
-
-    protected $entity;
+    protected $module;
 
     protected $config;
 
@@ -35,16 +34,8 @@ class Controller extends AbstractController
 
     public function __construct()
     {
-        parent::__construct();
-        
-        $inifile = CONFIG_DIR . 'config.ini';
-        
-        if (file_exists($inifile)) {
-            $this->parser = new IniParser();
-            $this->parser->use_array_object = false;
-            $this->config = $this->parser->parse($inifile);
-        }
-        
+        $this->module = URLs::getInstance()->module();
+        $this->config = Config::getInstance()->config;
         $this->actionListener();
         $this->cache();
     }
@@ -53,16 +44,16 @@ class Controller extends AbstractController
     {
         try {
             // load the configuration file
-            if (isset($this->config[$this->entity])) {
-                $config = $this->config[$this->entity];
+            if (isset($this->config[$this->module])) {
+                $config = $this->config[$this->module];
             } else {
                 throw new Exception('The requested URL is not available.');
             }
             // try to resolve URL
-            if (isset($_GET['value'])) {
+            if ($submodule = URLs::getInstance()->submodule(1)) {
                 // if a dropdown is present
-                if (array_key_exists($v = $_GET['value'], $config)) {
-                    $config = $config[$v];
+                if (array_key_exists($submodule, $config)) {
+                    $config = $config[$submodule];
                 } else {
                     throw new Exception('The requested URL is not available.');
                 }
@@ -146,5 +137,4 @@ class Controller extends AbstractController
         }
     }
 }
-
 ?>

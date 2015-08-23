@@ -54,12 +54,11 @@ class MarkdownRemote extends AbstractModel
      * folder
      * stored in $this->path, parses them into a HTML string and returns it.
      *
-     * @param unknown $start
-     *            - offset where to start, if given
-     * @param unknown $limit
-     *            - maximum number of files to parse, if given
-     * @param array $filter
-     *            - array of filter criteria
+     * @param int $start offset where to start, if given
+     * @param int $limit maximum number of files to parse, if given
+     * @param array $filter array of filter criteria
+     *
+     * @return array list of entities
      */
     public function getList($start = 0, $limit = null, array $filter = array())
     {

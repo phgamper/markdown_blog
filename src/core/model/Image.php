@@ -48,7 +48,7 @@ class Image extends AbstractModel
     public function parse($file, $index)
     {
         try {
-            $img = '<img index='.$index.' src="'.$file.'" class="owl-jumpTo">';
+            $img = '<img index='.$index.' src="'.Config::getInstance()->app_root.$file.'" class="owl-jumpTo">';
             $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="'.$index.'">'.$img.'</a>';
             return '<div class="thumbnail">'.$a.'</div>';
         } catch (Exception $e) {
@@ -63,7 +63,7 @@ class Image extends AbstractModel
      * This function loads all images contained in the folder stored in $this->path,
      * generate the bootstrap modal carousel and returns it.
      *
-     * @param unknown $reverse specify whether to build the carousel in reverse order or not
+     * @param bool $reverse specify whether to build the carousel in reverse order or not
      *
      * @return generated carousel
      */
@@ -75,11 +75,17 @@ class Image extends AbstractModel
         {
             rsort($files);
         }
-        foreach ($files as &$f) {
-            $f = $this->path.$f;
-        }
         try {
-            return HTMLBuilder::owl_carousel($files);
+            Head::getInstance()->link('lib/owl-carousel/css/owl.carousel.css');
+            Head::getInstance()->link('lib/owl-carousel/css/owl.theme.css');
+            Script::getInstance()->link('lib/owl-carousel/js/owl.carousel.js');
+            Head::getInstance()->link('lib/owl-carousel/css/lazy_load.css');
+            Script::getInstance()->link('lib/owl-carousel/js/lazy_load.js');
+            $items = '';
+            foreach ($files as $f){
+                $items .= '<div class="item"><img class="lazyOwl" data-src="'.Config::getInstance()->app_root.$this->path.$f.'" /></div>';
+            }
+            return '<div id="carousel" class="owl-carousel owl-theme">'.$items.'</div>';
         } catch (Exception $e) {
             Logger::getInstance()->add(
                 new Error('An unexpected error has occurred.', 'Markdown::carousel( ... )'), $e->getMessage());
