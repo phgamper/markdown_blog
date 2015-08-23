@@ -61,9 +61,17 @@ class ListView extends AbstractView
                 $head = $this->head($this->model->parseTags($it->current()['path']));
                 $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current()['html'] . '</div></div>';
                 if (!$this->model instanceof Image){
+                    $href = URLs::getInstance()->uri.'/'.$it->current()['link'];
+                    // social
+                    $social = '';
+                    $general = Config::getInstance()->getGeneralItem('general');
+                    // TODO description
+                    if (array_key_exists('social', $general) && $general['social']) {
+                        $social = Social::getInstance()->socialButtons($href, Head::getInstance()->getTitle());
+                    }
                     // TODO refactor, instance of Markdown, ...
-                    $static = '<a class="btn btn-default" href="'.URLs::getInstance()->uri.'/'.$it->current()['link'].'" role="button">Static <i class="fa fa-share-alt"></i></a>';
-                    $body .= '<div class="row"><div class="col-md-12 text-right">'.$static.'</div></div>';
+                    $static = '<a class="btn btn-default" href="'.$href.'" role="button">Static <i class="fa fa-share-alt"></i></a>';
+                    $body .= '<div class="row"><div class="col-md-4">'.$social.'</div><div class="col-md-8 text-right">'.$static.'</div></div>';
                 }
                 $column .= '<div class="row"><div class="col-md-12 list-item">' . $head . $body . '</div></div>';
                 $it->next();

@@ -78,10 +78,17 @@ class Head
     }
 
     /**
-     *
+     * @param $title to set
      */
     public function setTitle($title){
-        $this->title = '<title>'.$title.'</title>';
+        $this->title = $title;
+    }
+
+    /**
+     * @return string title of the page
+     */
+    public function getTitle(){
+        return $this->title;
     }
 
     /**
@@ -225,7 +232,7 @@ class Head
      */
     public function toString()
     {
-        return $this->meta().$this->title.$this->og().$this->css().$this->javascript();
+        return $this->meta().'<title>'.$this->title.'</title>'.$this->og().$this->css().$this->javascript();
     }
 }
 
