@@ -61,7 +61,7 @@ $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'
 $container = new Controller();
 $footer = new FooterController(new Sitemap(CONFIG_DIR.'config.ini'));
 
-include_once(TEMPLATES_DIR.'business-casual.php');
+include_once(TEMPLATES_DIR.Config::getInstance()->getGeneralItem('general')['template']);
 
 /**
  * Function to autoload classes
