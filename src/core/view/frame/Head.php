@@ -38,7 +38,7 @@ class Head
 
     private static $instance = null;
 
-    private function __construct($ini)
+    private function __construct()
     {
         $this->config = Config::getInstance()->getGeneralItem('head');
         if (isset($this->config['meta'])) {
