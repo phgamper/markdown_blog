@@ -11,9 +11,6 @@ public/content/*
 .settings
 .idea
 
-# security settings
-*.htaccess
-
 # cache & logs
 *.log
 *.bak
