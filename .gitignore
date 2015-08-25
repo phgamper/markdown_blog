@@ -17,3 +17,6 @@ public/content/*
 
 # VIM 
 *.swp
+
+# file contained in folder on OSX
+.DS_Store
