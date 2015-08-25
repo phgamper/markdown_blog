@@ -54,8 +54,8 @@ if (isset($config['highlight']) && $config['highlight']) {
 
 Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
 Head::getInstance()->link(PUBLIC_LIB_DIR.'font-awesome/css/font-awesome.min.css');
-Script::getInstance()->linkScript(PUBLIC_LIB_DIR.'jquery/js/jquery.min.js');
-Script::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
+Script::getInstance()->link(PUBLIC_LIB_DIR.'jquery/js/jquery.min.js');
+Script::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
 
 $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
 $container = new Controller();
