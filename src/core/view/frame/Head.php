@@ -34,6 +34,8 @@ class Head
 
     private $meta = array();
 
+    private $scripts = array();
+
     private $og = array();
 
     private $title = '';
@@ -151,6 +153,24 @@ class Head
     }
 
     /**
+     * link a JS to the script list
+     *
+     * @param $script path to js file
+     */
+    public function linkScript($script, $abs = false)
+    {
+        $this->scripts[] = $abs ? $script : Config::getInstance()->app_root.$script;
+    }
+
+    /**
+     * empty the script list
+     */
+    public function flushScript()
+    {
+        $this->scripts = array();
+    }
+
+    /**
      * return the og tags as a HTML string
      *
      * @return string to print
@@ -193,13 +213,26 @@ class Head
     }
 
     /**
+     * return the script tags as a HTML string
+     *
+     * @return string to print
+     */
+    public function javascript()
+    {
+        $js = '';
+        foreach ($this->scripts as $j) {
+            $js .= '<script src="' . $j . '"></script>';
+        }
+        return $js;
+    }
+    /**
      * generate the head as a HTML string
      *
      * @return string to print
      */
     public function toString()
     {
-        return $this->meta().'<title>'.$this->title.'</title>'.$this->og().$this->css();
+        return $this->meta().'<title>'.$this->title.'</title>'.$this->og().$this->css().$this->javascript();
     }
 }
 
