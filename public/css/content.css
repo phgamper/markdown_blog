@@ -22,33 +22,6 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-.content h1 {
-	padding: 0px 0 12px 0;
-}
-
-.content h2 {
-	padding: 24px 0 12px 0;
-}
-
-.content h3 {
-	padding: 16px 0 12px 0;
-}
-
-.content h4 {
-	padding: 12px 8px 4px 8px;
-}
-
-.content h5 {
-	padding: 12px 8px 4px 8px;
-}
-
-.content pre {
-	margin: 12px 0px;
-}
-
-.content {
-	font-size: 11pt;
-}
 
 .content-head {
 	margin: 0px 2px;
