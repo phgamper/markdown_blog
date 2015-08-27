@@ -84,18 +84,11 @@ class Social
             $socials[] = $item;
         }
         $it = new ArrayIterator($socials);
-        $break = ceil($it->count() / 2);
-        $span = floor(12/$break);
+        $span = floor(12/$it->count());
         $social = '';
         while ($it->valid()) {
-            $i = 0;
-            $item = '';
-            while ($it->valid() && $i < $break) {
-                $item .= '<div class="col-md-'.$span.' text-center">'.$it->current().'</div>';
-                $it->next();
-                $i ++;
-            }
-            $social .= '<div class="col-md-6 text-center">'.$item.'</div>';
+            $social .= '<div class="col-xs-1 col-md-'.$span.' text-center">'.$it->current().'</div>';
+            $it->next();
         }
         return $social;
     }
