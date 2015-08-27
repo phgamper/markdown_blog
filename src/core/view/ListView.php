@@ -67,7 +67,7 @@ class ListView extends AbstractView
                     $general = Config::getInstance()->getGeneralItem('general');
                     // TODO description
                     if (array_key_exists('social', $general) && $general['social']) {
-                        $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].'/'.$href, Head::getInstance()->getTitle());
+                        $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$href, Head::getInstance()->getTitle());
                     }
                     // TODO refactor, instance of Markdown, ...
                     $static = '<a class="btn btn-default" href="'.$href.'" role="button">Static <i class="fa fa-share-alt"></i></a>';
