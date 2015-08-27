@@ -53,7 +53,7 @@ class Footer implements IView
         $general = Config::getInstance()->getGeneralItem('general');
         if (array_key_exists('social', $general) && $general['social']) {
             $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], Head::getInstance()->getTitle());
-            $social = '<div class="row"><div class="col-md-8 col-md-offset-2 text-center">'.$social.'</div></div>';
+            $social = '<div class="row"><div class="col-md-3"></div>'.$social.'</div>';
         }
         // powered by
         $poweredby = '';

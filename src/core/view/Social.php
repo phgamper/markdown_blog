@@ -84,7 +84,7 @@ class Social
             $socials[] = $item;
         }
         $it = new ArrayIterator($socials);
-        $span = floor(12/$it->count());
+        $span = floor(6/$it->count());
         $social = '';
         while ($it->valid()) {
             $social .= '<div class="col-xs-1 col-md-'.$span.' text-center">'.$it->current().'</div>';
