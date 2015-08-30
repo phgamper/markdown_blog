@@ -60,18 +60,18 @@ class ListView extends AbstractView
             while ($it->valid() && $i < $break) {
                 $head = $this->head($this->model->parseTags($it->current()['path']));
                 $body = '<div class="row"><div class="col-md-12 content-body">' . $it->current()['html'] . '</div></div>';
-                if (!$this->model instanceof Image){
+                if (!$this->model instanceof Image && (!array_key_exists('static', $this->config) || $this->config['static'])){
                     $href = Config::getInstance()->app_root.URLs::getInstance()->getURI().'/'.$it->current()['link'];
                     // social
                     $social = '';
-                    $general = Config::getInstance()->getGeneralItem('general');
+                    $general = Config::getInstance()->getGeneralArray('general');
                     // TODO description
                     if (array_key_exists('social', $general) && $general['social']) {
                         $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$href, Head::getInstance()->getTitle());
                     }
                     // TODO refactor, instance of Markdown, ...
                     $static = '<a class="btn btn-default" href="'.$href.'" role="button">Static <i class="fa fa-share-alt"></i></a>';
-                    $body .= '<div class="row"><div class="col-md-4">'.$social.'</div><div class="col-md-8 text-right">'.$static.'</div></div>';
+                    $body .= '<div class="row"><div class="col-md-4"><div class="row">'.$social.'</div></div><div class="col-md-8 text-right">'.$static.'</div></div>';
                 }
                 $column .= '<div class="row"><div class="col-md-12 list-item">' . $head . $body . '</div></div>';
                 $it->next();

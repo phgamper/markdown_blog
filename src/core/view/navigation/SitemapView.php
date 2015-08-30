@@ -31,7 +31,7 @@ class SitemapView implements IView
     public function __construct(IniNavigation $model)
     {
         $this->model = $model;
-        $this->config = Config::getInstance()->getGeneralItem('general');
+        $this->config = Config::getInstance()->getGeneralArray('general');
         Head::getInstance()->link(CSS_DIR.'sitemap.css');
     }
 

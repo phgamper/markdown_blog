@@ -68,25 +68,55 @@ class Config
     }
 
     /**
-     * returns the item of config array according to the given key if exists
+     * returns the nested array of the config array according to the given key if exists
      * returns an empty array() otherwise
      *
      * @param $key of the array element
      * @return array
      */
-    public function getConfigItem($key){
+    public function getConfigArray($key){
         return array_key_exists($key, $this->config) ? $this->config[$key] : array();
     }
 
     /**
-     * returns the item of general array according to the given key if exists
+     * returns the item of the given nested array of the config array according to the
+     * given key if exists, returns false otherwise
+     *
+     * @param $array name of the nested array
+     * @param $key name of the item to get
+     * @return bool
+     */
+    public function getConfig($array, $key){
+        if(array_key_exists($array, $this->config)){
+            return array_key_exists($key, $this->config[$array]) ? $this->config[$array][$key] : false;
+        }
+        return false;
+    }
+
+    /**
+     * returns the nested array of general array according to the given key if exists
      * returns an empty array() otherwise
      *
      * @param $key of the array element
      * @return array
      */
-    public function getGeneralItem($key){
+    public function getGeneralArray($key){
         return array_key_exists($key, $this->general) ? $this->general[$key] : array();
+    }
+
+    /**
+     * returns the item of the given nested array of the general array according to the
+     * given key if exists, returns false otherwise
+     *
+     * @param $array name of the nested array
+     * @param $key name of the item to get
+     * @return bool
+     */
+    public function getGeneral($array, $key){
+        if(array_key_exists($array, $this->general)){
+            return array_key_exists($key, $this->general[$array]) ? $this->general[$array][$key] : false;
+        }
+        return false;
     }
 }
 ?>

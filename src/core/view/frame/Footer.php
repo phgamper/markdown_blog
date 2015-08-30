@@ -33,7 +33,7 @@ class Footer implements IView
     public function __construct(AbstractNavigation $model)
     {
         $this->model = $model;
-        $this->config = Config::getInstance()->getGeneralItem('footer');
+        $this->config = Config::getInstance()->getGeneralArray('footer');
         Head::getInstance()->link(CSS_DIR.'footer.css');
     }
 
@@ -50,7 +50,7 @@ class Footer implements IView
         $right = '<div class="col-md-2"><p class="pull-right"><a href="#">Back to top</a></p></div>';
         // social
         $social = '';
-        $general = Config::getInstance()->getGeneralItem('general');
+        $general = Config::getInstance()->getGeneralArray('general');
         if (array_key_exists('social', $general) && $general['social']) {
             $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], Head::getInstance()->getTitle());
             $social = '<div class="row"><div class="col-md-3"></div>'.$social.'</div>';

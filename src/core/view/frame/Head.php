@@ -44,7 +44,7 @@ class Head
 
     private function __construct()
     {
-        $this->config = Config::getInstance()->getGeneralItem('head');
+        $this->config = Config::getInstance()->getGeneralArray('head');
         self::setTitle($this->config['title'].' - '.URLs::getInstance()->module());
         // default meta tags
         self::addMeta('description', $this->config['description']);

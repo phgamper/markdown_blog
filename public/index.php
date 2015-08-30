@@ -45,7 +45,7 @@ URLs::getInstance()->parseURI();
 /**
  * setup page and load provided business-casual.php
  */
-$config = Config::getInstance()->getGeneralItem('general');
+$config = Config::getInstance()->getGeneralArray('general');
 if (isset($config['highlight']) && $config['highlight']) {
     $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
     Head::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/css/'.$style);
@@ -63,7 +63,9 @@ $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'
 $container = new Controller();
 $footer = new FooterController(new Sitemap(CONFIG_DIR.'config.ini'));
 
-include_once(TEMPLATES_DIR.Config::getInstance()->getGeneralItem('general')['template']);
+if(($template = Config::getInstance()->getGeneral('general', 'template'))){
+    include_once(TEMPLATES_DIR.$template);
+}
 
 /**
  * Function to autoload classes

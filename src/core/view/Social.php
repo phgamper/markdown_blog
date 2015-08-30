@@ -32,7 +32,7 @@ class Social
 
     private function __construct()
     {
-       $this->socials = Config::getInstance()->getGeneralItem('social');
+       $this->socials = Config::getInstance()->getGeneralArray('social');
     }
 
     private function __clone() {}
@@ -87,7 +87,7 @@ class Social
         $span = floor(6/$it->count());
         $social = '';
         while ($it->valid()) {
-            $social .= '<div class="col-xs-1 col-md-'.$span.' text-center">'.$it->current().'</div>';
+            $social .= '<div class="col-xs-2 col-md-'.$span.' text-center">'.$it->current().'</div>';
             $it->next();
         }
         return $social;
