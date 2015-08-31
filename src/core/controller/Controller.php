@@ -76,47 +76,52 @@ class Controller extends AbstractController
             // evaluate model to use
             switch ($type) {
                 case 'md':
-                    $this->model = new Markdown($path);
+                    $this->model = 'Markdown';
                     break;
                 case 'remote':
                     $this->model = new MarkdownRemote($path);
                     break;
                 case 'html':
-                    $this->model = new HyperTextMarkup($path);
+                    $this->model = 'HyperTextMarkup';
                     break;
                 case 'img':
-                    $this->model = new Image($path);
+                    $this->model = 'Image';
                     break;
                 default:
                     throw new ErrorException('There is an error in the configuration file!');
             }
 
             switch (true) {
-                case is_dir($path):
-                    $this->view = new ListView($this->model, $config);
+                case is_dir($path) && $type != 'img':
+                    $this->model = new Collection($this->model, $config, $path, '.'.$type);
+                    break;
+                case is_dir($path) && $type == 'img':
+                    // TODO hack, img => composition of collection of Image & Carousel if carousel desired
+                    $this->model = new Composite(array(new Image($path, '.jpg'), new Carousel($path, '.jpg')));
                     break;
                 case is_file($path):
-                    $this->view = new SingleView($this->model, $config);
+                    $this->model = new $this->model($path);
+                    //$this->view = new SingleView($this->model, $config);
                     break;
+                /*
                 case preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",
                     $path):
                     $this->view = new RemoteMarkdownView($this->model, $config);
                     break;
+                */
                 default:
                     // should never happen
                     throw new ErrorException('Something is completely broken!');
             }
+            $this->view = new View($this->model, $config);
         } catch (ErrorException $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
             $this->model = new Markdown(ERROR_MD);
-            $this->view = new SingleView($this->model, array('name' => 'Error', 'logger' => true));
+            $this->view = new View($this->model, array('name' => 'Error', 'logger' => true));
         } catch (Exception $e) {
             Logger::getInstance()->add(new Warning($e->getMessage(), 'Controller::actionListener()'));
             $this->model = new Markdown(ERROR_MD);
-            $this->view = new SingleView($this->model, array(
-                'logger' => true
-            ));
+            $this->view = new View($this->model, array( 'logger' => true ));
         }
     }
 }

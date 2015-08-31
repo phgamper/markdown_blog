@@ -25,16 +25,23 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Markdown extends AbstractModel
+class Markdown extends Markup
 {
-
-    public $path;
-
-    public $count = 0;
 
     public function __construct($path)
     {
         parent::__construct($path, '.md');
+    }
+
+    /**
+     *
+     *
+     * @param IVisitor $visitor
+     * @param $arg
+     * @return mixed
+     */
+    public function accept(IVisitor $visitor, $arg){
+        return $visitor->markdown($this, $arg);
     }
 
     /**
@@ -49,8 +56,7 @@ class Markdown extends AbstractModel
     {
         try {
             if ($fh = fopen($file, 'r')) {
-                // TODO deprecated Method
-                $content = Parsedown::instance()->parse(fread($fh, filesize($file)));
+                $content = Parsedown::instance()->text(fread($fh, filesize($file)));
                 fclose($fh);
                 return $content;
             } else {

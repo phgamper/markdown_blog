@@ -25,7 +25,7 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Image extends AbstractModel
+class Carousel extends AbstractModel
 {
     // TODO
     public $mime = '.jpg';
@@ -41,24 +41,39 @@ class Image extends AbstractModel
     }
 
     /**
-     * This function parse the given file into HTML and outputs a string
-     * containing its content.
+     * This function loads all images contained in the folder stored in $this->path,
+     * generate the bootstrap modal carousel and returns it.
      *
-     * @param unknown $file - file to parse
-     * @param unknown $index - index of parsed element
-     * @return parsed image
+     * @param $file
+     * @param $index
+     *
+     * @return string generated carousel
      */
-    public function parse($file, $index)
+    function parse($file, $index)
     {
+        $files = ScanDir::getFilesOfType($this->path, $this->mime);
+        $this->count = count($files);
+        if(false)
+        {
+            rsort($files);
+        }
         try {
-            $img = '<img index='.$index.' src="'.Config::getInstance()->app_root.$file.'" class="owl-jumpTo">';
-            $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="'.$index.'">'.$img.'</a>';
-            return '<div class="thumbnail">'.$a.'</div>';
+            Head::getInstance()->link('lib/owl-carousel/css/owl.carousel.css');
+            Head::getInstance()->link('lib/owl-carousel/css/owl.theme.css');
+            Script::getInstance()->link('lib/owl-carousel/js/owl.carousel.js');
+            Head::getInstance()->link('lib/owl-carousel/css/lazy_load.css');
+            Script::getInstance()->link('lib/owl-carousel/js/lazy_load.js');
+            $items = '';
+            foreach ($files as $f){
+                $items .= '<div class="item"><img class="lazyOwl" data-src="'.Config::getInstance()->app_root.$this->path.$f.'" /></div>';
+            }
+            return '<div id="carousel" class="owl-carousel owl-theme">'.$items.'</div>';
         } catch (Exception $e) {
             Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::parse("'.$file.'")'), $e->getMessage());
+                new Error('An unexpected error has occurred.', 'Markdown::carousel( ... )'), $e->getMessage());
             return '';
         }
+
     }
 }
 

@@ -3,7 +3,7 @@
 /**
  * This file is part of the MarkdownBlog project.
  * It provides the central part of the application and is responsible for loading 
- * and parsing the image files.
+ * and parsing the PHP files.
  * 
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
@@ -25,19 +25,16 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Image extends AbstractModel
+class HypertextPreprocessor extends AbstractModel
 {
-    // TODO
-    public $mime = '.jpg';
 
-    /**
-     *
-     *
-     * @param IVisitor $visitor
-     * @return mixed
-     */
-    public function accept(IVisitor $visitor, $arg){
-        return $visitor->image($this, $arg);
+    public $path;
+
+    public $count = 0;
+
+    public function __construct($path)
+    {
+        parent::__construct($path, '.php');
     }
 
     /**
@@ -46,21 +43,27 @@ class Image extends AbstractModel
      *
      * @param unknown $file - file to parse
      * @param unknown $index - index of parsed element
-     * @return parsed image
+     * @return parsed HTML
      */
     public function parse($file, $index)
     {
         try {
-            $img = '<img index='.$index.' src="'.Config::getInstance()->app_root.$file.'" class="owl-jumpTo">';
-            $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="'.$index.'">'.$img.'</a>';
-            return '<div class="thumbnail">'.$a.'</div>';
+            if (file_exists($file)) {
+                ob_start();
+                include $file;
+                $content = ob_get_contents();
+                ob_end_clean();
+                return $content;
+            } else {
+                throw new Exception('File not found: ' . $file);
+            }
         } catch (Exception $e) {
             Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::parse("'.$file.'")'), $e->getMessage());
+                new Error('An unexpected error has occurred.', 'HypertextPreprocessor::parse("' . $file . '")'),
+                $e->getMessage());
             return '';
         }
     }
 }
 
 ?>
-

@@ -3,7 +3,7 @@
 /**
  * This file is part of the MarkdownBlog project.
  * It provides the central part of the application and is responsible for loading 
- * and parsing the image files.
+ * and parsing the markdown files.
  * 
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
@@ -25,10 +25,19 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Image extends AbstractModel
+class Remote extends AbstractModel
 {
-    // TODO
-    public $mime = '.jpg';
+    private $model;
+
+    // TODO make private ?!
+    public $path;
+
+    public $count = 0;
+
+    public function __construct($path)
+    {
+        parent::__construct($path, '.md');
+    }
 
     /**
      *
@@ -36,8 +45,36 @@ class Image extends AbstractModel
      * @param IVisitor $visitor
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
-        return $visitor->image($this, $arg);
+    public function accept(IVisitor $visitor){
+        return $visitor->markdown($this);
+    }
+
+    /**
+     * This function loads the file specified in $this->path, parses it into
+     * a HTML string and returns it.
+     */
+    public function get()
+    {
+        // TODO check the index
+        return $this->parse(file_get_contents($this->path), 0);
+    }
+
+    /**
+     * TODO maybe use templates method pattern
+     *
+     * This function loads all respectively specified files contained in the
+     * folder
+     * stored in $this->path, parses them into a HTML string and returns it.
+     *
+     * @param int $start offset where to start, if given
+     * @param int $limit maximum number of files to parse, if given
+     * @param array $filter array of filter criteria
+     *
+     * @return array list of entities
+     */
+    public function getList($start = 0, $limit = null, array $filter = array())
+    {
+        return array();
     }
 
     /**
@@ -46,19 +83,11 @@ class Image extends AbstractModel
      *
      * @param unknown $file - file to parse
      * @param unknown $index - index of parsed element
-     * @return parsed image
+     * @return parsed Markdown
      */
     public function parse($file, $index)
     {
-        try {
-            $img = '<img index='.$index.' src="'.Config::getInstance()->app_root.$file.'" class="owl-jumpTo">';
-            $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="'.$index.'">'.$img.'</a>';
-            return '<div class="thumbnail">'.$a.'</div>';
-        } catch (Exception $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::parse("'.$file.'")'), $e->getMessage());
-            return '';
-        }
+        return Parsedown::instance()->parse($file);
     }
 }
 

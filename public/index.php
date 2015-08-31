@@ -55,7 +55,7 @@ if (isset($config['highlight']) && $config['highlight']) {
 Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
 Head::getInstance()->link(PUBLIC_LIB_DIR.'font-awesome/css/font-awesome.min.css');
 
-// Add jqery and bootstrrap into header so included HTML pages can use the libs
+// Add jquery and bootstrap into header so included HTML pages can use the libs
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'jquery/js/jquery.min.js');
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
 

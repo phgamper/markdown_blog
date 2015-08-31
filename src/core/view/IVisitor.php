@@ -2,8 +2,7 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the abstract central part of the application and is responsible for loading 
- * and parsing the files.
+ * This interface enables TODO
  * 
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
@@ -25,18 +24,25 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-abstract class AbstractModel implements IModel
+interface IVisitor
 {
-    // TODO public / private
-    public $path;
+    public function visit(AbstractModel $model, $arg);
 
-    public function __construct($path)
-    {
-        $this->path = $path;
-    }
+    public function composite(Composite $model, $arg);
 
-    public abstract function accept(IVisitor $visitor, $arg);
+    public function collection(Collection $model, $arg);
+
+    public function image(Image $model, $arg);
+
+    public function carousel(Carousel $model, $arg);
+
+    public function markup(Markup $markup, $arg);
+
+    public function markdown(Markdown $model, $arg);
+
+    public function hyperTextMarkup(HyperTextMarkup $model, $arg);
+
+    // public function remote(Remote $model, $arg);
 }
 
 ?>
-

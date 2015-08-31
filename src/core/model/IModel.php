@@ -25,38 +25,13 @@
  */
 interface IModel
 {
-
-    /**
-     * This function loads all respectively specified files contained in the folder
-     * stored in $this->path, parses them into a HTML string and returns it.
-     *
-     * @param unknown $start offset where to start, if given
-     * @param unknown $limit maximum number of files to parse, if given
-     * @param array $filter array of filter criteria
-     */
-    public function getList($start, $limit, array $filter);
-
-    /**
-     * This function loads the file specified in $this->path, parses it into
-     * a HTML string and returns it.
-     */
-    public function get();
-
     /**
      * This function parse the given file into HTML and outputs a string containing its content.
      *
+     * TODO remove $file ?!
      *
-     * @param unknown $file
-     *            - file to parse
+     * @param unknown $file file to parse
      * @param unknown $index
      */
     public function parse($file, $index);
-
-    /**
-     * This function reads the tags from the file, if they have been provided
-     *
-     * @param unknown $file
-     *            - file to parse
-     */
-    public function parseTags($file);
 }

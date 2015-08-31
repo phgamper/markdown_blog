@@ -25,16 +25,17 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class HyperTextMarkup extends AbstractModel
+class HyperTextMarkup extends Markup
 {
-
-    public $path;
-
-    public $count = 0;
-
-    public function __construct($path)
-    {
-        parent::__construct($path, '.html');
+    /**
+     *
+     *
+     * @param IVisitor $visitor
+     * @param $arg
+     * @return mixed
+     */
+    public function accept(IVisitor $visitor, $arg){
+        return $visitor->hyperTextMarkup($this, $arg);
     }
 
     /**
