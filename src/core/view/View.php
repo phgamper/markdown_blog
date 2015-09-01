@@ -30,11 +30,11 @@ class View extends AbstractView
     public function image(Image $model, $arg)
     {
         // TODO content-body needed?
-        return '<div class="row"><div class="col-md-12 content-body">' . $model->parse($model->path, $arg) . '</div></div>';
+        return '<div class="row"><div class="col-md-12 content-body">' . $model->parse($arg) . '</div></div>';
     }
 
     public function carousel(Carousel $model, $arg){
-        $carousel = '<div class="modal-dialog"><div class="modal-content">'.$this->model->parse().'</div></div>';
+        $carousel = '<div class="modal-dialog"><div class="modal-content">'.$model->parse($arg).'</div></div>';
         return '<div class="modal fade" id="carousel-modal" role="dialog">'.$carousel.'</div>';
     }
 
@@ -42,34 +42,40 @@ class View extends AbstractView
        return '';
     }
 
+    /**
+     *
+     * @param Collection $model
+     * @param $arg
+     * @return string
+     */
     public function collection(Collection $model, $arg){
         $string = '';
         $cols = $model->cols;
         $width = floor(12 / $cols);
-        $it = new ArrayIterator($this->model->get());
+        $break = $arg;
+        $it = new ArrayIterator($model->get());
         $item_left = $it->count();
         while ($it->valid()) {
             $column = '';
-            $i = 0;
-            $break = ceil($item_left / $cols);
-            while ($it->valid() && $i < $break) {
-                $column .= '<div class="row"><div class="col-md-12 list-item">'.$this->visit($it->current(), $arg).'</div></div>';
+            $break += ceil($item_left / $cols);
+            while ($it->valid() && $arg < $break) {
+                $column .= '<div class="row"><div class="col-md-12 list-item">'.$this->visit($it->current(),$arg).'</div></div>';
                 $it->next();
-                $i ++;
+                $item_left --;
+                $arg++;
             }
             $cols--;
-            $item_left -= $break;
             $string .= '<div class="col-md-'.$width.' list-column">'.$column.'</div>';
         }
         $string = '<div class="row list">' . $string . '</div>';
-        return $string.$this->pager($model->limit);
+        return $string.$this->pager($model->count, $model->limit);
 
     }
 
     public function markup(Markup $model, $arg){
-        $body = '<div class="row"><div class="col-md-12 content-body">'.$model->parse($model->path, $arg).'</div></div>';
+        $body = '<div class="row"><div class="col-md-12 content-body">'.$model->parse($arg).'</div></div>';
 
-        if (!array_key_exists('static', $this->config) || $this->config['static']){
+        if (!is_null($arg) && (!array_key_exists('static', $this->config) || $this->config['static'])){
             $href = Config::getInstance()->app_root.URLs::getInstance()->getURI().'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->path));
             // social
             $social = '';
@@ -78,7 +84,6 @@ class View extends AbstractView
             if (array_key_exists('social', $general) && $general['social']) {
                 $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$href, Head::getInstance()->getTitle());
             }
-            // TODO refactor, instance of Markdown, ...
             $static = '<a class="btn btn-default" href="'.$href.'" role="button">Static <i class="fa fa-share-alt"></i></a>';
             $body .= '<div class="row"><div class="col-md-4"><div class="row">'.$social.'</div></div><div class="col-md-8 text-right">'.$static.'</div></div>';
         }
@@ -98,12 +103,12 @@ class View extends AbstractView
     /**
      * This function builds the head containing the meta information
      *
-     * TODO move HTML to View, just provide a function to get the tags
+     * TODO move to markup()?!
      *
-     * @param unknown $tags
+     * @param array $tags
      * @return string
      */
-    private function head($tags)
+    private function head(array $tags)
     {
         $head = '';
 
@@ -136,7 +141,8 @@ class View extends AbstractView
         return $head;
     }
 
-    private function pager($limit){
+    // TODO move to collection()?!
+    private function pager($count, $limit){
         $pager = '';
         if (!is_null($limit)) {
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
@@ -146,7 +152,7 @@ class View extends AbstractView
             if ($prev > 0) {
                 $pager = '<li class="previous"><a href="' . $self . $prev . '">&larr; Newer</a></li>';
             }
-            if ($next <= ceil($this->model->count / ($limit))) {
+            if ($next <= ceil($count / ($limit))) {
                 $pager .= '<li class="next"><a href="' . $self . $next . '">Older &rarr;</a></li>';
             }
             $pager = '<ul class="pager">' . $pager . '</ul>';

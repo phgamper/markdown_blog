@@ -44,7 +44,7 @@ class MarkdownRemote extends AbstractModel
     public function get()
     {
         // TODO check the index
-        return $this->parse(file_get_contents($this->path), 0);
+        return $this->parse(0);
     }
 
     /**
@@ -69,11 +69,11 @@ class MarkdownRemote extends AbstractModel
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $file - file to parse
      * @param unknown $index - index of parsed element
      * @return parsed Markdown
+     * @internal param unknown $file - file to parse
      */
-    public function parse($file, $index)
+    public function parse($index)
     {
         return Parsedown::instance()->parse($file);
     }

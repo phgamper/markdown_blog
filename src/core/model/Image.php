@@ -2,12 +2,12 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the central part of the application and is responsible for loading 
+ * It provides the central part of the application and is responsible for loading
  * and parsing the image files.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -27,16 +27,18 @@
  */
 class Image extends AbstractModel
 {
-    // TODO
-    public $mime = '.jpg';
+    // TODO support multiple mimes
+    const MIME = '.jpg';
 
     /**
      *
      *
      * @param IVisitor $visitor
+     * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
+    public function accept(IVisitor $visitor, $arg)
+    {
         return $visitor->image($this, $arg);
     }
 
@@ -44,23 +46,18 @@ class Image extends AbstractModel
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $file - file to parse
-     * @param unknown $index - index of parsed element
-     * @return parsed image
+     * @param int $index - index of parsed element
+     * @return string parsed image
      */
-    public function parse($file, $index)
+    public function parse($index)
     {
         try {
-            $img = '<img index='.$index.' src="'.Config::getInstance()->app_root.$file.'" class="owl-jumpTo">';
-            $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="'.$index.'">'.$img.'</a>';
-            return '<div class="thumbnail">'.$a.'</div>';
+            $img = '<img index=' . $index . ' src="' . Config::getInstance()->app_root . $this->path . '" class="owl-jumpTo">';
+            $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="' . $index . '">' . $img . '</a>';
+            return '<div class="thumbnail">' . $a . '</div>';
         } catch (Exception $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::parse("'.$file.'")'), $e->getMessage());
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("' . $this->path . '")', $e->getMessage()));
             return '';
         }
     }
 }
-
-?>
-

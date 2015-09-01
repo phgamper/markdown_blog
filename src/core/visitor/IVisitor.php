@@ -36,7 +36,7 @@ interface IVisitor
 
     public function carousel(Carousel $model, $arg);
 
-    public function markup(Markup $markup, $arg);
+    public function markup(Markup $model, $arg);
 
     public function markdown(Markdown $model, $arg);
 
@@ -44,5 +44,3 @@ interface IVisitor
 
     // public function remote(Remote $model, $arg);
 }
-
-?>

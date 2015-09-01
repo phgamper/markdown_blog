@@ -64,7 +64,7 @@ abstract class AbstractView implements IView, IVisitor
 
     public function show()
     {
-        $string = '<div class="row"><div class="col-md-12">' . $this->visit($this->model, 0) . '</div></div>';
+        $string = '<div class="row"><div class="col-md-12">' . $this->visit($this->model, null) . '</div></div>';
         // append logger output on top
         if (! (isset($this->config['logger']) && ! $this->config['logger'])) {
             $string = Logger::getInstance()->toString() . $string;

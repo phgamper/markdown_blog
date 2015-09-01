@@ -41,11 +41,11 @@ class HypertextPreprocessor extends AbstractModel
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $file - file to parse
      * @param unknown $index - index of parsed element
      * @return parsed HTML
+     * @internal param unknown $file - file to parse
      */
-    public function parse($file, $index)
+    public function parse($index)
     {
         try {
             if (file_exists($file)) {

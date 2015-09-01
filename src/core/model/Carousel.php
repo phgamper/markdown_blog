@@ -34,29 +34,23 @@ class Carousel extends AbstractModel
      *
      *
      * @param IVisitor $visitor
+     * @param $arg
      * @return mixed
      */
     public function accept(IVisitor $visitor, $arg){
-        return $visitor->image($this, $arg);
+        return $visitor->carousel($this, $arg);
     }
 
     /**
      * This function loads all images contained in the folder stored in $this->path,
      * generate the bootstrap modal carousel and returns it.
      *
-     * @param $file
-     * @param $index
-     *
+     * @param int $index
      * @return string generated carousel
      */
-    function parse($file, $index)
+    public function parse($index)
     {
         $files = ScanDir::getFilesOfType($this->path, $this->mime);
-        $this->count = count($files);
-        if(false)
-        {
-            rsort($files);
-        }
         try {
             Head::getInstance()->link('lib/owl-carousel/css/owl.carousel.css');
             Head::getInstance()->link('lib/owl-carousel/css/owl.theme.css');
@@ -70,7 +64,7 @@ class Carousel extends AbstractModel
             return '<div id="carousel" class="owl-carousel owl-theme">'.$items.'</div>';
         } catch (Exception $e) {
             Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::carousel( ... )'), $e->getMessage());
+                new Error('An unexpected error has occurred.', 'Markdown::carousel( ... )', $e->getMessage()));
             return '';
         }
 

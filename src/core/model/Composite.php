@@ -28,11 +28,7 @@ class Composite extends AbstractModel
 {
     public $models = array();
 
-    // TODO add functions
-    public function __construct($models)
-    {
-        $this->models = $models;
-    }
+    public function __construct(){}
 
     /**
      *
@@ -44,9 +40,13 @@ class Composite extends AbstractModel
     public function accept(IVisitor $visitor, $arg){
         $ret = '';
         foreach($this->models as $model){
-            $ret .= $visitor->visit($model, $arg + 1);
+            $ret .= $visitor->visit($model, 0);
         }
         return $ret;
+    }
+
+    public function addModel(AbstractModel $model){
+        $this->models[] = $model;
     }
 
     public function get()
@@ -58,15 +58,12 @@ class Composite extends AbstractModel
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $file - file to parse
-     * @param unknown $index - index of parsed element
-     * @return parsed image
+     * @param int $index - index of parsed element
+     * @return string parsed image
+     * @internal param unknown $file - file to parse
      */
-    public function parse($file, $index)
+    public function parse($index)
     {
         return '';
     }
 }
-
-?>
-

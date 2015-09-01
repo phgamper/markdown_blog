@@ -27,11 +27,7 @@
  */
 class Markdown extends Markup
 {
-
-    public function __construct($path)
-    {
-        parent::__construct($path, '.md');
-    }
+    const MIME = '.md';
 
     /**
      *
@@ -48,27 +44,25 @@ class Markdown extends Markup
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $file - file to parse
-     * @param unknown $index - index of parsed element
-     * @return parsed Markdown
+     * @param int $index - index of parsed element
+     * @return string parsed Markdown
      */
-    public function parse($file, $index)
+    public function parse($index)
     {
         try {
-            if ($fh = fopen($file, 'r')) {
-                $content = Parsedown::instance()->text(fread($fh, filesize($file)));
+            if ($fh = fopen($this->path, 'r')) {
+                $content = Parsedown::instance()->text(fread($fh, filesize($this->path)));
                 fclose($fh);
                 return $content;
             } else {
-                throw new Exception('Can not open ' . $file);
+                throw new Exception('Can not open ' . $this->path);
             }
         } catch (Exception $e) {
             Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::parse("' . $file . '")'), $e->getMessage());
+                new Error('An unexpected error has occurred.', 'Markdown::parse("' . $index . '")', $e->getMessage()));
             return '';
         }
     }
-}
 
-?>
+}
 

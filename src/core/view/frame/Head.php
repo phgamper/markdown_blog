@@ -136,8 +136,8 @@ class Head
     /**
      * adds an og tag to the HTML head
      *
-     * @param unknown $name - name of the meta tag
-     * @param unknown $content - content of the meta tag
+     * @param string $name - name of the meta tag
+     * @param string $content - content of the meta tag
      */
     public function addMeta($name, $content)
     {

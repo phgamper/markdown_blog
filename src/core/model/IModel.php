@@ -28,10 +28,10 @@ interface IModel
     /**
      * This function parse the given file into HTML and outputs a string containing its content.
      *
-     * TODO remove $file ?!
-     *
-     * @param unknown $file file to parse
-     * @param unknown $index
+     * @param int $index
+     * @return
      */
-    public function parse($file, $index);
+    public function parse($index);
+
+    // public static function mime();
 }

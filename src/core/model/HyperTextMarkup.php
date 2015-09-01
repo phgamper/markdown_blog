@@ -27,6 +27,7 @@
  */
 class HyperTextMarkup extends Markup
 {
+    const MIME = '.html';
     /**
      *
      *
@@ -42,27 +43,24 @@ class HyperTextMarkup extends Markup
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $file - file to parse
-     * @param unknown $index - index of parsed element
-     * @return parsed HTML
+     * @param int $index - index of parsed element
+     * @return string parsed HTML
      */
-    public function parse($file, $index)
+    public function parse($index)
     {
         try {
-            if ($fh = fopen($file, 'r')) {
-                $content = fread($fh, filesize($file));
+            if ($fh = fopen($this->path, 'r')) {
+                $content = fread($fh, filesize($this->path));
                 fclose($fh);
                 return $content;
             } else {
-                throw new Exception('Can not open ' . $file);
+                throw new Exception('Can not open ' . $this->path);
             }
         } catch (Exception $e) {
             Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("' . $file . '")'), 
-                $e->getMessage());
+                new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("' . $this->path . '")',
+                $e->getMessage()));
             return '';
         }
     }
 }
-
-?>

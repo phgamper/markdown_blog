@@ -93,11 +93,14 @@ class Controller extends AbstractController
 
             switch (true) {
                 case is_dir($path) && $type != 'img':
-                    $this->model = new Collection($this->model, $config, $path, '.'.$type);
+                    $filter = new Filter(new Collection($this->model, $config, $path, '.'.$type));
+                    $this->model = $filter->filter();
                     break;
                 case is_dir($path) && $type == 'img':
                     // TODO hack, img => composition of collection of Image & Carousel if carousel desired
-                    $this->model = new Composite(array(new Image($path, '.jpg'), new Carousel($path, '.jpg')));
+                    $this->model = new Composite();
+                    $this->model->addModel(new Collection('Image',  $config, $path, '.jpg'));
+                    $this->model->addModel(new Carousel($path, '.jpg'));
                     break;
                 case is_file($path):
                     $this->model = new $this->model($path);
