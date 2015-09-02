@@ -91,4 +91,3 @@ class Social
         return $social;
     }
 }
-?>

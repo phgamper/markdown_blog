@@ -29,12 +29,12 @@ class View extends AbstractView
 
     public function image(Image $model, $arg)
     {
-        // TODO content-body needed?
+        // TODO content-body needed? many divs ...
         return '<div class="row"><div class="col-md-12 content-body">' . $model->parse($arg) . '</div></div>';
     }
 
     public function carousel(Carousel $model, $arg){
-        $index = !isset($config['reverse']) || $config['reverse'] ? 1 : 0;
+        $index = !isset($config['reverse']) || $config['reverse'] ? 0 : 1;
         $carousel = '<div class="modal-dialog"><div class="modal-content">'.$model->parse($index).'</div></div>';
         return '<div class="modal fade" id="carousel-modal" role="dialog">'.$carousel.'</div>';
     }
@@ -74,7 +74,7 @@ class View extends AbstractView
     }
 
     public function markup(Markup $model, $arg){
-        $body = '<div class="row"><div class="col-md-12 content-body">'.$model->parse($arg).'</div></div>';
+        $body = '<div class="row"><div class="col-md-12 content-item">'.$model->parse($arg).'</div></div>';
 
         if (!is_null($arg) && (!array_key_exists('static', $this->config) || $this->config['static'])){
             $href = Config::getInstance()->app_root.URLs::getInstance()->getURI().'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->path));
