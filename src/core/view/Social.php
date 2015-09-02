@@ -83,12 +83,10 @@ class Social
             $item .= '<i class="fa fa-2x fa-envelope-square wow bounceIn" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: bounceIn;"> </i> </a>';
             $socials[] = $item;
         }
-        $it = new ArrayIterator($socials);
-        $span = floor(6/$it->count());
+        $span = floor(6/count($socials));
         $social = '';
-        while ($it->valid()) {
-            $social .= '<div class="col-xs-2 col-md-'.$span.' text-center">'.$it->current().'</div>';
-            $it->next();
+        foreach($socials as $s){
+            $social .= '<div class="col-xs-2 col-md-'.$span.' text-center">'.$s.'</div>';
         }
         return $social;
     }

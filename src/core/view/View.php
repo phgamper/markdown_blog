@@ -34,7 +34,8 @@ class View extends AbstractView
     }
 
     public function carousel(Carousel $model, $arg){
-        $carousel = '<div class="modal-dialog"><div class="modal-content">'.$model->parse($arg).'</div></div>';
+        $index = !isset($config['reverse']) || $config['reverse'] ? 1 : 0;
+        $carousel = '<div class="modal-dialog"><div class="modal-content">'.$model->parse($index).'</div></div>';
         return '<div class="modal fade" id="carousel-modal" role="dialog">'.$carousel.'</div>';
     }
 
@@ -50,7 +51,7 @@ class View extends AbstractView
      */
     public function collection(Collection $model, $arg){
         $string = '';
-        $cols = $model->cols;
+        $cols = isset($this->config['columns']) && $this->config['columns'] > 0 ? $this->config['columns'] : 1;
         $width = floor(12 / $cols);
         $break = $arg;
         $it = new ArrayIterator($model->get());

@@ -78,7 +78,7 @@ class Head
     }
 
     /**
-     * @param $title to set
+     * @param string $title to set
      */
     public function setTitle($title){
         $this->title = $title;
@@ -94,8 +94,9 @@ class Head
     /**
      * links a CSS to the style sheet list
      *
-     * @param unknown $href path to css file
+     * @param string $href path to css file
      * @param string $rel type of how to link the css
+     * @param bool $abs link css using absolute path e.g. https:// ...
      */
     public function link($href, $rel = 'stylesheet', $abs = false)
     {
@@ -117,8 +118,8 @@ class Head
     /**
      * adds an og tag to the HTML head
      *
-     * @param unknown $name - name of the og tag
-     * @param unknown $content - content of the og tag
+     * @param string $name - name of the og tag
+     * @param string $content - content of the og tag
      */
     public function addOg($name, $content)
     {
@@ -153,9 +154,10 @@ class Head
     }
 
     /**
-     * link a JS to the script list
+     * link a JS to the script list from local or remote source
      *
-     * @param $script path to js file
+     * @param string $script path to js file
+     * @param bool $abs link script using absolute path e.g. https:// ...
      */
     public function linkScript($script, $abs = false)
     {
@@ -236,4 +238,3 @@ class Head
     }
 }
 
-?>

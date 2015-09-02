@@ -71,7 +71,7 @@ class Config
      * returns the nested array of the config array according to the given key if exists
      * returns an empty array() otherwise
      *
-     * @param $key of the array element
+     * @param string $key of the array element
      * @return array
      */
     public function getConfigArray($key){
@@ -82,8 +82,8 @@ class Config
      * returns the item of the given nested array of the config array according to the
      * given key if exists, returns false otherwise
      *
-     * @param $array name of the nested array
-     * @param $key name of the item to get
+     * @param string $array name of the nested array
+     * @param string $key name of the item to get
      * @return bool
      */
     public function getConfig($array, $key){
@@ -97,7 +97,7 @@ class Config
      * returns the nested array of general array according to the given key if exists
      * returns an empty array() otherwise
      *
-     * @param $key of the array element
+     * @param string $key of the array element
      * @return array
      */
     public function getGeneralArray($key){
@@ -108,8 +108,8 @@ class Config
      * returns the item of the given nested array of the general array according to the
      * given key if exists, returns false otherwise
      *
-     * @param $array name of the nested array
-     * @param $key name of the item to get
+     * @param string $array name of the nested array
+     * @param string $key name of the item to get
      * @return bool
      */
     public function getGeneral($array, $key){
@@ -119,4 +119,3 @@ class Config
         return false;
     }
 }
-?>

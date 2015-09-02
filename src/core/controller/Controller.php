@@ -30,8 +30,6 @@ class Controller extends AbstractController
 
     protected $config;
 
-    protected $parser;
-
     public function __construct()
     {
         $this->module = URLs::getInstance()->module();
@@ -76,35 +74,36 @@ class Controller extends AbstractController
             // evaluate model to use
             switch ($type) {
                 case 'md':
-                    $this->model = 'Markdown';
+                    $class = 'Markdown';
                     break;
+                /*TODO
                 case 'remote':
-                    $this->model = new MarkdownRemote($path);
+                    $class = new MarkdownRemote($path);
                     break;
+                    */
                 case 'html':
-                    $this->model = 'HyperTextMarkup';
+                    $class = 'HyperTextMarkup';
                     break;
                 case 'img':
-                    $this->model = 'Image';
+                    $class = 'Image';
                     break;
                 default:
                     throw new ErrorException('There is an error in the configuration file!');
             }
 
             switch (true) {
-                case is_dir($path) && $type != 'img':
-                    $filter = new Filter(new Collection($this->model, $config, $path, '.'.$type));
-                    $this->model = $filter->filter();
-                    break;
-                case is_dir($path) && $type == 'img':
-                    // TODO hack, img => composition of collection of Image & Carousel if carousel desired
-                    $this->model = new Composite();
-                    $this->model->addModel(new Collection('Image',  $config, $path, '.jpg'));
-                    $this->model->addModel(new Carousel($path, '.jpg'));
+                case is_dir($path):
+                    $filter = new Filter(new Collection($class, $config, $path));
+                    if ($type == 'img'){
+                        $this->model = new Composite();
+                        $this->model->addModel($filter->filter());
+                        $this->model->addModel(new Carousel($path, '.jpg'));
+                    }else{
+                        $this->model = $filter->filter();
+                    }
                     break;
                 case is_file($path):
-                    $this->model = new $this->model($path);
-                    //$this->view = new SingleView($this->model, $config);
+                    $this->model = new $class($path);
                     break;
                 /*
                 case preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",

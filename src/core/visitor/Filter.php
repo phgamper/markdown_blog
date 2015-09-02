@@ -33,11 +33,11 @@ class Filter implements IVisitor
     }
 
     public function filter(){
-        return self::visit($this->collection(), null);
+        return self::visit($this->collection, null);
     }
 
     public function visit(AbstractModel $model, $arg){
-        return $this->collection->accept($this, $arg);
+        return $model->accept($this, $arg);
     }
 
     public function composite(Composite $model, $arg){
@@ -46,13 +46,15 @@ class Filter implements IVisitor
 
     public function collection(Collection $model, $arg){
         $criteria = isset($_GET['tag']) ? array('category' => $_GET['tag']) : array();
-        if(!empty($criteria)){
-            foreach ($model->models as $m) {
-                if(!self::visit($m, $criteria)){
-                    unset($m);
-                }
+        $model->start = isset($_GET['page']) && $_GET['page'] > 0 ? $model->limit * ($_GET['page'] - 1) : 0;
+        $models = array();
+
+        for($i = $model->start; $i < $model->count && $i - $model->start < $model->limit; $i++){
+            if(empty($criteria) || self::visit($model->models[$i], $criteria)) {
+                $models[] = $model->models[$i];
             }
         }
+        $model->models = $models;
         return $model;
     }
 
@@ -78,8 +80,7 @@ class Filter implements IVisitor
                     }
                 }
             }
-            // at least one criteria does not match
-            return false;
+            return false; // at least one criteria does not match
         }
         return true;
     }
@@ -94,5 +95,3 @@ class Filter implements IVisitor
 
     // public function remote(Remote $model, $arg);
 }
-
-?>

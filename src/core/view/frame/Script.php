@@ -58,8 +58,8 @@ class Script
     /**
      * link a JS to the script list
      *
-     * @param $script path
-     *            to js file
+     * @param string $script path to js file
+     * @param bool $abs link script using absolute path e.g. https:// ...
      */
     public function link($script, $abs = false)
     {
@@ -102,5 +102,3 @@ class Script
         return $js;
     }
 }
-
-?>

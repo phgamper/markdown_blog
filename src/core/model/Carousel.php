@@ -27,7 +27,7 @@
  */
 class Carousel extends AbstractModel
 {
-    // TODO
+    // TODO multiple mimes
     public $mime = '.jpg';
 
     /**
@@ -50,7 +50,7 @@ class Carousel extends AbstractModel
      */
     public function parse($index)
     {
-        $files = ScanDir::getFilesOfType($this->path, $this->mime);
+        $files = ScanDir::getFilesOfType($this->path, $this->mime, $index);
         try {
             Head::getInstance()->link('lib/owl-carousel/css/owl.carousel.css');
             Head::getInstance()->link('lib/owl-carousel/css/owl.theme.css');
@@ -63,13 +63,8 @@ class Carousel extends AbstractModel
             }
             return '<div id="carousel" class="owl-carousel owl-theme">'.$items.'</div>';
         } catch (Exception $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::carousel( ... )', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::carousel( ... )', $e->getMessage()));
             return '';
         }
-
     }
 }
-
-?>
-

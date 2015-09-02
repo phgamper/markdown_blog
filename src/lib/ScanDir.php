@@ -77,7 +77,7 @@ class ScanDir
         }
     }
 
-    public static function getFilesOfType($path, $mime)
+    public static function getFilesOfType($path, $mime, $reverse = false)
     {
         $scan = new self($path, $mime);
         $files = array();
@@ -85,6 +85,10 @@ class ScanDir
             if ($mime == strtolower(substr($f, - strlen($mime)))) {
                 $files[] = $f;
             }
+        }
+        if($reverse)
+        {
+            rsort($files);
         }
         return $files;
     }

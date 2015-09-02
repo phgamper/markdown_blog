@@ -126,8 +126,8 @@ class Logger
     /**
      * prints an alert block in the colour according to the given alert type
      *
-     * @param string $alert
-     *            type passed
+     * @param string $alert type passed
+     * @param string $class indicates which css class to use
      * @return string to print
      */
     private function alertblock($alert, $class)
