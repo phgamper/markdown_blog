@@ -1,20 +1,31 @@
+.socials {
+    margin-top: 16px;
+}
+
+.content-head p{
+    margin-bottom: 0px;
+    font-size: 9pt;
+}
+
+
 .preview {
-    position:                   relative;
-    font-family:                sans-serif;
-    display:                    block;
-    height:                     16em;
-    overflow:                   hidden;
+    position: relative;
+    font-family: sans-serif;
+    display: block;
+    height: 16em;
+    overflow: hidden;
 }
 .preview .text {
-    overflow:                   hidden;
-    font-size:                  .95em;
-    line-height:                1;
-    text-align:     			justify;
+    overflow: hidden;
+    font-size: .95em;
+    line-height: 1;
+    text-align: justify;
 }
 
 /* TODO move custom style into template*/
 .preview h1{
     font-size: 13pt;
+    text-align: center;
 }
 
 .preview h2{

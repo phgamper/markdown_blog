@@ -40,7 +40,7 @@ class PreView extends View
 
     public function markup(Markup $model, $arg){
         $body = '<div class="preview"><div class="text">'.$model->parse($arg).'</div></div>';
-        $body = '<div class="row"><div class="col-md-12 content-item">'.$body.'</div></div>';
+        $body = '<div class="row content-item"><div class="col-md-12">'.$body.'</div></div>';
 
         if (array_key_exists('static', $model->config) && $model->config['static']){
             // TODO static link in Composite
@@ -53,7 +53,7 @@ class PreView extends View
                 $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$href, Head::getInstance()->getTitle());
             }
             $static = '<a class="btn btn-default" href="'.$href.'" role="button">Static <i class="fa fa-share-alt"></i></a>';
-            $body .= '<div class="row"><div class="col-md-5"><div class="row">'.$social.'</div></div><div class="col-md-7 text-right">'.$static.'</div></div>';
+            $body .= '<div class="row socials"><div class="col-md-5"><div class="row">'.$social.'</div></div><div class="col-md-7 text-right">'.$static.'</div></div>';
         }
         return self::head($model->parseTags($model->config['path'])).$body;
     }

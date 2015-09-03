@@ -126,7 +126,7 @@ class View extends AbstractView
             if (isset($tags['author'])) {
                 $left = $left ? $left . ' | ' . $tags['author'] : $tags['author'];
             }
-            $left = $left ? '<div class="col-md-6"><p>' . $left . '</p></div>' : '';
+            $left = $left ? '<div class="col-md-7"><p>' . $left . '</p></div>' : '';
             $right = '';
             if (isset($tags['category'])) {
                 $href = Config::getInstance()->app_root.URLs::getInstance()->getURI() . '?' . QueryString::removeAll(array('tag', 'page'), $_SERVER['QUERY_STRING']);
@@ -134,7 +134,7 @@ class View extends AbstractView
                     $right .= ' | <a href="' . $href . '&tag=' . $c . '">#' . trim($c) . '</a>';
                     // $right .= ' | #' . trim($c);
                 }
-                $right = '<div class="col-md-6 pull-right text-right">' . substr($right, 3) . '</div>';
+                $right = '<div class="col-md-5 pull-right text-right">' . substr($right, 3) . '</div>';
             }
             $head = $left . $right ? '<div class="row content-head">' . $left . $right . '</div>' : '';
             // adding meta tags
