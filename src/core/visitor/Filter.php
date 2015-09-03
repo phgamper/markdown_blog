@@ -40,12 +40,16 @@ class Filter implements IVisitor
         return $model->accept($this, $arg);
     }
 
+    public function container(Container $model, $arg){
+        return null; // TODO not implemented || unused
+    }
+
     public function composite(Composite $model, $arg){
         return null; // TODO not implemented || unused
     }
 
     public function collection(Collection $model, $arg){
-        $criteria = isset($_GET['tag']) ? array('category' => $_GET['tag']) : array();
+        $criteria = isset($_GET['tag']) ? array('category' =>$_GET['tag']) : array();
         $model->start = isset($_GET['page']) && $_GET['page'] > 0 ? $model->limit * ($_GET['page'] - 1) : 0;
         $models = array();
 

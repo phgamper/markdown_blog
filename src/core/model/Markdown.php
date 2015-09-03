@@ -50,12 +50,12 @@ class Markdown extends Markup
     public function parse($index)
     {
         try {
-            if ($fh = fopen($this->path, 'r')) {
-                $content = Parsedown::instance()->text(fread($fh, filesize($this->path)));
+            if ($fh = fopen($this->config['path'], 'r')) {
+                $content = Parsedown::instance()->text(fread($fh, filesize($this->config['path'])));
                 fclose($fh);
                 return $content;
             } else {
-                throw new Exception('Can not open ' . $this->path);
+                throw new Exception('Can not open ' . $this->config['path']);
             }
         } catch (Exception $e) {
             Logger::getInstance()->add(

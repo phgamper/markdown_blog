@@ -47,11 +47,11 @@
 
 .sitemap-top-level {
 	float: left;
-	margin: 16px 20px 32px 20px;
+	margin: 16px 16px 32px 16px;
 }
 
 .sitemap-top-level h5 {
-	font-size: 11pt;
+	font-size: 10pt;
 	font-weight: bold;
 	color: #428bca;
 }

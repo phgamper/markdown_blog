@@ -29,12 +29,12 @@ abstract class Markup extends AbstractModel
     /**
      * This function reads the tags from the file, if they have been provided
      *
-     * @return parsed tags
+     * @return array parsed tags
      */
     public function parseTags()
     {
         try {
-            if ($fh = fopen($this->path, 'r')) {
+            if ($fh = fopen($this->config['path'], 'r')) {
 
                 $tags = array();
                 $meta = false;
@@ -85,7 +85,7 @@ abstract class Markup extends AbstractModel
                 fclose($fh);
                 return $tags;
             } else {
-                throw new Exception('Can not open ' . $this->path);
+                throw new Exception('Can not open ' . $this->config['path']);
             }
         } catch (Exception $e) {
             Logger::getInstance()->add(

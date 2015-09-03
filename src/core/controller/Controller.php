@@ -38,6 +38,9 @@ class Controller extends AbstractController
         $this->cache();
     }
 
+    /**
+     *
+     */
     protected function actionListener()
     {
         // TODO refactor
@@ -58,63 +61,7 @@ class Controller extends AbstractController
                     $value = URLs::getInstance()->level(2);
                 }
             }
-
-            if (isset($config['type'])) {
-                $type = $config['type'];
-            } else {
-                throw new ErrorException('There is an error in the configuration file!');
-            }
-
-            if (isset($config['path'])) {
-                $path = $value ? $config['path'].'/'.$value.'.'.$config['type'] : $config['path'];
-            } else {
-                throw new Exception('The requested URL is not available.');
-            }
-
-            // evaluate model to use
-            switch ($type) {
-                case 'md':
-                    $class = 'Markdown';
-                    break;
-                /*TODO
-                case 'remote':
-                    $class = new MarkdownRemote($path);
-                    break;
-                    */
-                case 'html':
-                    $class = 'HyperTextMarkup';
-                    break;
-                case 'img':
-                    $class = 'Image';
-                    break;
-                default:
-                    throw new ErrorException('There is an error in the configuration file!');
-            }
-
-            switch (true) {
-                case is_dir($path):
-                    $filter = new Filter(new Collection($class, $config, $path));
-                    if ($type == 'img'){
-                        $this->model = new Composite();
-                        $this->model->addModel($filter->filter());
-                        $this->model->addModel(new Carousel($path, '.jpg'));
-                    }else{
-                        $this->model = $filter->filter();
-                    }
-                    break;
-                case is_file($path):
-                    $this->model = new $class($path);
-                    break;
-                /*
-                case preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",
-                    $path):
-                    $this->view = new RemoteMarkdownView($this->model, $config);
-                    break;
-                */
-                default:
-                    // should never happen
-                    throw new ErrorException('Something is completely broken!');
-            }
+            $this->model = $this->evaluateModel($config);
             $this->view = new View($this->model, $config);
         } catch (ErrorException $e) {
             Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
@@ -125,6 +72,45 @@ class Controller extends AbstractController
             $this->model = new Markdown(ERROR_MD);
             $this->view = new View($this->model, array( 'logger' => true ));
         }
+    }
+
+    /**
+     *
+     *
+     * @param array $config
+     * @return Composite
+     * @throws ErrorException
+     * @throws Exception
+     */
+    protected function evaluateModel($config){
+        if (isset($config['type'])) {
+            $type = $config['type'];
+        } else {
+            throw new ErrorException('There is an error in the configuration file!');
+        }
+
+        switch (true) {
+            case !array_key_exists('path', $config):
+                // type should be Composite
+                $model = new Composite($config);
+                foreach($config as $item){
+                    if(is_array($item)){
+                        $model->addModel(self::evaluateModel($item));
+                    }
+                }
+                break;
+            case is_file($config['path']) || $type == 'Carousel':
+                $model = new $type($config);
+                break;
+            case is_dir($config['path']):
+                $filter = new Filter(new Collection($type, $config));
+                $model = $filter->filter();
+                break;
+            default:
+                // should never happen
+                throw new Exception('The requested URL is not available.');
+        }
+        return $model;
     }
 }
 ?>

@@ -33,10 +33,10 @@ abstract class AbstractView implements IView, IVisitor
     /**
      * TODO
      *
-     * @param IModel $model to view
+     * @param AbstractModel $model to view
      * @param array $config
      */
-    public function __construct(IModel $model, array $config)
+    public function __construct(AbstractModel $model, array $config)
     {
         $this->model = $model;
         $this->config = $config;
@@ -56,6 +56,7 @@ abstract class AbstractView implements IView, IVisitor
      * TODO
      *
      * @param AbstractModel $model to visit
+     * @param int $arg
      * @return mixed
      */
     public function visit(AbstractModel $model, $arg){

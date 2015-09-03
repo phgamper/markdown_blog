@@ -48,14 +48,25 @@ class IniNavigation extends AbstractNavigation
         $ini = $this->parser->parse($file);
         foreach ($ini as $key => $value) {
             $this->items[$key] = array();
-            $this->items[$key]['dropdown'] = array();
-            
+            // TODO refactor ... XD
+            $tmp = array();
+            $composite = false;
             foreach ($value as $k => $v) {
                 if (is_array($v)) {
-                    $this->items[$key]['dropdown'][$k] = $v;
+                    $tmp[$k] = $v;
                 } else {
+                    if ($k == 'type' && $v == 'Composite') {
+                        $composite = true;
+                    }
                     $this->items[$key][$k] = $v;
                 }
+            }
+            if($composite){
+                $this->items[$key]['dropdown'] = array();
+                $this->items[$key]['composite'] = $tmp;
+            }else{
+                $this->items[$key]['dropdown'] = $tmp;
+                $this->items[$key]['composite'] = array();
             }
         }
         

@@ -28,6 +28,8 @@ interface IVisitor
 {
     public function visit(AbstractModel $model, $arg);
 
+    public function container(Container $model, $arg);
+
     public function composite(Composite $model, $arg);
 
     public function collection(Collection $model, $arg);

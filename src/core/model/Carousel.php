@@ -28,7 +28,7 @@
 class Carousel extends AbstractModel
 {
     // TODO multiple mimes
-    public $mime = '.jpg';
+    const MIME = '.jpg';
 
     /**
      *
@@ -38,7 +38,8 @@ class Carousel extends AbstractModel
      * @return mixed
      */
     public function accept(IVisitor $visitor, $arg){
-        return $visitor->carousel($this, $arg);
+        $index = !isset($this->config['reverse']) || $this->config['reverse'] ? 1 : 0;
+        return $visitor->carousel($this, $index);
     }
 
     /**
@@ -50,7 +51,7 @@ class Carousel extends AbstractModel
      */
     public function parse($index)
     {
-        $files = ScanDir::getFilesOfType($this->path, $this->mime, $index);
+        $files = ScanDir::getFilesOfType($this->config['path'], self::MIME, $index);
         try {
             Head::getInstance()->link('lib/owl-carousel/css/owl.carousel.css');
             Head::getInstance()->link('lib/owl-carousel/css/owl.theme.css');
@@ -59,7 +60,7 @@ class Carousel extends AbstractModel
             Script::getInstance()->link('lib/owl-carousel/js/lazy_load.js');
             $items = '';
             foreach ($files as $f){
-                $items .= '<div class="item"><img class="lazyOwl" data-src="'.Config::getInstance()->app_root.$this->path.$f.'" /></div>';
+                $items .= '<div class="item"><img class="lazyOwl" data-src="'.Config::getInstance()->app_root.$this->config['path'].$f.'" /></div>';
             }
             return '<div id="carousel" class="owl-carousel owl-theme">'.$items.'</div>';
         } catch (Exception $e) {

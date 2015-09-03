@@ -52,11 +52,11 @@ class Image extends AbstractModel
     public function parse($index)
     {
         try {
-            $img = '<img index=' . $index . ' src="' . Config::getInstance()->app_root . $this->path . '" class="owl-jumpTo">';
+            $img = '<img index=' . $index . ' src="' . Config::getInstance()->app_root . $this->config['path'] . '" class="owl-jumpTo">';
             $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="' . $index . '">' . $img . '</a>';
             return '<div class="thumbnail">' . $a . '</div>';
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("' . $this->path . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

@@ -29,29 +29,23 @@ class View extends AbstractView
 
     public function image(Image $model, $arg)
     {
-        // TODO content-body needed? many divs ...
-        return '<div class="row"><div class="col-md-12 content-body">' . $model->parse($arg) . '</div></div>';
+        return $model->parse($arg);
     }
 
     public function carousel(Carousel $model, $arg){
-        $index = !isset($config['reverse']) || $config['reverse'] ? 0 : 1;
-        $carousel = '<div class="modal-dialog"><div class="modal-content">'.$model->parse($index).'</div></div>';
+        $carousel = '<div class="modal-dialog"><div class="modal-content">'.$model->parse($arg).'</div></div>';
         return '<div class="modal fade" id="carousel-modal" role="dialog">'.$carousel.'</div>';
-    }
-
-    public function composite(Composite $model, $arg){
-       return '';
     }
 
     /**
      *
-     * @param Collection $model
-     * @param $arg
+     * @param Collection|Container $model
+     * @param int $arg
      * @return string
      */
-    public function collection(Collection $model, $arg){
+    public function container(Container $model, $arg){
         $string = '';
-        $cols = isset($this->config['columns']) && $this->config['columns'] > 0 ? $this->config['columns'] : 1;
+        $cols = isset($model->config['columns']) && $model->config['columns'] > 0 ? $model->config['columns'] : 1;
         $width = floor(12 / $cols);
         $break = $arg;
         $it = new ArrayIterator($model->get());
@@ -62,22 +56,33 @@ class View extends AbstractView
             while ($it->valid() && $arg < $break) {
                 $column .= '<div class="row"><div class="col-md-12 list-item">'.$this->visit($it->current(),$arg).'</div></div>';
                 $it->next();
-                $item_left --;
+                $item_left--;
                 $arg++;
             }
             $cols--;
             $string .= '<div class="col-md-'.$width.' list-column">'.$column.'</div>';
         }
-        $string = '<div class="row list">' . $string . '</div>';
-        return $string.$this->pager($model->count, $model->limit);
+        return '<div class="row list">' . $string . '</div>';
 
+    }
+
+    public function composite(Composite $model, $arg){
+        return $this->container($model, $arg);
+    }
+
+    public function collection(Collection $model, $arg){
+        $pager = '';
+        if(!array_key_exists('paging', $model->config) || $model->config['paging']){
+            $pager = $this->pager($model->count, $model->limit) ;
+        }
+        return $this->container($model, $arg).$pager;
     }
 
     public function markup(Markup $model, $arg){
         $body = '<div class="row"><div class="col-md-12 content-item">'.$model->parse($arg).'</div></div>';
 
-        if (!is_null($arg) && (!array_key_exists('static', $this->config) || $this->config['static'])){
-            $href = Config::getInstance()->app_root.URLs::getInstance()->getURI().'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->path));
+        if (array_key_exists('static', $model->config) && $model->config['static']){
+            $href = Config::getInstance()->app_root.URLs::getInstance()->getURI().'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->config['path']));
             // social
             $social = '';
             $general = Config::getInstance()->getGeneralArray('general');
@@ -86,9 +91,9 @@ class View extends AbstractView
                 $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$href, Head::getInstance()->getTitle());
             }
             $static = '<a class="btn btn-default" href="'.$href.'" role="button">Static <i class="fa fa-share-alt"></i></a>';
-            $body .= '<div class="row"><div class="col-md-4"><div class="row">'.$social.'</div></div><div class="col-md-8 text-right">'.$static.'</div></div>';
+            $body .= '<div class="row"><div class="col-md-5"><div class="row">'.$social.'</div></div><div class="col-md-7 text-right">'.$static.'</div></div>';
         }
-        return self::head($model->parseTags($model->path)).$body;
+        return self::head($model->parseTags($model->config['path'])).$body;
     }
 
     public function markdown(Markdown $model, $arg)
@@ -121,7 +126,7 @@ class View extends AbstractView
             if (isset($tags['author'])) {
                 $left = $left ? $left . ' | ' . $tags['author'] : $tags['author'];
             }
-            $left = $left ? '<div class="col-md-5"><p>' . $left . '</p></div>' : '';
+            $left = $left ? '<div class="col-md-6"><p>' . $left . '</p></div>' : '';
             $right = '';
             if (isset($tags['category'])) {
                 $href = Config::getInstance()->app_root.URLs::getInstance()->getURI() . '?' . QueryString::removeAll(array('tag', 'page'), $_SERVER['QUERY_STRING']);
@@ -129,7 +134,7 @@ class View extends AbstractView
                     $right .= ' | <a href="' . $href . '&tag=' . $c . '">#' . trim($c) . '</a>';
                     // $right .= ' | #' . trim($c);
                 }
-                $right = '<div class="col-md-7 pull-right text-right">' . substr($right, 3) . '</div>';
+                $right = '<div class="col-md-6 pull-right text-right">' . substr($right, 3) . '</div>';
             }
             $head = $left . $right ? '<div class="row content-head">' . $left . $right . '</div>' : '';
             // adding meta tags

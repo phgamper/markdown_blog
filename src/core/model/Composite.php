@@ -24,11 +24,9 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Composite extends AbstractModel
+class Composite extends Container
 {
     public $models = array();
-
-    public function __construct(){}
 
     /**
      *
@@ -38,14 +36,13 @@ class Composite extends AbstractModel
      * @return mixed
      */
     public function accept(IVisitor $visitor, $arg){
-        $ret = '';
-        foreach($this->models as $model){
-            $ret .= $visitor->visit($model, 0);
-        }
-        return $ret;
+        return $visitor->composite($this, $arg);
     }
 
     public function addModel(AbstractModel $model){
+        $this->count++;
+        $this->limit++;
+        $model->config['paging'] = !array_key_exists('paging', $this->config) || $this->config['paging'];
         $this->models[] = $model;
     }
 
@@ -60,7 +57,6 @@ class Composite extends AbstractModel
      *
      * @param int $index - index of parsed element
      * @return string parsed image
-     * @internal param unknown $file - file to parse
      */
     public function parse($index)
     {

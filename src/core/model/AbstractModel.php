@@ -28,11 +28,11 @@
 abstract class AbstractModel implements IModel
 {
     // TODO public / private
-    public $path;
+    public $config;
 
-    public function __construct($path)
+    public function __construct($config)
     {
-        $this->path = $path;
+        $this->config = $config;
     }
 
     public abstract function accept(IVisitor $visitor, $arg);

@@ -2,9 +2,8 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the central part of the application and is responsible for loading 
- * and parsing the HTML files.
- * 
+ * TODO
+ *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
  * or special setup needed. 
@@ -25,42 +24,29 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class HyperTextMarkup extends Markup
+abstract class Container extends AbstractModel
 {
-    const MIME = '.html';
-    /**
-     *
-     *
-     * @param IVisitor $visitor
-     * @param $arg
-     * @return mixed
-     */
-    public function accept(IVisitor $visitor, $arg){
-        return $visitor->hyperTextMarkup($this, $arg);
+    public $models = array();
+
+    public $count = 0;
+
+    public $limit = 0;
+
+    // merge get and parse?!
+    public function get()
+    {
+        return $this->models;
     }
 
     /**
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param int $index - index of parsed element
-     * @return string parsed HTML
+     * @param int $index of parsed element
+     * @return string parsed collection
      */
     public function parse($index)
     {
-        try {
-            if ($fh = fopen($this->config['path'], 'r')) {
-                $content = fread($fh, filesize($this->config['path']));
-                fclose($fh);
-                return $content;
-            } else {
-                throw new Exception('Can not open ' . $this->config['path']);
-            }
-        } catch (Exception $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("' . $this->config['path'] . '")',
-                $e->getMessage()));
-            return '';
-        }
+        return '';
     }
 }

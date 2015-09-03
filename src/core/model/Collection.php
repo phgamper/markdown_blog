@@ -24,25 +24,21 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Collection extends AbstractModel
+class Collection extends Container
 {
     public $models = array();
 
-    public $count = 0;
-
-    public $limit = 0;
-
     public $start = 0;
 
-    public function __construct($model, $config, $path)
+    public function __construct($model, $config)
     {
-        parent::__construct($path);
+        parent::__construct($config);
 
-        $files = ScanDir::getFilesOfType($this->path, $model::MIME, !isset($config['reverse']) || $config['reverse']);
+        $files = ScanDir::getFilesOfType($this->config['path'], $model::MIME, !isset($config['reverse']) || $config['reverse']);
         $this->count = count($files);
         $this->limit = isset($config['limit']) ? $config['limit'] : $this->count;
         foreach($files as $f){
-            $this->models[] = new $model($this->path.$f);
+            $this->models[] = new $model(array('name' => $f, 'path' => $config['path'].$f, 'type' => $config['type'], 'static' => true));
         }
     }
 
@@ -55,23 +51,5 @@ class Collection extends AbstractModel
      */
     public function accept(IVisitor $visitor, $arg){
         return $visitor->collection($this, $this->start);
-    }
-
-    // merge get and parse?!
-    public function get()
-    {
-        return $this->models;
-    }
-
-    /**
-     * This function parse the given file into HTML and outputs a string
-     * containing its content.
-     *
-     * @param int $index of parsed element
-     * @return string parsed collection
-     */
-    public function parse($index)
-    {
-        return '';
     }
 }
