@@ -44,7 +44,7 @@ class PreView extends View
 
         if (array_key_exists('static', $model->config) && $model->config['static']){
             // TODO static link in Composite
-            $href = Config::getInstance()->app_root.URLs::getInstance()->getURI().'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->config['path']));
+            $href = Config::getInstance()->app_root.$model->config['static'].'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->config['path']));
             // social
             $social = '';
             $general = Config::getInstance()->getGeneralArray('general');
@@ -52,7 +52,7 @@ class PreView extends View
             if (array_key_exists('social', $general) && $general['social']) {
                 $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$href, Head::getInstance()->getTitle());
             }
-            $static = '<a class="btn btn-default" href="'.$href.'" role="button">Static <i class="fa fa-share-alt"></i></a>';
+            $static = '<a class="btn" href="'.$href.'">More <i class="fa fa-angle-double-right"></i></a>';
             $body .= '<div class="row socials"><div class="col-md-5"><div class="row">'.$social.'</div></div><div class="col-md-7 text-right">'.$static.'</div></div>';
         }
         return self::head($model->parseTags($model->config['path'])).$body;

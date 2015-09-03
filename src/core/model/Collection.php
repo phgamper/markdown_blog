@@ -37,8 +37,9 @@ class Collection extends Container
         $files = ScanDir::getFilesOfType($this->config['path'], $model::MIME, !isset($config['reverse']) || $config['reverse']);
         $this->count = count($files);
         $this->limit = isset($config['limit']) ? $config['limit'] : $this->count;
+        $static = isset($config['static']) ? $config['static'] : true;
         foreach($files as $f){
-            $this->models[] = new $model(array('name' => $f, 'path' => $config['path'].$f, 'type' => $config['type'], 'static' => true));
+            $this->models[] = new $model(array('name' => $f, 'path' => $config['path'].$f, 'type' => $config['type'], 'static' => $static));
         }
     }
 

@@ -51,16 +51,7 @@ class Controller extends AbstractController
             } else {
                 throw new Exception('The requested URL is not available.');
             }
-            // try to resolve URL
-            if ($value = URLs::getInstance()->level(1)) {
-                // if a dropdown is present
-                if (array_key_exists($value, $config)) {
-                    $config = $config[$value];
-                    $value = false;
-                    // TODO Hack to support blog in dropdown
-                    $value = URLs::getInstance()->level(2);
-                }
-            }
+            $config = $this->resolveURL($config, 1);
             $this->model = $this->evaluateModel($config);
             $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
             $this->view = new $view($this->model, $config);
@@ -71,7 +62,7 @@ class Controller extends AbstractController
         } catch (Exception $e) {
             Logger::getInstance()->add(new Warning($e->getMessage(), 'Controller::actionListener()'));
             $this->model = new Markdown(ERROR_MD);
-            $this->view = new View($this->model, array( 'logger' => true ));
+            $this->view = new View($this->model, array('name' => 'Error','logger' => true ));
         }
     }
 
@@ -108,10 +99,20 @@ class Controller extends AbstractController
                 $model = $filter->filter();
                 break;
             default:
-                // should never happen
                 throw new Exception('The requested URL is not available.');
         }
         return $model;
     }
+
+    protected function resolveURL($config, $level){
+        if ($value = URLs::getInstance()->level($level)) {
+            // if a dropdown is present
+            if (array_key_exists($value, $config)) {
+                $config = self::resolveURL($config[$value], $level + 1);
+            }else{
+                $config['path'] = $config['path'].$value.$config['type']::MIME;
+            }
+        }
+        return $config;
+    }
 }
-?>
