@@ -1,0 +1,30 @@
+.preview {
+    position:                   relative;
+    font-family:                sans-serif;
+    display:                    block;
+    height:                     16em;
+    overflow:                   hidden;
+}
+.preview .text {
+    overflow:                   hidden;
+    font-size:                  .95em;
+    line-height:                1;
+    text-align:     			justify;
+}
+
+/* TODO move custom style into template*/
+.preview h1{
+    font-size: 13pt;
+}
+
+.preview h2{
+    font-size: 11pt;
+}
+
+.preview h3{
+    font-size: 10pt;
+}
+
+.preview p{
+    font-size: 10pt;
+}

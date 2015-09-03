@@ -62,7 +62,8 @@ class Controller extends AbstractController
                 }
             }
             $this->model = $this->evaluateModel($config);
-            $this->view = new View($this->model, $config);
+            $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
+            $this->view = new $view($this->model, $config);
         } catch (ErrorException $e) {
             Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
             $this->model = new Markdown(ERROR_MD);

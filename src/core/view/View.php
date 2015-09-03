@@ -114,7 +114,7 @@ class View extends AbstractView
      * @param array $tags
      * @return string
      */
-    private function head(array $tags)
+    protected function head(array $tags)
     {
         $head = '';
 
@@ -148,7 +148,7 @@ class View extends AbstractView
     }
 
     // TODO move to collection()?!
-    private function pager($count, $limit){
+    protected function pager($count, $limit){
         $pager = '';
         if (!is_null($limit)) {
             $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
