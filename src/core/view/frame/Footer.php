@@ -52,8 +52,13 @@ class Footer implements IView
         $social = '';
         $general = Config::getInstance()->getGeneralArray('general');
         if (array_key_exists('social', $general) && $general['social']) {
-            $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], Head::getInstance()->getTitle());
-            $social = '<div class="row"><div class="col-md-3"></div>'.$social.'</div>';
+            $buttons = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], Head::getInstance()->getTitle());
+            $span = floor(6/count($buttons));
+            foreach($buttons as $b){
+                $social .= '<div class="col-xs-2 col-md-'.$span.' text-center">'.$b.'</div>';
+            }
+            $x = floor((8 - count($buttons)) / 2);
+            $social = '<div class="row"><div class="col-md-offset-2 col-md-'.$x.'"></div>'.$social.'</div>';
         }
         // powered by
         $poweredby = '';
@@ -65,5 +70,3 @@ class Footer implements IView
         return $sitemap->display() .'<div class="footer-inner row">'. $left . $right .'</div>'.$social.$poweredby;
     }
 }
-
-?>
