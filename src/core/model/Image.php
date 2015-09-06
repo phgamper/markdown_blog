@@ -56,7 +56,7 @@ class Image extends AbstractModel
             $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="' . $index . '">' . $img . '</a>';
             return '<div class="thumbnail">' . $a . '</div>';
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("' . $this->config['path'] . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Image::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

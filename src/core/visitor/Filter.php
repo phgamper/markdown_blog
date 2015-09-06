@@ -98,4 +98,8 @@ class Filter implements IVisitor
     }
 
     // public function remote(Remote $model, $arg);
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
+    {
+        return null; // TODO: Implement csv() method.
+    }
 }

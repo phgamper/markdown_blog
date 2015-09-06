@@ -50,7 +50,11 @@ class PreView extends View
             $general = Config::getInstance()->getGeneralArray('general');
             // TODO description
             if (array_key_exists('social', $general) && $general['social']) {
-                $social = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$href, Head::getInstance()->getTitle());
+                $buttons = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$href, Head::getInstance()->getTitle());
+                $span = floor(6/count($buttons));
+                foreach($buttons as $b){
+                    $social .= '<div class="col-xs-2 col-md-'.$span.' text-center">'.$b.'</div>';
+                }
             }
             $static = '<a class="btn" href="'.$href.'">More <i class="fa fa-angle-double-right"></i></a>';
             $body .= '<div class="row socials"><div class="col-md-5"><div class="row">'.$social.'</div></div><div class="col-md-7 text-right">'.$static.'</div></div>';
@@ -66,6 +70,12 @@ class PreView extends View
     public function hyperTextMarkup(HyperTextMarkup $model, $arg)
     {
         return parent::markup($model, $arg);
+    }
+
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg){
+        $heading = '<h3>'.$model->config['name'].'</h3>';
+        $heading = '<div class="row"><div class="col-md-12 text-center">'.$heading.'</div></div>';
+        return $heading.parent::hypertextPreprocessor($model, $arg);
     }
 }
 

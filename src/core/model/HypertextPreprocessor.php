@@ -27,39 +27,42 @@
  */
 class HypertextPreprocessor extends AbstractModel
 {
+    const MIME = '.php';
 
-    public $path;
-
-    public $count = 0;
-
-    public function __construct($path)
+    /**
+     *
+     *
+     * @param IVisitor $visitor
+     * @param $arg
+     * @return mixed
+     */
+    public function accept(IVisitor $visitor, $arg)
     {
-        parent::__construct($path, '.php');
+        return $visitor->hypertextPreprocessor($this, $arg);
     }
 
     /**
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $index - index of parsed element
-     * @return parsed HTML
-     * @internal param unknown $file - file to parse
+     * @param int $index - index of parsed element
+     * @return string parsed HTML
      */
     public function parse($index)
     {
         try {
-            if (file_exists($file)) {
+            if (file_exists($this->config['path'])) {
                 ob_start();
-                include $file;
+                include $this->config['path'];
                 $content = ob_get_contents();
                 ob_end_clean();
                 return $content;
             } else {
-                throw new Exception('File not found: ' . $file);
+                throw new Exception('File not found: ' . $this->config['path']);
             }
         } catch (Exception $e) {
             Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'HypertextPreprocessor::parse("' . $file . '")'),
+                new Error('An unexpected error has occurred.', 'HypertextPreprocessor::parse("' . $this->config['path'] . '")'),
                 $e->getMessage());
             return '';
         }

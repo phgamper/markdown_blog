@@ -170,6 +170,11 @@ class View extends AbstractView
         }
         return $pager;
     }
+
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
+    {
+        return $model->parse($arg);
+    }
 }
 
 ?>
