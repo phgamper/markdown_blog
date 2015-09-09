@@ -32,7 +32,7 @@ class View extends AbstractView
         return $model->parse($arg);
     }
 
-    public function carousel(Carousel $model, $arg){
+    public function carousel(OwlCarousel $model, $arg){
         $carousel = '<div class="modal-dialog"><div class="modal-content">'.$model->parse($arg).'</div></div>';
         return '<div class="modal fade" id="carousel-modal" role="dialog">'.$carousel.'</div>';
     }
@@ -141,12 +141,6 @@ class View extends AbstractView
                 $right = '<div class="col-md-5 pull-right text-right">' . substr($right, 3) . '</div>';
             }
             $head = $left . $right ? '<div class="row content-head">' . $left . $right . '</div>' : '';
-            // adding meta tags
-            if (isset($tags['meta'])) {
-                foreach ($tags['meta'] as $name => $content) {
-                    Head::getInstance()->addMeta($name, $content);
-                }
-            }
         }
         return $head;
     }

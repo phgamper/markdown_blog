@@ -42,3 +42,44 @@
 .content img {
 	max-width: 100%;
 }
+
+
+/* RESPONSIVE CSS
+    --------------------------------------------------
+@media ( max-width : 979px) {
+    .content h1 {
+        font-size: 15pt;
+        text-align: center;
+    }
+
+    .content h2 {
+        font-size: 13pt;
+    }
+
+    .content h3 {
+        font-size: 12pt;
+    }
+
+    .content p {
+        font-size: 11pt;
+    }
+
+}
+@media ( max-width : 767px) {
+    .content h1 {
+        font-size: 14pt;
+        text-align: center;
+    }
+
+    .content h2 {
+        font-size: 12pt;
+    }
+
+    .content h3 {
+        font-size: 11pt;
+    }
+
+    .content p {
+        font-size: 10pt;
+    }
+}*/

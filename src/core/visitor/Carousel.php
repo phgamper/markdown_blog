@@ -24,16 +24,16 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Filter implements IVisitor
+class Carousel implements IVisitor
 {
-    private $collection;
+    private $model;
 
-    public function __construct(Collection $collection){
-        $this->collection = $collection;
+    public function __construct(AbstractModel $model){
+        $this->model = $model;
     }
 
-    public function filter(){
-        return self::visit($this->collection, null);
+    public function items(){
+        return self::visit($this->model, null);
     }
 
     public function visit(AbstractModel $model, $arg){
@@ -41,52 +41,41 @@ class Filter implements IVisitor
     }
 
     public function container(Container $model, $arg){
-        return null; // TODO not implemented || unused
+        return array(); // TODO not implemented || unused
     }
 
     public function composite(Composite $model, $arg){
-        return null; // TODO not implemented || unused
+        $items = array();
+        foreach($model->models as $m){
+            $items = array_merge($items, self::visit($m, $arg));
+        }
+        return $items;
     }
 
     public function collection(Collection $model, $arg){
-        $criteria = isset($_GET['tag']) ? array('category' =>$_GET['tag']) : array();
-        $model->start = isset($_GET['page']) && $_GET['page'] > 0 ? $model->limit * ($_GET['page'] - 1) : 0;
-        $models = array();
-
-        for($i = $model->start; $i < $model->count && $i - $model->start < $model->limit; $i++){
-            if(empty($criteria) || self::visit($model->models[$i], $criteria)) {
-                $models[] = $model->models[$i];
-            }
+        $items = array();
+        for($i = 0; $i < $model->count && $i < $model->limit; $i++){
+            $items[] = self::visit($model->models[$i], $arg);
         }
-        $model->models = $models;
-        return $model;
+        return $items;
     }
 
     public function image(Image $model, $arg){
-        return null; // TODO not implemented || unused
+        return array(); // TODO not implemented || unused
     }
 
     public function carousel(OwlCarousel $model, $arg){
-        return null; // TODO not implemented || unused
+        return array(); // TODO not implemented || unused
     }
 
     public function markup(Markup $model, $arg){
         $tags = $model->parseTags();
-        foreach ($arg as $key => $value) {
-            if (isset($tags[$key])) {
-                if (is_array($tags[$key])) {
-                    if (in_array($value, $tags[$key])) {
-                        continue; // check next criteria
-                    }
-                } else {
-                    if ($tags[$key] == $value) {
-                        continue; // check next criteria
-                    }
-                }
-            }
-            return false; // at least one criteria does not match
+        $item = array();
+        if (array_key_exists('name', $tags)) {
+            $item['name'] = $tags['name'];
+            $item['static'] = Config::getInstance()->app_root.$model->config['static'].'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->config['path']));
         }
-        return true;
+        return $item;
     }
 
     public function markdown(Markdown $model, $arg){
@@ -100,6 +89,6 @@ class Filter implements IVisitor
     // public function remote(Remote $model, $arg);
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
     {
-        return null; // TODO: Implement csv() method.
+        return array(); // TODO not implemented || unused
     }
 }

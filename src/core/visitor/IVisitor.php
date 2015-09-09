@@ -36,7 +36,7 @@ interface IVisitor
 
     public function image(Image $model, $arg);
 
-    public function carousel(Carousel $model, $arg);
+    public function carousel(OwlCarousel $model, $arg);
 
     public function markup(Markup $model, $arg);
 

@@ -25,7 +25,7 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Carousel extends AbstractModel
+class OwlCarousel extends AbstractModel
 {
     // TODO multiple mimes
     const MIME = '.jpg';

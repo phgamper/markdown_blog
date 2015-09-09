@@ -43,7 +43,6 @@ class PreView extends View
         $body = '<div class="row content-item"><div class="col-md-12">'.$body.'</div></div>';
 
         if (array_key_exists('static', $model->config) && $model->config['static']){
-            // TODO static link in Composite
             $href = Config::getInstance()->app_root.$model->config['static'].'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->config['path']));
             // social
             $social = '';
@@ -76,6 +75,31 @@ class PreView extends View
         $heading = '<h3>'.$model->config['name'].'</h3>';
         $heading = '<div class="row"><div class="col-md-12 text-center">'.$heading.'</div></div>';
         return $heading.parent::hypertextPreprocessor($model, $arg);
+    }
+
+    /**
+     * This function builds the head containing the meta information
+     *
+     * TODO move to markup()?!
+     *
+     * @param array $tags
+     * @return string
+     */
+    protected function head(array $tags)
+    {
+        $head = '';
+
+        if (! empty($tags)) {
+            $head = '';
+            if (isset($tags['published'])) {
+                $head .= $tags['published'];
+            }
+            if (isset($tags['author'])) {
+                $head = $head ? $head . ' | ' . $tags['author'] : $tags['author'];
+            }
+            $head = $head ? '<div class="row content-head"><div class="col-md-12"><p>' . $head . '</p></div></div>' : '';
+        }
+        return $head;
     }
 }
 

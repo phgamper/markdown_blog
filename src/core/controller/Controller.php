@@ -91,7 +91,7 @@ class Controller extends AbstractController
                     }
                 }
                 break;
-            case is_file($config['path']) || $type == 'Carousel':
+            case is_file($config['path']) || $type == 'OwlCarousel':
                 $model = new $type($config);
                 break;
             case is_dir($config['path']):
