@@ -3,7 +3,11 @@ $(document).ready(function() {
     $("#carousel").owlCarousel({
         items : 1,
         lazyLoad : true,
-        navigation : false,
+        navigation : true,
+        navigationText: [
+            '<i class="fa fa-chevron-left"></i>',
+            '<i class="fa fa-chevron-right"></i>'
+        ],
         autoHeight : true,
         singleItem : true,
         responsive : true,
