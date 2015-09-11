@@ -10,7 +10,6 @@ RUN rm -rfv /var/www/html \
 # COPY config/php.ini /usr/local/etc/php
 COPY apache.conf /etc/apache2/sites-available/
 COPY config /var/www/html/config
-COPY .config /var/www/html/.config
 COPY public /var/www/html/public
 COPY src /var/www/html/src
 
