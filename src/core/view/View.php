@@ -79,7 +79,8 @@ class View extends AbstractView
     }
 
     public function markup(Markup $model, $arg){
-        $body = '<div class="row"><div class="col-md-12 content-item">'.$model->parse($arg).'</div></div>';
+        $body = self::head($model->parseTags($model->config['path']));
+        $body .= '<div class="row content-body"><div class="col-md-12">'.$model->parse($arg).'</div></div>';
 
         if (array_key_exists('static', $model->config) && $model->config['static']){
             $href = Config::getInstance()->app_root.URLs::getInstance()->getURI().'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->config['path']));
@@ -95,9 +96,9 @@ class View extends AbstractView
                 }
             }
             $static = '<a class="btn btn-default" href="'.$href.'" role="button">Static <i class="fa fa-share-alt"></i></a>';
-            $body .= '<div class="row"><div class="col-md-5"><div class="row">'.$social.'</div></div><div class="col-md-7 text-right">'.$static.'</div></div>';
+            $body .= '<div class="row content-foot"><div class="col-md-5"><div class="row">'.$social.'</div></div><div class="col-md-7 text-right">'.$static.'</div></div>';
         }
-        return self::head($model->parseTags($model->config['path'])).$body;
+        return '<div class="row content-item"><div class="col-md-12">'.$body.'</div></div>';
     }
 
     public function markdown(Markdown $model, $arg)

@@ -43,7 +43,6 @@ class Controller extends AbstractController
      */
     protected function actionListener()
     {
-        // TODO refactor
         try {
             // load the configuration file
             if (isset($this->config[$this->module])) {

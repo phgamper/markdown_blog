@@ -52,6 +52,10 @@ if (isset($config['highlight']) && $config['highlight']) {
     Script::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/js/prism.js');
 }
 
+if (array_key_exists('img_resize', $config) && $config['img_resize']){
+    Script::getInstance()->link('image.js');
+}
+
 Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
 Head::getInstance()->link(PUBLIC_LIB_DIR.'font-awesome/css/font-awesome.min.css');
 

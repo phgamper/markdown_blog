@@ -52,7 +52,11 @@ class Image extends AbstractModel
     public function parse($index)
     {
         try {
-            $img = '<img index=' . $index . ' src="/img/loader.gif" data-src="' . Config::getInstance()->app_root . $this->config['path'] . '" class="owl-jumpTo">';
+            $src = 'src="'.Config::getInstance()->app_root . $this->config['path'].'"';
+            if (Config::getInstance()->getGeneral('general', 'img_resize')) {
+                $src = 'src="/img/loader.gif" data-'.$src;
+            }
+            $img = '<img index='.$index.' '.$src.' class="owl-jumpTo">';
             // TODO move link to modal or use $index for case distinction
             $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="' . $index . '">' . $img . '</a>';
             return '<div class="thumbnail img-resize">' . $a . '</div>';
