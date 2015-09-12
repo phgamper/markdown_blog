@@ -42,11 +42,8 @@ class Footer implements IView
         // sitemap
         $sitemap = new NavigationController($this->model);
         // legal notice
-        $left = '';
-        if (isset($this->config['legal_notice'])) {
-            $left = $this->config['legal_notice'];
-        }
-        $left = '<div class="col-md-6 col-md-offset-2">' . $left . '</div>';
+        $left = array_key_exists('legal_notice', $this->config) ? $this->config['legal_notice'] : '';
+        $left = '<div class="col-md-6 col-md-offset-2"><p>' . $left . '</p></div>';
         $right = '<div class="col-md-2"><p class="pull-right"><a href="#">Back to top</a></p></div>';
         // social
         $social = '';
@@ -63,7 +60,7 @@ class Footer implements IView
         // powered by
         $poweredby = '';
         if (isset($this->config['poweredby'])) {
-            $poweredby = '<p class="poweredby">' . $this->config['poweredby'] . '</p>';
+            $poweredby = '<p class="poweredby text-center">' . $this->config['poweredby'] . '</p>';
             $poweredby = '<div class="row"><div class="col-md-8 col-md-offset-2">' . $poweredby . '</div></div>';
         }
         // put it together
