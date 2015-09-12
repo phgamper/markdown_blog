@@ -111,6 +111,21 @@ class View extends AbstractView
         return self::markup($model, $arg);
     }
 
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
+    {
+        return $model->parse($arg);
+    }
+
+    public function remote(Remote $model, $arg)
+    {
+        return self::markup($model, $arg);
+    }
+
+    public function link(Link $model, $arg)
+    {
+        return '<div class="row content-item"><div class="col-md-12">'.$model->parse($arg).'</div></div>';
+    }
+
     /**
      * This function builds the head containing the meta information
      *
@@ -164,11 +179,6 @@ class View extends AbstractView
             $pager = '<div class="row"><div class="col-md-12">' . $pager . '</div></div>';
         }
         return $pager;
-    }
-
-    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
-    {
-        return $model->parse($arg);
     }
 }
 

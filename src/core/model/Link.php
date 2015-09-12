@@ -2,9 +2,8 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the central part of the application and is responsible for loading 
- * and parsing the markdown files.
- * 
+ * TODO
+ *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
  * or special setup needed. 
@@ -25,10 +24,8 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Markdown extends Markup
+class Link extends AbstractModel
 {
-    const MIME = '.md';
-
     /**
      *
      *
@@ -37,7 +34,7 @@ class Markdown extends Markup
      * @return mixed
      */
     public function accept(IVisitor $visitor, $arg){
-        return $visitor->markdown($this, $arg);
+        return $visitor->link($this, $arg);
     }
 
     /**
@@ -45,23 +42,10 @@ class Markdown extends Markup
      * containing its content.
      *
      * @param int $index - index of parsed element
-     * @return string parsed Markdown
+     * @return string parsed image
      */
     public function parse($index)
     {
-        try {
-            if ($fh = fopen($this->config['path'], 'r')) {
-                $content = Parsedown::instance()->text(fread($fh, filesize($this->config['path'])));
-                fclose($fh);
-                return $content;
-            } else {
-                throw new Exception('Can not open ' . $this->config['path']);
-            }
-        } catch (Exception $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::parse("' . $index . '")', $e->getMessage()));
-            return '';
-        }
+        return '<a href="'.$this->config['path'].' target="blank">'.$this->config['path'].'</a>';
     }
 }
-

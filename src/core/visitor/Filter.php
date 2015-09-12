@@ -100,6 +100,16 @@ class Filter implements IVisitor
     // public function remote(Remote $model, $arg);
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
     {
-        return null; // TODO: Implement csv() method.
+        return null; // TODO not implemented || unused
+    }
+
+    public function remote(Remote $model, $arg)
+    {
+        return self::markup($model, $arg);
+    }
+
+    public function link(Link $model, $arg)
+    {
+        return null; // TODO not implemented || unused
     }
 }

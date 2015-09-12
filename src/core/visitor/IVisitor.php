@@ -46,5 +46,7 @@ interface IVisitor
 
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg);
 
-    // public function remote(Remote $model, $arg);
+    public function remote(Remote $model, $arg);
+
+    public function link(Link $model,$arg);
 }
