@@ -90,14 +90,14 @@ class Controller extends AbstractController
                     }
                 }
                 break;
-            case is_dir($config['path']):
-                $filter = new Filter(new Collection($type, $config));
-                $model = $filter->filter();
-                break;
             case is_file($config['path']) || $type == 'OwlCarousel':
             case $type =='Remote':
             case $type == 'Link':
                 $model = new $type($config);
+                break;
+            case is_dir($config['path']):
+                $filter = new Filter(new Collection($type, $config));
+                $model = $filter->filter();
                 break;
             default:
                 throw new Exception('The requested URL is not available.');
