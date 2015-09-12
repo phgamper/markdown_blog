@@ -27,6 +27,7 @@ RUN mkdir -p /var/www/html/log/ \
     && apt-get -y update \
     && apt-get install -y ca-certificates \
     && update-ca-certificates \
+    && apt-get install -y imagemagick \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && cp /etc/ssl/certs/ca-certificates.crt /etc/apache2/ssl.crt/ca-bundle.crt \
