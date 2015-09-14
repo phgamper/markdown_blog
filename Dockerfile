@@ -26,6 +26,7 @@ RUN mkdir -p /var/www/html/log/ \
     && a2enmod headers \
     && apt-get -y update \
     && apt-get install -y ca-certificates \
+    && apt-get install -y openssl \
     && update-ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
