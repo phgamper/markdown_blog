@@ -2,7 +2,7 @@ FROM php:5.6-apache
 
 MAINTAINER Max Schrimpf <code@schrimpf.ch>
 
-ENV APACHE_LOG_DIR /var/log/httpd
+ENV APACHE_LOG_DIR /var/www/html/log/ 
 
 RUN rm -rfv /var/www/html \
     && mkdir /var/www/html
@@ -13,14 +13,13 @@ COPY config /var/www/html/config
 COPY public /var/www/html/public
 COPY src /var/www/html/src
 
-RUN mkdir -p /var/www/html/log/ \
+RUN mkdir -p $APACHE_LOG_DIR\
     && mkdir -p /etc/ssl/certs/ \
     && mkdir -p /etc/ssl/private/ \
     && mkdir -p /etc/apache2/ssl.crt/ \
-    && echo "" > /var/www/html/log/default.log \
-    && chmod 777 /var/www/html/log/default.log \
+    && echo "" > $APACHE_LOG_DIR/default.log \
+    && chmod 777 $APACHE_LOG_DIR/default.log \
     && chown -R www-data:www-data /var/www/html/  \
-    && mkdir /var/log/httpd \
     && a2enmod rewrite \
     && a2enmod ssl \
     && a2enmod headers \
@@ -39,7 +38,7 @@ RUN mkdir -p /var/www/html/log/ \
 VOLUME ["/etc/ssl/certs"]
 VOLUME ["/etc/ssl/private"]
 VOLUME ["/etc/apache2/ssl.crt"]
-VOLUME ["/var/log/httpd"]
+VOLUME ["/var/www/html/log/"]
 VOLUME ["/var/www/html/public/content"]
 VOLUME ["/var/www/html/config"]
 
