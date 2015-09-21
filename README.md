@@ -34,10 +34,11 @@ For detailed information see the [documentation](https://github.com/phgamper/mar
 Markdown Blog provides a Dockerfile for a easy installation. 
 
 For a test you can follow these steps: 
+
 1. Download [markdown.zip](https://github.com/phgamper/markdown_blog/releases) and extract your local hard disk
-2. docker build -t YOUR_NAME/mdblog . in the MarkdownBlog folder (where YOUR_NAME equals a distinctive string)
+2. `docker build -t YOUR_NAME/mdblog . `in the MarkdownBlog folder (where YOUR_NAME equals a distinctive string)
 3. Switch to your website folder 
-4. docker run -v $(pwd)/:/var/www/html/public/content -v $(pwd)/.config/:/var/www/html/config -p 8080:443 YOUR_NAME/mdblog (where $(pwd) equals the path of your website folder)
+4. `docker run -v $(pwd)/:/var/www/html/public/content -v $(pwd)/.config/:/var/www/html/config -p 8080:443 YOUR_NAME/mdblog` (where $(pwd) equals the path of your website folder)
 5. You can access your MarkdownBlog via https://localhost:8080/
 
 __Note:__ This setup is only suited for testing purposes. You Should definitely replace the self signed certificate that is generated in the docker container with a real SSL Cert.

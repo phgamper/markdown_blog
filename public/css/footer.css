@@ -32,7 +32,12 @@ footer {
 	width: 100%;
 }
 
+footer p {
+	font-size: 11pt;
+}
+
 .poweredby {
+	margin-top: 5px;
 	color: #CCCCCC;
 	font-style: italic;
 }

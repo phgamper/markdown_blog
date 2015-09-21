@@ -2,7 +2,7 @@ FROM php:5.6-apache
 
 MAINTAINER Max Schrimpf <code@schrimpf.ch>
 
-ENV APACHE_LOG_DIR /var/log/httpd
+ENV APACHE_LOG_DIR /var/www/html/log/ 
 
 RUN rm -rfv /var/www/html \
     && mkdir /var/www/html
@@ -13,14 +13,12 @@ COPY config /var/www/html/config
 COPY public /var/www/html/public
 COPY src /var/www/html/src
 
-RUN mkdir -p /var/www/html/log/ \
-    && mkdir -p /etc/ssl/certs/ \
-    && mkdir -p /etc/ssl/private/ \
+RUN mkdir -p $APACHE_LOG_DIR\
+    && mkdir -p /etc/ssl/domain/private/ \
     && mkdir -p /etc/apache2/ssl.crt/ \
-    && echo "" > /var/www/html/log/default.log \
-    && chmod 777 /var/www/html/log/default.log \
+    && echo "" > $APACHE_LOG_DIR/default.log \
+    && chmod 777 $APACHE_LOG_DIR/default.log \
     && chown -R www-data:www-data /var/www/html/  \
-    && mkdir /var/log/httpd \
     && a2enmod rewrite \
     && a2enmod ssl \
     && a2enmod headers \
@@ -28,18 +26,19 @@ RUN mkdir -p /var/www/html/log/ \
     && apt-get install -y ca-certificates \
     && apt-get install -y openssl \
     && update-ca-certificates \
+    && apt-get install -y imagemagick \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && cp /etc/ssl/certs/ca-certificates.crt /etc/apache2/ssl.crt/ca-bundle.crt \
-    && openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/private/domain.key -out /etc/ssl/certs/domain.pem -days 365 -nodes -subj "/C=CH/ST=Zuerich/L=Zuerich/O=Markdown_blog/OU=IT Department/CN=markdown_blog" \
-    && cp /etc/ssl/certs/domain.pem /etc/ssl/certs/intermediate.pem \
+    && openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/domain/private/domain.key -out /etc/ssl/domain/domain.pem -days 365 -nodes -subj "/C=CH/ST=Zuerich/L=Zuerich/O=Markdown_blog/OU=IT Department/CN=markdown_blog" \
+    && cp /etc/ssl/domain/domain.pem /etc/ssl/domain/intermediate.pem \
     && rm -vf /etc/apache2/sites-enabled/* \
     && ln -s /etc/apache2/sites-available/apache.conf /etc/apache2/sites-enabled/ 
 
-VOLUME ["/etc/ssl/certs"]
-VOLUME ["/etc/ssl/private"]
+VOLUME ["/etc/ssl/domain"]
+VOLUME ["/etc/ssl/domain/private"]
 VOLUME ["/etc/apache2/ssl.crt"]
-VOLUME ["/var/log/httpd"]
+VOLUME ["/var/www/html/log/"]
 VOLUME ["/var/www/html/public/content"]
 VOLUME ["/var/www/html/config"]
 

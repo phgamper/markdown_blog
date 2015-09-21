@@ -91,4 +91,14 @@ class Carousel implements IVisitor
     {
         return array(); // TODO not implemented || unused
     }
+
+    public function remote(Remote $model, $arg)
+    {
+        return self::markup($model, $arg);
+    }
+
+    public function link(Link $model, $arg)
+    {
+        return array(); // TODO not implemented || unused
+    }
 }

@@ -43,7 +43,6 @@ class Controller extends AbstractController
      */
     protected function actionListener()
     {
-        // TODO refactor
         try {
             // load the configuration file
             if (isset($this->config[$this->module])) {
@@ -57,12 +56,14 @@ class Controller extends AbstractController
             $this->view = new $view($this->model, $config);
         } catch (ErrorException $e) {
             Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
-            $this->model = new Markdown(ERROR_MD);
-            $this->view = new View($this->model, array('name' => 'Error', 'logger' => true));
+            $config = array('name' => 'Error', 'logger' => true, 'path' => ERROR_MD);
+            $this->model = new Markdown($config);
+            $this->view = new View($this->model, $config);
         } catch (Exception $e) {
             Logger::getInstance()->add(new Warning($e->getMessage(), 'Controller::actionListener()'));
-            $this->model = new Markdown(ERROR_MD);
-            $this->view = new View($this->model, array('name' => 'Error','logger' => true ));
+            $config = array('name' => 'Error', 'logger' => true, 'path' => ERROR_MD);
+            $this->model = new Markdown($config);
+            $this->view = new View($this->model, $config);
         }
     }
 
@@ -92,6 +93,8 @@ class Controller extends AbstractController
                 }
                 break;
             case is_file($config['path']) || $type == 'OwlCarousel':
+            case $type =='Remote':
+            case $type == 'Link':
                 $model = new $type($config);
                 break;
             case is_dir($config['path']):

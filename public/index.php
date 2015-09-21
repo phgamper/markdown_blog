@@ -52,6 +52,10 @@ if (isset($config['highlight']) && $config['highlight']) {
     Script::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/js/prism.js');
 }
 
+if (array_key_exists('img_resize', $config) && $config['img_resize']){
+    Script::getInstance()->link('image.js');
+}
+
 Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
 Head::getInstance()->link(PUBLIC_LIB_DIR.'font-awesome/css/font-awesome.min.css');
 
@@ -91,7 +95,7 @@ function error_handler($errno, $errstr, $errfile, $errline)
         default:
         {
             $msg = $errno . ' - ' . $errstr . ' - ' . $errfile . ' - ' . $errline;
-            Logger::getInstance()->addLog(new Log(new Error('An unexpected error has been catched by the error_handler.', 'business-casual.php::error_handler()', $msg)));
+            Logger::getInstance()->addLog(new Log(new Error('An unexpected error has been caught by the error_handler.', 'index.php::error_handler()', $msg)));
         }
     }
 }

@@ -55,9 +55,9 @@ class SitemapView implements IView
             }
             $href = $this->config['app_root'].$key;
             if ($submenu) {
-                $li = '<h5>' . $value['name'] . '</h5>';
+                $li = '<p>' . $value['name'] . '</p>';
             } else {
-                $li = '<h5><a href="' . $href . '">' . $value['name'] . '</a></h5>';
+                $li = '<p><a href="' . $href . '">' . $value['name'] . '</a></p>';
             }
             $menu .= '<li class="sitemap-top-level">' . $li . '<div class="sitemap-sub-level">' . $submenu .
                  '</div></li>';

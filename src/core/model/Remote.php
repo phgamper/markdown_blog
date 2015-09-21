@@ -2,9 +2,8 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the central part of the application and is responsible for loading 
- * and parsing the markdown files.
- * 
+ * TODO
+ *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
  * or special setup needed. 
@@ -25,71 +24,40 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Remote extends AbstractModel
+class Remote extends Markdown
 {
-    private $model;
-
-    // TODO make private ?!
-    public $path;
-
-    public $count = 0;
-
-    public function __construct($path)
-    {
-        parent::__construct($path, '.md');
-    }
+    const MIME = '.md';
 
     /**
      *
      *
      * @param IVisitor $visitor
+     * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor){
-        return $visitor->markdown($this);
-    }
-
-    /**
-     * This function loads the file specified in $this->path, parses it into
-     * a HTML string and returns it.
-     */
-    public function get()
-    {
-        // TODO check the index
-        return $this->parse(0);
-    }
-
-    /**
-     * TODO maybe use templates method pattern
-     *
-     * This function loads all respectively specified files contained in the
-     * folder
-     * stored in $this->path, parses them into a HTML string and returns it.
-     *
-     * @param int $start offset where to start, if given
-     * @param int $limit maximum number of files to parse, if given
-     * @param array $filter array of filter criteria
-     *
-     * @return array list of entities
-     */
-    public function getList($start = 0, $limit = null, array $filter = array())
-    {
-        return array();
+    public function accept(IVisitor $visitor, $arg){
+        return $visitor->remote($this, $arg);
     }
 
     /**
      * This function parse the given file into HTML and outputs a string
      * containing its content.
      *
-     * @param unknown $index - index of parsed element
-     * @return parsed Markdown
-     * @internal param unknown $file - file to parse
+     * @param int $index - index of parsed element
+     * @return string parsed Markdown
      */
     public function parse($index)
     {
-        return Parsedown::instance()->parse($file);
+        try {
+            if ($file = file_get_contents($this->config['path'])) {
+                return Parsedown::instance()->text($file);
+            } else {
+                throw new Exception('Can not read ' . $this->config['path']);
+            }
+        } catch (Exception $e) {
+            Logger::getInstance()->add(
+                new Error('An unexpected error has occurred.', 'Remote::parse("' . $index . '")', $e->getMessage()));
+            return '';
+        }
     }
 }
-
-?>
-
