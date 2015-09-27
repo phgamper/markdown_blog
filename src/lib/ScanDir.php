@@ -77,6 +77,19 @@ class ScanDir
         }
     }
 
+    public static function getFilesOfTypes($path, array $mimes, $reverse = false)
+    {
+        $files = array();
+        foreach($mimes as $mime){
+            $files = array_merge($files, self::getFilesOfType($path, $mime));
+        }
+        if($reverse)
+        {
+            rsort($files);
+        }
+        return $files;
+    }
+
     public static function getFilesOfType($path, $mime, $reverse = false)
     {
         $scan = new self($path, $mime);
