@@ -39,10 +39,10 @@ abstract class AbstractController
 
     public function display()
     {
+        Logger::getInstance()->writeLog();
         if(!$this->cache){
             $this->cache = $this->view->show();
         }
-        Logger::getInstance()->writeLog();
         return $this->cache;
     }
 
