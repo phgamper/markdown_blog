@@ -46,6 +46,6 @@ class Link extends AbstractModel
      */
     public function parse($index)
     {
-        return '<a href="'.$this->config['path'].' target="blank">'.$this->config['path'].'</a>';
+        return '<a href="'.$this->config['path'].'" target="blank">'.$this->config['path'].'</a>';
     }
 }
