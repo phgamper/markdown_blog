@@ -14,6 +14,8 @@ The content of the website can be provided in easy to use [markdown](http://de.w
   - Grouping of topics in a dynamicly generated dropdown menue.
 - Full responsive design due to the use of Twitter Bootstrap.
 - Syntax highlighting for both HTML and markdown
+- Build-in Gallery, including a lazy-load slider
+- Dynamic image resize to minimize network traffic
 - Extended support for blogs
   - Search for categories
   - Display content on several pages to ensure fast loading
@@ -53,17 +55,20 @@ Furthermore you might want to add custom CA authorities ("ca-bundle.crt") into t
 - [IniParser](https://github.com/austinhyde/IniParser)
 - [prismjs](http://prismjs.com/index.html)
 - [Bootstrap 3.2](http://getbootstrap.com)
+- [OWL Carousel](http://owlgraphic.com/owlcarousel/)
+- [Font Awesome](https://fortawesome.github.io/Font-Awesome/)
 - HTML 5
-- PHP 5.4
+- PHP 5.6
 
 ## Tested on
 
-- Google Chrome 38.x
+- Google Chrome 45.x
 - Safari on iOS 8
-- Google Chrome for iOS 37.x
-- Google Chrome for Android 37.x
+- Google Chrome for iOS 45.x
+- Google Chrome for Android 45.x
 - Mozilla Firefox for Ubuntu 31.0
 
 ## Releases
 
 - 22.09.2014  v0.1 - initial release
+- 03.10.2015  v0.2 - stable release
