@@ -58,8 +58,7 @@ class Markdown extends Markup
                 throw new Exception('Can not open ' . $this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'Markdown::parse("' . $index . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("'.$this->config['path'].'")', $e->getMessage()));
             return '';
         }
     }

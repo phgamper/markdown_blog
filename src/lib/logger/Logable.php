@@ -26,33 +26,32 @@
  */
 abstract class Logable
 {
-
     protected $msg;
-
+    protected $trigger;
     protected $logmsg;
 
-    protected $trigger;
+    public function __construct($msg, $trigger, $logmsg = NULL) {
+        $this->msg = $msg;
+        $this->trigger = $trigger;
+        $this->logmsg = $logmsg;
+    }
 
     public abstract function toString();
 
-    public function toLog()
-    {
+    public function toLog() {
         $this->logmsg = $this->logmsg == null ? $this->msg : $this->logmsg;
         return new Log($this);
     }
 
-    public function getMsg()
-    {
+    public function getMsg() {
         return $this->msg;
     }
 
-    public function getLogMsg()
-    {
+    public function getLogMsg() {
         return $this->logmsg;
     }
 
-    public function getTrigger()
-    {
+    public function getTrigger() {
         return $this->trigger;
     }
 

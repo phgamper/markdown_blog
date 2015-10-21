@@ -54,12 +54,10 @@ class HyperTextMarkup extends Markup
                 fclose($fh);
                 return $content;
             } else {
-                throw new Exception('Can not open ' . $this->config['path']);
+                throw new Exception('Can not open '.$this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("' . $this->config['path'] . '")',
-                $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("'.$this->config['path'].'")', $e->getMessage()));
             return '';
         }
     }

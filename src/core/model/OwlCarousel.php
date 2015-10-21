@@ -64,7 +64,7 @@ class OwlCarousel extends AbstractModel
             }
             return '<div id="carousel" class="owl-carousel owl-theme">'.$items.'</div>';
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'OwlCarousel::parse( ... )', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'OwlCarousel::parse("'.$this->config['path'].'")', $e->getMessage()));
             return '';
         }
     }

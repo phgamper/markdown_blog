@@ -30,18 +30,13 @@
  */
 class Logger
 {
-
     private $msgs = array();
-
     private $logs = array();
-
     private static $instance = null;
 
-    private function __construct()
-    {}
+    private function __construct() {}
 
-    private function __clone()
-    {}
+    private function __clone() {}
 
     /**
      * returns the instance created by its first invoke.

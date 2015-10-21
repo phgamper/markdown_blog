@@ -61,9 +61,7 @@ class HypertextPreprocessor extends AbstractModel
                 throw new Exception('File not found: ' . $this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(
-                new Error('An unexpected error has occurred.', 'HypertextPreprocessor::parse("' . $this->config['path'] . '")'),
-                $e->getMessage());
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'HypertextPreprocessor::parse("'.$this->config['path'].'")', $e->getMessage()));
             return '';
         }
     }

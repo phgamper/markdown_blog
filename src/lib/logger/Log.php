@@ -24,28 +24,25 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Log
+class Log extends Logable
 {
+    protected $TSP;
+    protected $logable;
+    private $request;
 
-    public $msg;
-
-    public $TSP;
-
-    public $alert;
-
-    public $trigger;
-
-    public function __construct(Logable $l)
-    {
+    public function __construct(Logable $l) {
+        parent::__construct($l->getMsg(), $l->getTrigger(), $l->getLogMsg());
         $this->TSP = date('YmdHms');
-        $this->msg = $l->getLogMsg();
-        $this->trigger = $l->getTrigger();
-        $this->alert = $l->getSymbol();
+        $this->request = $_SERVER['SERVER_PROTOCOL']." - ".$_SERVER['SERVER_ADDR'].$_SERVER['REQUEST_URI'];
+        $this->logable = $l;
     }
 
-    public function toString()
-    {
-        return "$this->TSP:\t$this->alert\t$this->trigger\t$this->msg\n";
+    public function toString() {
+        return "$this->TSP:\t".self::getSymbol()."\t$this->trigger\t$this->logmsg\t$this->request\n";
+    }
+
+    public function getSymbol() {
+        $this->logable->getSymbol();
     }
 }
 
