@@ -31,6 +31,7 @@ class NavigationController extends AbstractController
     {
         $this->model = $model;
         $this->actionListener();
+        $this->output = $this->view->show();
     }
 
     protected function actionListener()

@@ -28,13 +28,11 @@ abstract class AbstractController
 {
     protected $model;
     protected $view;
+    protected $output;
 
     public function display()
     {
-        $string = $this->view->show();
-        Logger::getInstance()->writeLog();
-        // TODO prepend msg thrown by Logger
-        return $string;
+        return $this->output;
     }
 
     /**
