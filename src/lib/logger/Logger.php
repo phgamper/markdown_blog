@@ -30,11 +30,16 @@
  */
 class Logger
 {
-    private $msgs = array();
+    private $logfile = LOG_DIR.DEFAULT_LOG_FILE;
+    private $messages = array();
     private $logs = array();
     private static $instance = null;
 
-    private function __construct() {}
+    private function __construct() {
+        if(isset($_ENV['APACHE_LOG_DIR'])) {
+            $this->logfile = $_ENV['APACHE_LOG_DIR'].DEFAULT_LOG_FILE;
+        }
+    }
 
     private function __clone() {}
 
@@ -43,64 +48,55 @@ class Logger
      *
      * @return Logger
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
-        
         return self::$instance;
     }
 
     /**
      * adds a Logable to the message list
      *
-     * @param Logable $l            
+     * @param Logable $l
      */
-    public function add(Logable $l)
-    {
-        $this->msgs[] = $l;
+    public function add(Logable $l) {
+        $this->messages[] = $l;
         self::addLog($l->toLog());
     }
 
     /**
      * adds a Log to the loglist
      *
-     * @param Log $log
-     *            to add
+     * @param Log $log to add
      */
-    public function addLog(Log $log)
-    {
+    public function addLog(Log $log) {
         $this->logs[] = $log;
     }
 
     /**
      * empty the alert message list
      */
-    public function flushMsgs()
-    {
-        $this->msgs = array();
+    public function flushMsgs() {
+        $this->messages = array();
     }
 
     /**
      * writes all alerts into the logfile
      */
-    public function writeLog()
-    {
-        $fh = fopen(LOG_DIR . DEFAULT_LOG_FILE, 'a');
-        
+    public function writeLog() {
+        $fh = fopen($this->logfile, 'a');
         if ($fh) {
             foreach ($this->logs as $log) {
                 if (! fwrite($fh, $log->toString())) {
                     self::add(
-                        new Error('Can\'t write to Logfile: ' . LOG_DIR . DEFAULT_LOG_FILE, 'Logger::writeLog( )'));
+                        new Error('Can\'t write to Logfile: '.$this->logfile, 'Logger::writeLog( )'));
                     return;
                 }
             }
-            
             $this->logs = array();
         } else {
-            self::add(new Error('Can\'t open Logfile: ' . LOG_DIR . DEFAULT_LOG_FILE, 'Logger::writeLog( )'));
+            self::add(new Error('Can\'t open Logfile: '.$this->logfile, 'Logger::writeLog( )'));
         }
     }
 
@@ -109,12 +105,11 @@ class Logger
      *
      * @return string to print
      */
-    public function toString()
-    {
-        $string = self::alertblock('Info', 'info');
-        $string .= self::alertblock('Success', 'success');
-        $string .= self::alertblock('Warning', 'warning');
-        $string .= self::alertblock('Error', 'danger');
+    public function toString() {
+        $string = self::alertBlock('Info', 'info');
+        $string .= self::alertBlock('Success', 'success');
+        $string .= self::alertBlock('Warning', 'warning');
+        $string .= self::alertBlock('Error', 'danger');
         return $string;
     }
 
@@ -125,27 +120,20 @@ class Logger
      * @param string $class indicates which css class to use
      * @return string to print
      */
-    private function alertblock($alert, $class)
-    {
+    private function alertBlock($alert, $class) {
         $has = false;
         $string = '';
-        
-        if (! empty($this->msgs)) {
-            $string .= '<div class="alert alert-block bg-' . $class .
-                 '"><button type="button" class="close" data-dismiss="alert">x</button><ul>';
-            
-            foreach ($this->msgs as $key => $msg) {
+        if (! empty($this->messages)) {
+            $string .= '<div class="alert alert-block bg-'.$class.'"><button type="button" class="close" data-dismiss="alert">x</button><ul>';
+            foreach ($this->messages as $key => $msg) {
                 if ($msg instanceof $alert) {
                     $has = true;
                     $string .= '<li>' . $msg->toString() . '</li>';
-                    unset($this->msgs[$key]);
+                    unset($this->messages[$key]);
                 }
             }
-            
             $string .= '</ul></div>';
         }
         return $has ? $string : '';
     }
 }
-
-?>
