@@ -35,7 +35,6 @@ class Controller extends AbstractController
         $this->module = URLs::getInstance()->module();
         $this->config = Config::getInstance()->config;
         $this->actionListener();
-        $this->cache();
     }
 
     /**

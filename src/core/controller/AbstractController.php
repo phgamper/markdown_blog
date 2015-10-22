@@ -27,23 +27,14 @@
 abstract class AbstractController
 {
     protected $model;
-
     protected $view;
-
-    protected $cache = null;
-
-    public function cache()
-    {
-        $this->cache = $this->view->show();
-    }
 
     public function display()
     {
+        $string = $this->view->show();
         Logger::getInstance()->writeLog();
-        if(!$this->cache){
-            $this->cache = $this->view->show();
-        }
-        return $this->cache;
+        // TODO prepend msg thrown by Logger
+        return $string;
     }
 
     /**
