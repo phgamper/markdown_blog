@@ -30,15 +30,13 @@
  */
 class Logger
 {
-    private $logfile = LOG_DIR.DEFAULT_LOG_FILE;
+    private $logfile;
     private $messages = array();
     private $logs = array();
     private static $instance = null;
 
     private function __construct() {
-        if(isset($_ENV['APACHE_LOG_DIR'])) {
-            $this->logfile = $_ENV['APACHE_LOG_DIR'].DEFAULT_LOG_FILE;
-        }
+        $this->logfile = ($env = getenv('APACHE_LOG_DIR')) ? $env.'/'.DEFAULT_LOG_FILE : LOG_DIR.DEFAULT_LOG_FILE;
     }
 
     private function __clone() {}

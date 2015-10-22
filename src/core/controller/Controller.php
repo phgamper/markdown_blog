@@ -27,7 +27,6 @@
 class Controller extends AbstractController
 {
     protected $module;
-
     protected $config;
 
     public function __construct()
@@ -35,6 +34,9 @@ class Controller extends AbstractController
         $this->module = URLs::getInstance()->module();
         $this->config = Config::getInstance()->config;
         $this->actionListener();
+        $this->output = $this->view->show();
+        // TODO prepend msg thrown by Logger
+        Logger::getInstance()->writeLog();
     }
 
     /**
