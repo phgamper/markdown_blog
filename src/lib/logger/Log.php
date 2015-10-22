@@ -42,7 +42,7 @@ class Log extends Logable
     }
 
     public function getSymbol() {
-        $this->logable->getSymbol();
+        return $this->logable->getSymbol();
     }
 }
 
