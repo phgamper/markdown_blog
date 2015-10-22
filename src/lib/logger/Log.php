@@ -32,13 +32,13 @@ class Log extends Logable
 
     public function __construct(Logable $l) {
         parent::__construct($l->getMsg(), $l->getTrigger(), $l->getLogMsg());
-        $this->TSP = date('YmdHms');
+        $this->TSP = date('Y-m-d-H.i.s');
         $this->request = $_SERVER['SERVER_PROTOCOL']." - ".$_SERVER['SERVER_ADDR'].$_SERVER['REQUEST_URI'];
         $this->logable = $l;
     }
 
     public function toString() {
-        return "$this->TSP:\t".self::getSymbol()."\t$this->trigger\t$this->logmsg\t$this->request\n";
+        return "$this->TSP ".self::getSymbol()." - $this->trigger: $this->logmsg [$this->request]\n";
     }
 
     public function getSymbol() {
