@@ -84,7 +84,7 @@ define('LOG_DIR', '../log/', TRUE);
  *        
  */
 
-define('DEFAULT_LOG_FILE', 'default.log', TRUE);
+define('DEFAULT_LOG_FILE', 'markdown_blog.log', TRUE);
 
 /**
  * Path to the installed HTML templates
