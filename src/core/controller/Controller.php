@@ -28,6 +28,7 @@ class Controller extends AbstractController
 {
     protected $module;
     protected $config;
+    protected $HTTPStatusCode = 200;
 
     public function __construct()
     {
@@ -37,6 +38,14 @@ class Controller extends AbstractController
         $this->output = $this->view->show();
         // TODO prepend msg thrown by Logger
         Logger::getInstance()->writeLog();
+    }
+
+    /**
+     *
+     * @return int HTTP Status Code
+     */
+    public function getHTTPStatusCode(){
+        return $this->HTTPStatusCode;
     }
 
     /**
@@ -60,11 +69,13 @@ class Controller extends AbstractController
             $config = array('name' => 'Error', 'logger' => true, 'path' => ERROR_MD);
             $this->model = new Markdown($config);
             $this->view = new View($this->model, $config);
+            $this->HTTPStatusCode = 500;
         } catch (Exception $e) {
             Logger::getInstance()->add(new Warning($e->getMessage(), 'Controller::actionListener()'));
-            $config = array('name' => 'Error', 'logger' => true, 'path' => ERROR_MD);
+            $config = array('name' => 'Not_Found', 'logger' => true, 'path' => NOT_FOUND_MD);
             $this->model = new Markdown($config);
             $this->view = new View($this->model, $config);
+            $this->HTTPStatusCode = 404;
         }
     }
 

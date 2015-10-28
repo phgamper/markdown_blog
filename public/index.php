@@ -67,6 +67,10 @@ $navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'
 $container = new Controller();
 $footer = new FooterController(new Sitemap(CONFIG_DIR.'config.ini'));
 
+if(($code = $container->getHTTPStatusCode()) != 200){
+    http_response_code($code);
+}
+
 if(($template = Config::getInstance()->getGeneral('general', 'template'))){
     include_once(TEMPLATES_DIR.$template);
 }
