@@ -27,27 +27,23 @@
 class Config
 {
     public $general;
-
     public $config;
-
+    public $error;
     public $app_root;
-
     public $title;
 
     private static $instance = null;
 
     private function __construct()
     {
-        $this->general = IniParser::parseMerged(array(
-            SRC_DIR.'defaults.ini',
-            CONFIG_DIR.'general.ini'
-        ));
-
-        if (file_exists(CONFIG_DIR.'config.ini')) {
-            $this->parser = new IniParser();
-            $this->parser->use_array_object = false;
-            $this->config = $this->parser->parse(CONFIG_DIR.'config.ini');
-        }
+        // General settings
+        $this->general = IniParser::parseMerged(array(SRC_DIR.'defaults.ini', CONFIG_DIR.'general.ini'));
+        // Sitemap settings
+        $this->config = IniParser::parseMerged(array(CONFIG_DIR.'config.ini'));
+        // Error settings
+        $files = file_exists(CONFIG_DIR.'error.ini') ? array(SRC_DIR.'error.ini', CONFIG_DIR.'error.ini') : array(SRC_DIR.'error.ini');
+        $this->error = IniParser::parseMerged($files);
+        // extract most recently used
         $this->app_root = $this->general['general']['app_root'];
         $this->title = array_key_exists('title', $this->general['head']) ? $this->general['head']['title'] : '';
     }
@@ -68,8 +64,8 @@ class Config
     }
 
     /**
-     * returns the nested array of the config array according to the given key if exists
-     * returns an empty array() otherwise
+     * returns the nested array of the config settings according to the given
+     * key if exists returns an empty array() otherwise
      *
      * @param string $key of the array element
      * @return array
@@ -79,8 +75,8 @@ class Config
     }
 
     /**
-     * returns the item of the given nested array of the config array according to the
-     * given key if exists, returns false otherwise
+     * returns the item of the given nested array of the config settings
+     * according to the given key if exists, returns false otherwise
      *
      * @param string $array name of the nested array
      * @param string $key name of the item to get
@@ -94,8 +90,8 @@ class Config
     }
 
     /**
-     * returns the nested array of general array according to the given key if exists
-     * returns an empty array() otherwise
+     * returns the nested array of the general settings according to the given
+     * key if exists returns an empty array() otherwise
      *
      * @param string $key of the array element
      * @return array
@@ -105,8 +101,8 @@ class Config
     }
 
     /**
-     * returns the item of the given nested array of the general array according to the
-     * given key if exists, returns false otherwise
+     * returns the item of the given nested array of the general settings
+     * according to the given key if exists, returns false otherwise
      *
      * @param string $array name of the nested array
      * @param string $key name of the item to get
@@ -115,6 +111,32 @@ class Config
     public function getGeneral($array, $key){
         if(array_key_exists($array, $this->general)){
             return array_key_exists($key, $this->general[$array]) ? $this->general[$array][$key] : false;
+        }
+        return false;
+    }
+
+    /**
+     * returns the nested array of the error settings according to the given key
+     * if exists returns an empty array() otherwise
+     *
+     * @param string $key of the array element
+     * @return array
+     */
+    public function getErrorArray($key){
+        return array_key_exists($key, $this->error) ? $this->error[$key] : array();
+    }
+
+    /**
+     * returns the item of the given nested array of the error settings according
+     * to the given key if exists, returns false otherwise
+     *
+     * @param string $array name of the nested array
+     * @param string $key name of the item to get
+     * @return bool
+     */
+    public function getError($array, $key){
+        if(array_key_exists($array, $this->error)){
+            return array_key_exists($key, $this->error[$array]) ? $this->error[$array][$key] : false;
         }
         return false;
     }

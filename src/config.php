@@ -64,20 +64,6 @@ define('CSS_DIR', 'css/', TRUE);
 define('PUBLIC_LIB_DIR', 'lib/', TRUE);
 
 /**
- * The page that is displayed in case of an error.
- *
- * @global ERROR_MD string path to error.md
- */
-define('ERROR_MD', '../src/error.md', TRUE);
-
-/**
- * The page that is displayed in case of an error.
- *
- * @global ERROR_MD string path to error.md
- */
-define('NOT_FOUND_MD', '../src/not_found.md', TRUE);
-
-/**
  * Path for the log files of the project.
  *
  * @global LOG_DIR string path of the log directory

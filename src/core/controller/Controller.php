@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the MarkdownBlog project.
  * Interacts with the View and loads the requested parts form the model.
@@ -28,7 +27,6 @@ class Controller extends AbstractController
 {
     protected $module;
     protected $config;
-    protected $HTTPStatusCode = 200;
 
     public function __construct()
     {
@@ -38,14 +36,6 @@ class Controller extends AbstractController
         $this->output = $this->view->show();
         // TODO prepend msg thrown by Logger
         Logger::getInstance()->writeLog();
-    }
-
-    /**
-     *
-     * @return int HTTP Status Code
-     */
-    public function getHTTPStatusCode(){
-        return $this->HTTPStatusCode;
     }
 
     /**
@@ -65,19 +55,36 @@ class Controller extends AbstractController
             $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
             $this->view = new $view($this->model, $config);
         } catch (ErrorException $e) {
-            $this->HTTPStatusCode = 500;
-            http_response_code($this->HTTPStatusCode);
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage()));
-            $config = array('name' => 'Error', 'logger' => true, 'path' => ERROR_MD);
-            $this->model = new Markdown($config);
-            $this->view = new View($this->model, $config);
+            $config = Config::getInstance()->getErrorArray('500');
+            $log = new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage());
+            self::exception($log, $config, 500);
         } catch (Exception $e) {
-            $this->HTTPStatusCode = 404;
-            http_response_code($this->HTTPStatusCode);
-            Logger::getInstance()->add(new Warning($e->getMessage(), 'Controller::actionListener()'));
-            $config = array('name' => 'Not_Found', 'logger' => true, 'path' => NOT_FOUND_MD);
-            $this->model = new Markdown($config);
-            $this->view = new View($this->model, $config);
+            $config = Config::getInstance()->getErrorArray('404');
+            $log = new Warning($e->getMessage(), 'Controller::actionListener()');
+            self::exception($log, $config, 404);
+        }
+    }
+
+    /**
+     * @param Logable $log
+     * @param $config
+     * @param $code
+     */
+    protected function exception(Logable $log, $config, $code){
+        http_response_code($code);
+        Logger::getInstance()->add($log);
+
+        try {
+            $config = $this->resolveURL($config, 1);
+            $this->model = $this->evaluateModel($config);
+            $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
+            $this->view = new $view($this->model, $config);
+        } catch (ErrorException $e) {
+            die();
+        } catch (Exception $e) {
+            $config = Config::getInstance()->getErrorArray('404');
+            $log = new Error('There is a misconfiguration in the error behaviour.', 'Controller::exception()', $e->getMessage());
+            self::exception($log, $config, 404);
         }
     }
 
