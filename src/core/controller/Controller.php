@@ -75,7 +75,6 @@ class Controller extends AbstractController
         Logger::getInstance()->add($log);
 
         try {
-            $config = $this->resolveURL($config, 1);
             $this->model = $this->evaluateModel($config);
             $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
             $this->view = new $view($this->model, $config);
