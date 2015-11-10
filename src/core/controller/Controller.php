@@ -44,6 +44,18 @@ class Controller extends AbstractController
     protected function actionListener()
     {
         try {
+            // return 404 for invalid query string to get rid of spiders, that
+            // searches for links before the pretty url update
+            // TODO remove after a while
+            if (isset($_GET)){
+                $keys = array_keys($_GET);
+                $valid = in_array('tag', $keys) ? 1 : 0;
+                $valid = in_array('page', $keys) ? $valid + 1 : $valid;
+                if(count($keys) - $valid){
+                    throw new Exception('The requested URL is not available.');
+                }
+            }
+
             // load the configuration file
             if (isset($this->config[$this->module])) {
                 $config = $this->config[$this->module];
