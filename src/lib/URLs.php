@@ -74,9 +74,11 @@ class URLs
 
     /**
      * TODO
+     * @param int $level
+     * @return string
      */
-    public function module(){
-        return $this->parts[0] == '' ?  'home' : strtolower($this->parts[0]);
+    public function module($level = 0){
+        return !array_key_exists($level, $this->parts) || $this->parts[$level] == '' ?  'home' : strtolower($this->parts[$level]);
     }
 
     public function getURI(){

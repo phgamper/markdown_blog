@@ -25,13 +25,8 @@
  */
 class Controller extends AbstractController
 {
-    protected $module;
-    protected $config;
-
     public function __construct()
     {
-        $this->module = URLs::getInstance()->module();
-        $this->config = Config::getInstance()->config;
         $this->actionListener();
         $this->output = $this->view->show();
         // TODO prepend msg thrown by Logger
@@ -57,12 +52,18 @@ class Controller extends AbstractController
             }
 
             // load the configuration file
-            if (isset($this->config[$this->module])) {
-                $config = $this->config[$this->module];
+            $level = 1;
+            $module = URLs::getInstance()->module();
+            if (Config::getInstance()->hasModule($module)) {
+                $config = Config::getInstance()->getConfigArray($module);
+            } else if(Config::getInstance()->hasPlugin($module)) {
+                // if the module part of the URI may be a plugin
+                $config = Config::getInstance()->getPlugin($module, URLs::getInstance()->module(1));
+                $level++;
             } else {
                 throw new Exception('The requested URL is not available.');
             }
-            $config = $this->resolveURL($config, 1);
+            $config = $this->resolveURL($config, $level);
             $this->model = $this->evaluateModel($config);
             $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
             $this->view = new $view($this->model, $config);

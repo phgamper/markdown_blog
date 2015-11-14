@@ -24,11 +24,13 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Config
+final class Config
 {
-    public $general;
-    public $config;
-    public $error;
+    private $general;
+    private $config;
+    private $error;
+    private $plugins = array();
+
     public $app_root;
     public $title;
 
@@ -43,6 +45,12 @@ class Config
         // Error settings
         $files = file_exists(CONFIG_DIR.'error.ini') ? array(SRC_DIR.'error.ini', CONFIG_DIR.'error.ini') : array(SRC_DIR.'error.ini');
         $this->error = IniParser::parseMerged($files);
+        // Plugins
+        foreach(ScanDir::getFilesOfType(PLUGIN_DIR,'.ini') as $plugin){
+            $name = substr($plugin, 0, -4);
+            $this->plugins[$name] = IniParser::parseMerged(array(PLUGIN_DIR.$plugin));
+        }
+
         // extract most recently used
         $this->app_root = $this->general['general']['app_root'];
         $this->title = array_key_exists('title', $this->general['head']) ? $this->general['head']['title'] : '';
@@ -71,7 +79,7 @@ class Config
      * @return array
      */
     public function getConfigArray($key){
-        return array_key_exists($key, $this->config) ? $this->config[$key] : array();
+        return self::hasModule($key) ? $this->config[$key] : array();
     }
 
     /**
@@ -83,7 +91,7 @@ class Config
      * @return bool
      */
     public function getConfig($array, $key){
-        if(array_key_exists($array, $this->config)){
+        if(self::hasModule($key)){
             return array_key_exists($key, $this->config[$array]) ? $this->config[$array][$key] : false;
         }
         return false;
@@ -139,5 +147,47 @@ class Config
             return array_key_exists($key, $this->error[$array]) ? $this->error[$array][$key] : false;
         }
         return false;
+    }
+
+    /**
+     * returns the settings of the plugin specified in the key
+     *
+     * @param string $name of the plugin
+     * @return array
+     */
+    public function getPlugin($name, $module){
+        return self::hasPluginModule($name, $module) ? $this->plugins[$name][$module] : array();
+    }
+
+    /**
+     * returns whether the given module is available
+     *
+     * @param $name of the module
+     * @return bool True if the module is available, False otherwise
+     */
+    public function hasModule($name){
+        return array_key_exists($name, $this->config);
+    }
+
+    /**
+     * returns whether the given plugin is available
+     *
+     * @param $name of the plugin
+     * @return bool True if the plugin is available, False otherwise
+     */
+    public function hasPlugin($name){
+        return array_key_exists($name, $this->plugins);
+    }
+
+
+    /**
+     * returns whether the given plugin contains the given module
+     *
+     * @param $name of the plugin
+     * @param $module of the module
+     * @return bool True if the plugin is available and the module exists, False otherwise
+     */
+    public function hasPluginModule($name, $module){
+        return self::hasPlugin($name) && array_key_exists($module, $this->plugins[$name]);
     }
 }

@@ -50,6 +50,13 @@ define('LIB_DIR', '../src/lib/', TRUE);
 define('CONFIG_DIR', '../config/', TRUE);
 
 /**
+ * Path to the configuration directory of the MarkdownBlog project.
+ *
+ * @global CONFIG_DIR string path of the config directory
+ */
+define('PLUGIN_DIR', CONFIG_DIR.'plugins/', TRUE);
+
+/**
  * Path to the CSS files of the project.
  *
  * @global CSS_DIR string path of the css directory
