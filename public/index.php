@@ -63,9 +63,18 @@ Head::getInstance()->link(PUBLIC_LIB_DIR.'font-awesome/css/font-awesome.min.css'
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'jquery/js/jquery.min.js');
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
 
-$navigation = new NavigationController(new IniNavigation(CONFIG_DIR.'config.ini'));
 $container = new Controller();
-$footer = new FooterController(new Sitemap(CONFIG_DIR.'config.ini'));
+// TODO redundant with the module evaluation of the controler
+$module = URLs::getInstance()->module();
+if (Config::getInstance()->hasPlugin($module)) {
+    // if the module part of the URI may be a plugin
+    $configfile = PLUGIN_DIR.$module.'.ini';
+} else {
+    $configfile = CONFIG_DIR.'config.ini';
+}
+
+$navigation = new NavigationController(new IniNavigation($configfile));
+$footer = new FooterController(new Sitemap($configfile));
 
 if(($template = Config::getInstance()->getGeneral('general', 'template'))){
     include_once(TEMPLATES_DIR.$template);

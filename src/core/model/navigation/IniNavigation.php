@@ -28,12 +28,8 @@
 class IniNavigation extends AbstractNavigation
 {
 
-    protected $parser;
-
     public function __construct($file)
     {
-        $this->parser = new IniParser();
-        $this->parser->use_array_object = false;
         $this->init($file);
     }
 
@@ -45,7 +41,7 @@ class IniNavigation extends AbstractNavigation
     protected function init($file)
     {
         $this->items = array();
-        $ini = $this->parser->parse($file);
+        $ini = IniParser::parseMerged(array($file));
         foreach ($ini as $key => $value) {
             $this->items[$key] = array();
             // TODO refactor ... XD
