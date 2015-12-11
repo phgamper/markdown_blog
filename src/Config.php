@@ -78,8 +78,16 @@ final class Config
      * @param string $key of the array element
      * @return array
      */
-    public function getConfigArray($key){
+    public function getModule($key){
         return self::hasModule($key) ? $this->config[$key] : array();
+    }
+
+    /**
+     *
+     * @return array whole config Array
+     */
+    public function getConfig(){
+        return $this->config;
     }
 
     /**
@@ -90,7 +98,7 @@ final class Config
      * @param string $key name of the item to get
      * @return bool
      */
-    public function getConfig($array, $key){
+    public function getConfigEntry($array, $key){
         if(self::hasModule($key)){
             return array_key_exists($key, $this->config[$array]) ? $this->config[$array][$key] : false;
         }
@@ -149,13 +157,23 @@ final class Config
         return false;
     }
 
+
+    /**
+     * @param string $name of Plugin
+     *
+     * @return array Config Array of specified Plugin
+     */
+    public function getPlugin($name){
+        return self::hasPlugin($name) ? $this->plugins[$name] : array();
+    }
+
     /**
      * returns the settings of the plugin specified in the key
      *
      * @param string $name of the plugin
      * @return array
      */
-    public function getPlugin($name, $module){
+    public function getPluginModule($name, $module){
         return self::hasPluginModule($name, $module) ? $this->plugins[$name][$module] : array();
     }
 

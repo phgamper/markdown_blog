@@ -27,16 +27,26 @@
 class NavigationController extends AbstractController
 {
 
-    public function __construct(AbstractNavigation $model)
-    {
-        $this->model = $model;
-        $this->actionListener();
-        $this->output = $this->view->show();
-    }
+    protected function actionListener(){
+        try{
+            $module = URLs::getInstance()->module();
+            if (Config::getInstance()->hasPlugin($module)) {
+                // if the module part of the URI may be a plugin
+                $config = Config::getInstance()->getPlugin($module);
+            } else {
+                $config = Config::getInstance()->getConfig();
+            }
+            $model = new Container($config);
+            foreach($config as $key => $value) {
+                $model->addModel(parent::evaluateModel($value), $key);
+            }
 
-    protected function actionListener()
-    {
-        $this->view = $this->model->getView();
+            $this->view = new NavigationView($model, $config);
+        } catch (ErrorException $e) {
+            die();
+        } catch (Exception $e) {
+            die();
+        }
     }
 }
 

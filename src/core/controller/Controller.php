@@ -25,14 +25,6 @@
  */
 class Controller extends AbstractController
 {
-    public function __construct()
-    {
-        $this->actionListener();
-        $this->output = $this->view->show();
-        // TODO prepend msg thrown by Logger
-        Logger::getInstance()->writeLog();
-    }
-
     /**
      *
      */
@@ -55,18 +47,18 @@ class Controller extends AbstractController
             $level = 1;
             $module = URLs::getInstance()->module();
             if (Config::getInstance()->hasModule($module)) {
-                $config = Config::getInstance()->getConfigArray($module);
+                $config = Config::getInstance()->getModule($module);
             } else if(Config::getInstance()->hasPlugin($module)) {
                 // if the module part of the URI may be a plugin
-                $config = Config::getInstance()->getPlugin($module, URLs::getInstance()->module(1));
+                $config = Config::getInstance()->getPluginModule($module, URLs::getInstance()->module(1));
                 $level++;
             } else {
                 throw new Exception('The requested URL is not available.');
             }
             $config = $this->resolveURL($config, $level);
-            $this->model = $this->evaluateModel($config);
+            $model = $this->evaluateModel($config);
             $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
-            $this->view = new $view($this->model, $config);
+            $this->view = new $view($model, $config);
         } catch (ErrorException $e) {
             $config = Config::getInstance()->getErrorArray('500');
             $log = new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage());
@@ -88,9 +80,9 @@ class Controller extends AbstractController
         Logger::getInstance()->add($log);
 
         try {
-            $this->model = $this->evaluateModel($config);
+            $model = $this->evaluateModel($config);
             $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
-            $this->view = new $view($this->model, $config);
+            $this->view = new $view($model, $config);
         } catch (ErrorException $e) {
             die();
         } catch (Exception $e) {
@@ -98,46 +90,6 @@ class Controller extends AbstractController
             $log = new Error('There is a misconfiguration in the error behaviour.', 'Controller::exception()', $e->getMessage());
             self::exception($log, $config, 404);
         }
-    }
-
-    /**
-     *
-     *
-     * @param array $config
-     * @return Composite
-     * @throws ErrorException
-     * @throws Exception
-     */
-    protected function evaluateModel($config){
-        if (isset($config['type'])) {
-            $type = $config['type'];
-        } else {
-            throw new ErrorException('There is an error in the configuration file!');
-        }
-
-        switch (true) {
-            case !array_key_exists('path', $config):
-                // type should be Composite
-                $model = new Composite($config);
-                foreach($config as $item){
-                    if(is_array($item)){
-                        $model->addModel(self::evaluateModel($item));
-                    }
-                }
-                break;
-            case is_file($config['path']) || $type == 'OwlCarousel':
-            case $type =='Remote':
-            case $type == 'Link':
-                $model = new $type($config);
-                break;
-            case is_dir($config['path']):
-                $filter = new Filter(new Collection($type, $config));
-                $model = $filter->filter();
-                break;
-            default:
-                throw new Exception('The requested URL is not available.');
-        }
-        return $model;
     }
 
     protected function resolveURL($config, $level){

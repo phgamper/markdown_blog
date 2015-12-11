@@ -26,9 +26,16 @@
  */
 abstract class AbstractController
 {
-    protected $model;
     protected $view;
     protected $output;
+
+    public function __construct()
+    {
+        $this->actionListener();
+        $this->output = $this->view->show();
+        // TODO prepend msg thrown by Logger
+        Logger::getInstance()->writeLog();
+    }
 
     public function display()
     {
@@ -39,6 +46,48 @@ abstract class AbstractController
      * This method specifies how to react on user input.
      */
     protected abstract function actionListener();
+
+    /**
+     *
+     *
+     * @param array $config
+     * @return Composite
+     * @throws ErrorException
+     * @throws Exception
+     */
+    protected function evaluateModel($config){
+        if (isset($config['type'])) {
+            $type = $config['type'];
+        } else {
+            throw new ErrorException('There is an error in the configuration file!');
+        }
+
+        switch (true) {
+            case !array_key_exists('path', $config):
+            case $type =='Container':
+            case $type =='Composite':
+                // type should be Composite or Container
+                $model = new $type($config);
+                foreach($config as $key => $value){
+                    if(is_array($value)){
+                        $model->addModel(self::evaluateModel($value), $key);
+                    }
+                }
+                break;
+            case is_file($config['path']) || $type == 'OwlCarousel':
+            case $type =='Remote':
+            case $type == 'Link':
+                $model = new $type($config);
+                break;
+            case is_dir($config['path']):
+                $filter = new Filter(new Collection($type, $config));
+                $model = $filter->filter();
+                break;
+            default:
+                throw new Exception('The requested URL is not available.');
+        }
+        return $model;
+    }
 }
 
 ?>

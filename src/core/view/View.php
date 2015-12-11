@@ -26,7 +26,6 @@
  */
 class View extends AbstractView
 {
-
     public function image(Image $model, $arg)
     {
         return $model->parse($arg);
@@ -48,7 +47,7 @@ class View extends AbstractView
         $cols = isset($model->config['columns']) && $model->config['columns'] > 0 ? $model->config['columns'] : 1;
         $width = floor(12 / $cols);
         $break = $arg;
-        $it = new ArrayIterator($model->get());
+        $it = new ArrayIterator($model->getModels());
         $item_left = $it->count();
         while ($it->valid()) {
             $column = '';

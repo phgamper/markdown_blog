@@ -31,7 +31,7 @@ abstract class AbstractView implements IView, IVisitor
     protected $model;
 
     /**
-     * TODO
+     * TODO maybe at the wrong place
      *
      * @param AbstractModel $model to view
      * @param array $config
@@ -63,6 +63,11 @@ abstract class AbstractView implements IView, IVisitor
         return $model->accept($this, $arg);
     }
 
+    /**
+     * TODO not the most general implementation => NavigationView
+     *
+     * @return string HTML to show
+     */
     public function show()
     {
         $string = '<div class="row"><div class="col-md-12">' . $this->visit($this->model, null) . '</div></div>';

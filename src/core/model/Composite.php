@@ -39,11 +39,16 @@ class Composite extends Container
         return $visitor->composite($this, $arg);
     }
 
-    public function addModel(AbstractModel $model){
+    /**
+     *
+     * @param AbstractModel $model to add
+     * @param string $key
+     */
+    public function addModel(AbstractModel $model, $key){
         $this->count++;
         $this->limit++;
         $model->config['paging'] = !array_key_exists('paging', $this->config) || $this->config['paging'];
-        $this->models[] = $model;
+        parent::addModel($model, $key);
     }
 
     public function get()

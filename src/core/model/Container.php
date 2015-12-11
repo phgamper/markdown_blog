@@ -24,7 +24,7 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-abstract class Container extends AbstractModel
+class Container extends AbstractModel
 {
     public $models = array();
 
@@ -32,10 +32,21 @@ abstract class Container extends AbstractModel
 
     public $limit = 0;
 
-    // merge get and parse?!
-    public function get()
+    /**
+     *
+     * @return array Models
+     */
+    public function getModels()
     {
         return $this->models;
+    }
+
+    /**
+     * @param AbstractModel $model to add
+     * @param string $key
+     */
+    public function addModel(AbstractModel $model, $key){
+        $this->models[$key] = $model;
     }
 
     /**
@@ -48,5 +59,16 @@ abstract class Container extends AbstractModel
     public function parse($index)
     {
         return '';
+    }
+
+    /**
+     *
+     *
+     * @param IVisitor $visitor
+     * @param $arg
+     * @return mixed
+     */
+    public function accept(IVisitor $visitor, $arg){
+        return $visitor->container($this, $arg);
     }
 }

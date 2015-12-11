@@ -45,9 +45,9 @@ class IniNavigationView implements IView
             $submenu = '';
             
             if (! empty($value['dropdown'])) {
+                $a_class = 'dropdown-toggle" data-toggle="dropdown';
+                $caret = '<b class="caret"></b>';
                 foreach ($value['dropdown'] as $i => $v) {
-                    $a_class = 'dropdown-toggle" data-toggle="dropdown';
-                    $caret = '<b class="caret"></b>';
                     if ($v['type'] == 'href') {
                         $href = $v['path'] . '" target="_blank';
                     } else {
