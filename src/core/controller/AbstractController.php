@@ -26,15 +26,11 @@
  */
 abstract class AbstractController
 {
-    protected $view;
     protected $output;
 
     public function __construct()
     {
         $this->actionListener();
-        $this->output = $this->view->show();
-        // TODO prepend msg thrown by Logger
-        Logger::getInstance()->writeLog();
     }
 
     public function display()

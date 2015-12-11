@@ -25,6 +25,15 @@
  */
 class Controller extends AbstractController
 {
+    private $view;
+
+    public function __construct()
+    {
+        $this->actionListener();
+        $this->output = $this->view->show();
+        // TODO prepend msg thrown by Logger
+        Logger::getInstance()->writeLog();
+    }
     /**
      *
      */

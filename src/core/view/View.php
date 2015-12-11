@@ -74,7 +74,7 @@ class View extends AbstractView
         if(!array_key_exists('paging', $model->config) || $model->config['paging']){
             $pager = $this->pager($model->count, $model->limit) ;
         }
-        return $this->container($model, $arg).$pager;
+        return $this->container($model, $model->start).$pager;
     }
 
     public function markup(Markup $model, $arg){

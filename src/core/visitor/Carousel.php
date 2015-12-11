@@ -55,7 +55,7 @@ class Carousel implements IVisitor
     public function collection(Collection $model, $arg){
         $items = array();
         for($i = 0; $i < $model->count && $i < $model->limit; $i++){
-            $items[] = self::visit($model->models[$i], $arg);
+            $items[] = self::visit($model->models[$i], $model->start);
         }
         return $items;
     }

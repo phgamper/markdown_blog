@@ -26,6 +26,24 @@
  */
 class NavigationController extends AbstractController
 {
+    private $view = "NavigationView";
+    private $model;
+    private $config;
+
+    public function __construct(){
+        parent::__construct();
+        Head::getInstance()->link(CSS_DIR.'sitemap.css');
+    }
+
+    public function setView($view){
+        $this->view = $view;
+    }
+
+    public function display(){
+        $output = (new $this->view($this->model, $this->config))->show();
+        Logger::getInstance()->writeLog();
+        return $output;
+    }
 
     protected function actionListener(){
         try{
@@ -36,12 +54,11 @@ class NavigationController extends AbstractController
             } else {
                 $config = Config::getInstance()->getConfig();
             }
-            $model = new Container($config);
+            $this->model = new Container($config);
             foreach($config as $key => $value) {
-                $model->addModel(parent::evaluateModel($value), $key);
+                $this->model->addModel(parent::evaluateModel($value), $key);
             }
 
-            $this->view = new NavigationView($model, $config);
         } catch (ErrorException $e) {
             die();
         } catch (Exception $e) {

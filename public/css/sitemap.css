@@ -45,14 +45,14 @@
 	padding: 0px;
 }
 
-.sitemap-top-level {
+.sitemap-top-level li {
 	float: left;
 	margin: 16px 12px 32px 12px;
+	font-weight: bold;
 }
 
 .sitemap-top-level p {
 	font-size: 10pt;
-	font-weight: bold;
 	color: #428bca;
 }
 
@@ -61,6 +61,12 @@
 	font-weight: normal;
 }
 
+.sitemap-sub-level li {
+	float: none;
+	margin: 0;
+	font-size: 9pt;
+	font-weight: normal;
+}
 /* RESPONSIVE CSS
     -------------------------------------------------- */
 @media ( max-width : 979px) {

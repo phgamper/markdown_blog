@@ -26,13 +26,12 @@
  */
 class Footer implements IView
 {
-    protected $model;
-
     protected $config;
+    protected $controller; // TODO hmm ... not nice
 
-    public function __construct(AbstractNavigation $model)
+    public function __construct(NavigationController $controller)
     {
-        $this->model = $model;
+        $this->controller = $controller;
         $this->config = Config::getInstance()->getGeneralArray('footer');
         Head::getInstance()->link(CSS_DIR.'footer.css');
     }
@@ -40,7 +39,8 @@ class Footer implements IView
     public function show()
     {
         // sitemap
-        $sitemap = new NavigationController($this->model);
+        $this->controller->setView('SitemapView');
+        $sitemap = $this->controller->display();
         // legal notice
         $left = array_key_exists('legal_notice', $this->config) ? $this->config['legal_notice'] : '';
         $left = '<div class="col-md-6 col-md-offset-2"><p>' . $left . '</p></div>';
@@ -64,6 +64,6 @@ class Footer implements IView
             $poweredby = '<div class="row"><div class="col-md-8 col-md-offset-2">' . $poweredby . '</div></div>';
         }
         // put it together
-        return $sitemap->display() .'<div class="footer-inner row">'. $left . $right .'</div>'.$social.$poweredby;
+        return $sitemap .'<div class="footer-inner row">'. $left . $right .'</div>'.$social.$poweredby;
     }
 }

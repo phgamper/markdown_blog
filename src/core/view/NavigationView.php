@@ -43,7 +43,8 @@ class NavigationView extends AbstractView
     public function show(){
         $nav = '';
         foreach($this->model->getModels() as $key => $value){
-            $nav .= $this->visit($value, $key);
+            $href = Config::getInstance()->getGeneral('general', 'app_root').$key;
+            $nav .= $this->visit($value, $href);
         }
         return $nav;
     }
@@ -69,7 +70,7 @@ class NavigationView extends AbstractView
             $dropdown .= $this->visit($value, $arg.'/'.$key);
         }
         $dropdown = '<ul class="dropdown-menu" role="menu">'.$dropdown.'</ul>';
-        return '<li class=""><a href="" class="dropdown-toggle" data-toggle="dropdown">'.$model->config['name'].'<b class="caret"></b></a>'.$dropdown.'</li>';
+        return '<li class=""><a href="'.$arg.'" class="dropdown-toggle" data-toggle="dropdown">'.$model->config['name'].'<b class="caret"></b></a>'.$dropdown.'</li>';
     }
 
     public function composite(Composite $model, $arg){
@@ -110,8 +111,7 @@ class NavigationView extends AbstractView
     }
 
     private function li(AbstractModel $model, $arg){
-        $href = Config::getInstance()->getGeneral('general', 'app_root').$arg;
-        return '<li><a href="'.$href.'">'.$model->config['name'].'</a></li>';
+        return '<li><a href="'.$arg.'">'.$model->config['name'].'</a></li>';
     }
 }
 

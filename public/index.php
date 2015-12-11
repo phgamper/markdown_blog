@@ -65,7 +65,7 @@ Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
 
 $container = new Controller();
 $navigation = new NavigationController();
-//$footer = new FooterController(new Sitemap($configfile));
+$footer = new Footer($navigation);
 
 if(($template = Config::getInstance()->getGeneral('general', 'template'))){
     include_once(TEMPLATES_DIR.$template);
