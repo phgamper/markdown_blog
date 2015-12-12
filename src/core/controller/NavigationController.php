@@ -58,11 +58,10 @@ class NavigationController extends AbstractController
             foreach($config as $key => $value) {
                 $this->model->addModel(parent::evaluateModel($value), $key);
             }
-
         } catch (ErrorException $e) {
-            die();
+            die(); // TODO
         } catch (Exception $e) {
-            die();
+            die(); // TODO
         }
     }
 }

@@ -66,7 +66,7 @@ abstract class AbstractController
                 $model = new $type($config);
                 foreach($config as $key => $value){
                     if(is_array($value)){
-                        $model->addModel(self::evaluateModel($value), $key);
+                        $model->addModel($this->evaluateModel($value), $key);
                     }
                 }
                 break;
@@ -83,6 +83,28 @@ abstract class AbstractController
                 throw new Exception('The requested URL is not available.');
         }
         return $model;
+    }
+
+    /**
+     * @param Logable $log
+     * @param $config
+     * @param $code
+     */
+    protected function exception(Logable $log, $config, $code){
+        http_response_code($code);
+        Logger::getInstance()->add($log);
+
+        try {
+            $model = $this->evaluateModel($config);
+            $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
+            $this->view = new $view($model, $config);
+        } catch (ErrorException $e) {
+            die();
+        } catch (Exception $e) {
+            $config = Config::getInstance()->getErrorArray('404');
+            $log = new Error('There is a misconfiguration in the error behaviour.', 'Controller::exception()', $e->getMessage());
+            self::exception($log, $config, 404);
+        }
     }
 }
 
