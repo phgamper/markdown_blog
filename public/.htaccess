@@ -1,3 +1,10 @@
+<If "%{REQUEST_URI} =~ /(admin|eth).*/">
+    AuthUserFile /home/phgamper/www/public/.htpasswd
+    AuthType Basic
+    AuthName "Password Protected"
+    Require valid-user
+</If>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
