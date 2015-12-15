@@ -43,8 +43,7 @@ class NavigationView extends AbstractView
     public function show(){
         $nav = '';
         foreach($this->model->getModels() as $key => $value){
-            $href = Config::getInstance()->getGeneral('general', 'app_root').$key;
-            $nav .= $this->visit($value, $href);
+            $nav .= $this->visit($value, $this->config['root'].$key);
         }
         return $nav;
     }

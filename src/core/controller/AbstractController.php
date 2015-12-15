@@ -70,6 +70,7 @@ abstract class AbstractController
                     }
                 }
                 break;
+            // TODO missing files prevents navigation from beeing built
             case is_file($config['path']) || $type == 'OwlCarousel':
             case $type =='Remote':
             case $type == 'Link':

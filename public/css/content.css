@@ -41,6 +41,11 @@
 	max-width: 100%;
 }
 
+.content th, .content td {
+    border: 1px solid #999999;
+    padding: 10px;
+}
+
 
 /* RESPONSIVE CSS
     --------------------------------------------------

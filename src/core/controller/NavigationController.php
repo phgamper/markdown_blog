@@ -27,8 +27,8 @@
 class NavigationController extends AbstractController
 {
     private $view = "NavigationView";
+    private $root;
     private $model;
-    private $config;
 
     public function __construct(){
         parent::__construct();
@@ -40,17 +40,19 @@ class NavigationController extends AbstractController
     }
 
     public function display(){
-        $output = (new $this->view($this->model, $this->config))->show();
+        $output = (new $this->view($this->model, array('root' => $this->root)))->show();
         Logger::getInstance()->writeLog();
         return $output;
     }
 
     protected function actionListener(){
         try{
+            $this->root = Config::getInstance()->getGeneral('general', 'app_root');
             $module = URLs::getInstance()->module();
             if (Config::getInstance()->hasPlugin($module)) {
                 // if the module part of the URI may be a plugin
                 $config = Config::getInstance()->getPlugin($module);
+                $this->root .= $module.'/';
             } else {
                 $config = Config::getInstance()->getConfig();
             }
