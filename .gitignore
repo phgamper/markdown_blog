@@ -3,6 +3,9 @@ content/*
 public/content
 public/content/*
 
+# sensitive files
+.htpasswd
+
 # git and project settings
 .git
 .buildpath
