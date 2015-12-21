@@ -60,8 +60,8 @@ abstract class AbstractController
 
         switch (true) {
             case !array_key_exists('path', $config):
-            case $type =='Container':
-            case $type =='Composite':
+            case $type == 'Container':
+            case $type == 'Composite':
                 // type should be Composite or Container
                 $model = new $type($config);
                 foreach($config as $key => $value){
@@ -70,7 +70,7 @@ abstract class AbstractController
                     }
                 }
                 break;
-            case is_dir($config['path']):
+            case is_dir($config['path']) && $type != 'OwlCarousel' && $type != 'Link':
                 $filter = new Filter(new Collection($type, $config));
                 $model = $filter->filter();
                 break;
@@ -80,6 +80,7 @@ abstract class AbstractController
             case $type == 'Image':
             case $type == 'Remote':
             case $type == 'Link':
+            case $type == 'OwlCarousel':
                 $model = new $type($config);
                 break;
             default:
