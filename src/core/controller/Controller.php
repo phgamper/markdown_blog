@@ -106,8 +106,11 @@ class Controller extends AbstractController
             // if a dropdown is present
             if (array_key_exists($value, $config)) {
                 $config = self::resolveURL($config[$value], $level + 1);
-            }else{
+            }else if(array_key_exists('path', $config)){
+                // if URL points to static link
                 $config['path'] = $config['path'].$value.$config['type']::MIME;
+            }else{
+                throw new Exception('The requested URL is not available.');
             }
         }
         return $config;

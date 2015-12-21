@@ -64,12 +64,13 @@ class NavigationView extends AbstractView
      * @return string
      */
     public function container(Container $model, $arg){
+        $active = $this->active($arg);
         $dropdown = '';
         foreach($model->getModels() as $key => $value){
             $dropdown .= $this->visit($value, $arg.'/'.$key);
         }
         $dropdown = '<ul class="dropdown-menu" role="menu">'.$dropdown.'</ul>';
-        return '<li class=""><a href="'.$arg.'" class="dropdown-toggle" data-toggle="dropdown">'.$model->config['name'].'<b class="caret"></b></a>'.$dropdown.'</li>';
+        return '<li '.$active.'><a href="'.$arg.'" class="dropdown-toggle" data-toggle="dropdown">'.$model->config['name'].'<b class="caret"></b></a>'.$dropdown.'</li>';
     }
 
     public function composite(Composite $model, $arg){
@@ -109,9 +110,19 @@ class NavigationView extends AbstractView
         return '<li><a href="'.$model->config['path'].'">'.$model->config['name'].'</a></li>';
     }
 
-    private function li(AbstractModel $model, $arg){
-        return '<li><a href="'.$arg.'">'.$model->config['name'].'</a></li>';
+    protected function li(AbstractModel $model, $arg){
+        $active = $this->active($arg);
+        return '<li '.$active.'><a href="'.$arg.'">'.$model->config['name'].'</a></li>';
+    }
+
+    protected function active($arg){
+        $active = true;
+        $level = count(explode('/', $this->config['root'])) - 2;
+        $regexp = '/'.str_replace('/', '\/', $this->config['root']).'/';
+        foreach(explode('/', preg_replace($regexp, '', $arg, 1)) as $module){
+            $active &= URLs::getInstance()->module($level) == $module;
+            $level++;
+        }
+        return $active ? 'class="active"' : '';
     }
 }
-
-?>

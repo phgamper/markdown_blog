@@ -43,6 +43,10 @@ class SitemapView extends NavigationView
         }
         return '<li><p><a href="'.$arg.'">'.$model->config['name'].'</a></p><div class="sitemap-sub-level"><ul>'.$sitemap.'</ul></div></li>';
     }
+
+    protected function active($arg){
+        return '';
+    }
 }
 
 ?>

@@ -70,15 +70,17 @@ abstract class AbstractController
                     }
                 }
                 break;
-            // TODO missing files prevents navigation from beeing built
-            case is_file($config['path']) || $type == 'OwlCarousel':
-            case $type =='Remote':
-            case $type == 'Link':
-                $model = new $type($config);
-                break;
             case is_dir($config['path']):
                 $filter = new Filter(new Collection($type, $config));
                 $model = $filter->filter();
+                break;
+            case $type == 'Markdown':
+            case $type == 'HyperTextMarkup':
+            case $type == 'HypertextPreprocessor':
+            case $type == 'Image':
+            case $type == 'Remote':
+            case $type == 'Link':
+                $model = new $type($config);
                 break;
             default:
                 throw new Exception('The requested URL is not available.');

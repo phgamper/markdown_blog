@@ -61,9 +61,11 @@ class NavigationController extends AbstractController
                 $this->model->addModel(parent::evaluateModel($value), $key);
             }
         } catch (ErrorException $e) {
-            die(); // TODO
+            $this->model = new Container(array());
+            // TODO
         } catch (Exception $e) {
-            die(); // TODO
+            $this->model = new Container(array());
+            // TODO
         }
     }
 }
