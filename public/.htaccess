@@ -5,3 +5,13 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php [L,QSA]
 </IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 week"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/pdf "access pluss 1 week"
+    ExpiresDefault "access plus 1 hour"
+</IfModule>
