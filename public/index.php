@@ -61,7 +61,7 @@ Head::getInstance()->link(PUBLIC_LIB_DIR.'font-awesome/css/font-awesome.min.css'
 
 // Add jquery and bootstrap into header so included HTML pages can use the libs
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'jquery/js/jquery.min.js');
-Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.js');
+Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.min.js');
 
 $container = new Controller();
 $navigation = new NavigationController();
