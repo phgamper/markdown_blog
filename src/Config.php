@@ -99,7 +99,7 @@ final class Config
      * @return bool
      */
     public function getConfigEntry($array, $key){
-        if(self::hasModule($key)){
+        if(self::hasModule($array)){
             return array_key_exists($key, $this->config[$array]) ? $this->config[$array][$key] : false;
         }
         return false;
