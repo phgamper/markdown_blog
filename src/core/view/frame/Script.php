@@ -94,7 +94,7 @@ class Script
     {
         $js = '<!-- Le javascript -->';
         foreach ($this->scripts as $j) {
-            $js .= '<script async src="' . $j . '"></script>';
+            $js .= '<script src="' . $j . '"></script>';
         }
         foreach ($this->inlines as $i) {
             $js .= '<script>' . $i . '</script>';

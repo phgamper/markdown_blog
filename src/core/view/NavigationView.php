@@ -50,11 +50,11 @@ class NavigationView extends AbstractView
 
     public function image(Image $model, $arg)
     {
-        return self::li($model, $arg);
+        return $this->li($model, $arg);
     }
 
     public function carousel(OwlCarousel $model, $arg){
-        return self::li($model, $arg);
+        return $this->li($model, $arg);
     }
 
     /**
@@ -74,35 +74,35 @@ class NavigationView extends AbstractView
     }
 
     public function composite(Composite $model, $arg){
-        return self::li($model, $arg);
+        return $this->li($model, $arg);
     }
 
     public function collection(Collection $model, $arg){
-        return self::li($model, $arg);
+        return $this->li($model, $arg);
     }
 
     public function markup(Markup $model, $arg){
-        return self::li($model, $arg);
+        return $this->li($model, $arg);
     }
 
     public function markdown(Markdown $model, $arg)
     {
-        return self::markup($model, $arg);
+        return $this->markup($model, $arg);
     }
 
     public function hyperTextMarkup(HyperTextMarkup $model, $arg)
     {
-        return self::markup($model, $arg);
+        return $this->markup($model, $arg);
     }
 
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
     {
-        return self::li($model, $arg);
+        return $this->li($model, $arg);
     }
 
     public function remote(Remote $model, $arg)
     {
-        return self::markdown($model, $arg);
+        return $this->markdown($model, $arg);
     }
 
     public function link(Link $model, $arg)

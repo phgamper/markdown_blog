@@ -41,7 +41,17 @@ class SitemapView extends NavigationView
         foreach($model->getModels() as $key => $value){
             $sitemap .= $this->visit($value, $arg.'/'.$key);
         }
-        return '<li><p><a href="'.$arg.'">'.$model->config['name'].'</a></p><div class="sitemap-sub-level"><ul>'.$sitemap.'</ul></div></li>';
+        return '<li><p>'.$model->config['name'].'</p><div class="sitemap-sub-level"><ul>'.$sitemap.'</ul></div></li>';
+    }
+
+    public function link(Link $model, $arg)
+    {
+        return '<li><p><a href="'.$model->config['path'].'">'.$model->config['name'].'</a></p></li>';
+    }
+    
+    protected function li(AbstractModel $model, $arg){
+        $active = $this->active($arg);
+        return '<li '.$active.'><p><a href="'.$arg.'">'.$model->config['name'].'</a></p></li>';
     }
 
     protected function active($arg){
