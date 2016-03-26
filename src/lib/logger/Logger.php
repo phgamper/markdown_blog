@@ -122,7 +122,7 @@ class Logger
         $has = false;
         $string = '';
         if (! empty($this->messages)) {
-            $string .= '<div class="alert alert-block bg-'.$class.'"><button type="button" class="close" data-dismiss="alert">x</button><ul>';
+            $string .= '<div class="alert alert-'.$class.'" role="alert"><button type="button" class="close" data-dismiss="alert">x</button><ul>';
             foreach ($this->messages as $key => $msg) {
                 if ($msg instanceof $alert) {
                     $has = true;
