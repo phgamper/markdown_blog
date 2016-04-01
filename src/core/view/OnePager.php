@@ -54,13 +54,9 @@ class OnePager extends View {
         }
         return $string;
     }
-    
-    public function composite(Composite $model, $arg) {
-        return $this->section($model, parent::composite($model, $arg));
-    }
 
     public function collection(Collection $model, $arg) {
-        return $this->section($model, parent::collection($model, $arg));
+        return $this->section($model, parent::container($model, $arg));
     }
 
     public function markup(Markup $model, $arg) {
@@ -72,6 +68,6 @@ class OnePager extends View {
     }
 
     public function link(Link $model, $arg) {
-        return $this->section($model, parent::link($model, $arg));
+        return "";
     }
 }
