@@ -24,7 +24,7 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class SitemapView extends NavigationView
+class SitemapView extends AbstractNavigationView
 {
     public function show() {
         return '<div class="row sitemap"><div class="sitemap-inner col-md-offset-2 col-md-8"><div class="row""><ul class = "sitemap-top-level">'.parent::show().'</ul></div></div></div>';
@@ -44,19 +44,11 @@ class SitemapView extends NavigationView
         return '<li><p>'.$model->config['name'].'</p><div class="sitemap-sub-level"><ul>'.$sitemap.'</ul></div></li>';
     }
 
-    public function link(Link $model, $arg)
-    {
+    public function link(Link $model, $arg) {
         return '<li><p><a href="'.$model->config['path'].'">'.$model->config['name'].'</a></p></li>';
     }
     
     protected function li(AbstractModel $model, $arg){
-        $active = $this->active($arg);
-        return '<li '.$active.'><p><a href="'.$arg.'">'.$model->config['name'].'</a></p></li>';
-    }
-
-    protected function active($arg){
-        return '';
+        return '<li><p><a href="'.$arg.'">'.$model->config['name'].'</a></p></li>';
     }
 }
-
-?>

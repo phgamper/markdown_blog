@@ -3,7 +3,7 @@
 /**
  * This file is part of the MarkdownBlog project.
  * It provides the interface for a controller.
- * 
+ *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
  * Its purpose is to provide a easy way to share your thoughts without any Database
  * or special setup needed.
@@ -24,17 +24,16 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-abstract class AbstractController
-{
+abstract class AbstractController {
+
+    protected $view;
     protected $output;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->actionListener();
     }
 
-    public function display()
-    {
+    public function display() {
         return $this->output;
     }
 
@@ -47,11 +46,13 @@ abstract class AbstractController
      *
      *
      * @param array $config
+     * @param $key
      * @return Composite
      * @throws ErrorException
      * @throws Exception
      */
-    protected function evaluateModel($config){
+    protected function evaluateModel($config, $key) {
+        $config['key'] = $key;
         if (isset($config['type'])) {
             $type = $config['type'];
         } else {
@@ -64,9 +65,9 @@ abstract class AbstractController
             case $type == 'Composite':
                 // type should be Composite or Container
                 $model = new $type($config);
-                foreach($config as $key => $value){
-                    if(is_array($value)){
-                        $model->addModel($this->evaluateModel($value), $key);
+                foreach ($config as $key => $value) {
+                    if (is_array($value)) {
+                        $model->addModel($this->evaluateModel($value, $key), $key);
                     }
                 }
                 break;
@@ -94,12 +95,12 @@ abstract class AbstractController
      * @param $config
      * @param $code
      */
-    protected function exception(Logable $log, $config, $code){
+    protected function exception(Logable $log, $config, $code) {
         http_response_code($code);
         Logger::getInstance()->add($log);
 
         try {
-            $model = $this->evaluateModel($config);
+            $model = $this->evaluateModel($config, 'exeption');
             $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
             $this->view = new $view($model, $config);
         } catch (ErrorException $e) {

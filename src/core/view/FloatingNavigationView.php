@@ -2,11 +2,11 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the navigation as a sidemap for incompatibilities with JS.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * It provides a view that displays formatted markdown/html files as a list.
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,18 +24,21 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Sitemap extends IniNavigation
-{
+class FloatingNavigationView extends AbstractNavigationView {
 
-    public function __construct($ini)
-    {
-        parent::__construct($ini);
+    public function show() {
+        $nav = '';
+        foreach ($this->model->getModels() as $key => $value) {
+            $nav .= $this->visit($value, $key);
+        }
+        return $nav;
     }
 
-    public function getView()
-    {
-        return new SitemapViewAbstract($this);
+    public function container(Container $model, $arg) {
+        return self::li($model, $arg);
+    }
+
+    protected function li(AbstractModel $model, $arg) {
+        return '<li><a href="#' . $arg . '">' . $model->config['name'] . '</a></li>';
     }
 }
-
-?>

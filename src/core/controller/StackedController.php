@@ -23,10 +23,8 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Controller extends AbstractController
+class StackedController extends AbstractController
 {
-    private $view;
-
     public function __construct()
     {
         $this->actionListener();
@@ -53,38 +51,16 @@ class Controller extends AbstractController
                 throw new Exception('The requested URL is not available.');
             }
             $config = $this->resolveURL($config, $level);
-            $model = $this->evaluateModel($config);
+            $model = $this->evaluateModel($config, $module);
             $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
             $this->view = new $view($model, $config);
         } catch (ErrorException $e) {
             $config = Config::getInstance()->getErrorArray('500');
-            $log = new Error('An unexpected error has occurred.', 'Controller::actionListener()', $e->getMessage());
+            $log = new Error('An unexpected error has occurred.', 'StackedController::actionListener()', $e->getMessage());
             self::exception($log, $config, 500);
         } catch (Exception $e) {
             $config = Config::getInstance()->getErrorArray('404');
-            $log = new Warning($e->getMessage(), 'Controller::actionListener()');
-            self::exception($log, $config, 404);
-        }
-    }
-
-    /**
-     * @param Logable $log
-     * @param $config
-     * @param $code
-     */
-    protected function exception(Logable $log, $config, $code){
-        http_response_code($code);
-        Logger::getInstance()->add($log);
-
-        try {
-            $model = $this->evaluateModel($config);
-            $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
-            $this->view = new $view($model, $config);
-        } catch (ErrorException $e) {
-            die();
-        } catch (Exception $e) {
-            $config = Config::getInstance()->getErrorArray('404');
-            $log = new Error('There is a misconfiguration in the error behaviour.', 'Controller::exception()', $e->getMessage());
+            $log = new Warning($e->getMessage(), 'StackedController::actionListener()');
             self::exception($log, $config, 404);
         }
     }

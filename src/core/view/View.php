@@ -62,7 +62,6 @@ class View extends AbstractView
             $string .= '<div class="col-md-'.$width.' list-column">'.$column.'</div>';
         }
         return '<div class="row list">' . $string . '</div>';
-
     }
 
     public function composite(Composite $model, $arg){
@@ -102,12 +101,12 @@ class View extends AbstractView
 
     public function markdown(Markdown $model, $arg)
     {
-        return self::markup($model, $arg);
+        return $this->markup($model, $arg);
     }
 
     public function hyperTextMarkup(HyperTextMarkup $model, $arg)
     {
-        return self::markup($model, $arg);
+        return $this->markup($model, $arg);
     }
 
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
@@ -117,7 +116,7 @@ class View extends AbstractView
 
     public function remote(Remote $model, $arg)
     {
-        return self::markup($model, $arg);
+        return $this->markup($model, $arg);
     }
 
     public function link(Link $model, $arg)

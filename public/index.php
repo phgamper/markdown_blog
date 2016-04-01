@@ -4,10 +4,10 @@
  * This file is part of the MarkdownBlog project.
  * It is the entry page for the project and is responsible for the proper loading
  * of all needed libraries.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -25,12 +25,9 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
-
-
-include_once ('../src/config.php');
-include_once (LIB_DIR . 'Autoload.php');
-include_once (LIB_DIR . 'ScanDir.php');
+include_once('../src/config.php');
+include_once(LIB_DIR . 'Autoload.php');
+include_once(LIB_DIR . 'ScanDir.php');
 ini_set('display_errors', 1);
 $src = Autoload::getInstance(SRC_DIR, false)->getClasses();
 $lib = Autoload::getInstance(LIB_DIR, false)->getClasses();
@@ -48,27 +45,34 @@ URLs::getInstance()->parseURI();
 $config = Config::getInstance()->getGeneralArray('general');
 if (isset($config['highlight']) && $config['highlight']) {
     $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
-    Head::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/css/'.$style);
-    Script::getInstance()->link(PUBLIC_LIB_DIR.'prismjs/js/prism.js');
+    Head::getInstance()->link(PUBLIC_LIB_DIR . 'prismjs/css/' . $style);
+    Script::getInstance()->link(PUBLIC_LIB_DIR . 'prismjs/js/prism.js');
 }
-
-if (array_key_exists('img_resize', $config) && $config['img_resize']){
+if (array_key_exists('img_resize', $config) && $config['img_resize']) {
     Script::getInstance()->link('image.js');
 }
-
-Head::getInstance()->link(PUBLIC_LIB_DIR.'bootstrap/css/bootstrap.min.css');
-Head::getInstance()->link(PUBLIC_LIB_DIR.'font-awesome/css/font-awesome.min.css');
-
+Head::getInstance()->link(PUBLIC_LIB_DIR . 'bootstrap/css/bootstrap.min.css');
+Head::getInstance()->link(PUBLIC_LIB_DIR . 'font-awesome/css/font-awesome.min.css');
 // Add jquery and bootstrap into header so included HTML pages can use the libs
-Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'jquery/js/jquery.min.js');
-Head::getInstance()->linkScript(PUBLIC_LIB_DIR.'bootstrap/js/bootstrap.min.js');
+Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'jquery/js/jquery.min.js');
+Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'bootstrap/js/bootstrap.min.js');
 
-$container = new Controller();
 $navigation = new NavigationController();
+// Onepager or not
+switch (Config::getInstance()->getGeneral('general', 'page_layout')){
+    case "floating":
+        $container = new FloatingController();
+        $navigation->setView("FloatingNavigationView");
+        break;
+    case "stacked":
+    default:
+        $navigation->setView("StackedNavigationView");
+        $container = new StackedController();
+}
 $footer = new Footer($navigation);
 
-if(($template = Config::getInstance()->getGeneral('general', 'template'))){
-    include_once(TEMPLATES_DIR.$template);
+if (($template = Config::getInstance()->getGeneral('general', 'template'))) {
+    include_once(TEMPLATES_DIR . $template);
 }
 
 /**
@@ -76,24 +80,19 @@ if(($template = Config::getInstance()->getGeneral('general', 'template'))){
  *
  * @param $class Class to load
  */
-function __autoload($class)
-{
+function __autoload($class) {
     global $classes;
-    include_once ($classes[$class]);
+    include_once($classes[$class]);
 }
 
 // TODO maybe not how it should be done ...
-function error_handler($errno, $errstr, $errfile, $errline)
-{
-    switch ($errno)
-    {
-        case E_NOTICE:
-        {
+function error_handler($errno, $errstr, $errfile, $errline) {
+    switch ($errno) {
+        case E_NOTICE: {
             throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
             break;
         }
-        default:
-        {
+        default: {
             $msg = $errno . ' - ' . $errstr . ' - ' . $errfile . ' - ' . $errline;
             Logger::getInstance()->addLog(new Log(new Error('An unexpected error has been caught by the error_handler.', 'index.php::error_handler()', $msg)));
         }

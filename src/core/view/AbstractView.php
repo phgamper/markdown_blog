@@ -3,10 +3,10 @@
 /**
  * This file is part of the MarkdownBlog project.
  * It is the interface for all possible markdown/html file orders.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,8 +24,8 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-abstract class AbstractView implements IView, IVisitor
-{
+abstract class AbstractView implements IView, IVisitor {
+
     protected $config;
 
     protected $model;
@@ -36,18 +36,18 @@ abstract class AbstractView implements IView, IVisitor
      * @param AbstractModel $model to view
      * @param array $config
      */
-    public function __construct(AbstractModel $model, array $config)
-    {
+    public function __construct(AbstractModel $model, array $config) {
         $this->model = $model;
         $this->config = $config;
         Head::getInstance()->link(CSS_DIR . 'content.css');
-        if (isset($this->config['style']))
-        {
+        if (isset($this->config['style'])) {
             Head::getInstance()->link($this->config['style']);
         }
-        Head::getInstance()->addOg('title', Config::getInstance()->title.' - '.$this->config['name']);
-        Head::getInstance()->setTitle(Config::getInstance()->title.' - '.$this->config['name']);
-        if (array_key_exists('description', $this->config)){
+        if(!($model instanceof Container)) {
+            Head::getInstance()->addOg('title', Config::getInstance()->title . ' - ' . $this->config['name']);
+            Head::getInstance()->setTitle(Config::getInstance()->title . ' - ' . $this->config['name']);
+        }    
+        if (array_key_exists('description', $this->config)) {
             Head::getInstance()->addOg('description', $this->config['description']);
         }
     }
@@ -59,7 +59,7 @@ abstract class AbstractView implements IView, IVisitor
      * @param int $arg
      * @return mixed
      */
-    public function visit(AbstractModel $model, $arg){
+    public function visit(AbstractModel $model, $arg) {
         return $model->accept($this, $arg);
     }
 
@@ -68,11 +68,11 @@ abstract class AbstractView implements IView, IVisitor
      *
      * @return string HTML to show
      */
-    public function show()
-    {
-        $string = '<div class="row"><div class="col-md-12">' . $this->visit($this->model, null) . '</div></div>';
+    public function show() {
+        //$string = '<div class="row"><div class="col-md-12">' . $this->visit($this->model, null) . '</div></div>';
+        $string = $this->visit($this->model, null);
         // append logger output on top
-        if (! (isset($this->config['logger']) && ! $this->config['logger'])) {
+        if (!(isset($this->config['logger']) && !$this->config['logger'])) {
             $string = Logger::getInstance()->toString() . $string;
         }
         return $string;
