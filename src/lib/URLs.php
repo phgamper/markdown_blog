@@ -88,17 +88,9 @@ class URLs
     public function level($level){
         return array_key_exists($level, $this->parts) ? $this->parts[$level] : false;
     }
+    
+    public function isRaw(){
+        return $this->module() == 'raw';
+    }
 }
 
-
-/*
-$path['query_utf8'] = urldecode($request_path[1]);
-$path['query'] = utf8_decode(urldecode($request_path[1]));
-$vars = explode('&', $path['query']);
-foreach ($vars as $var) {
-$t = explode('=', $var);
-$path['query_vars'][$t[0]] = $t[1];
-}
-*/
-
-?>

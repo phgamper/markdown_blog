@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the MarkdownBlog project.
  * Interacts with the View and loads the requested parts form the model.
@@ -23,37 +24,33 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class StackedController extends AbstractController
-{
-    public function __construct()
-    {
-        $this->actionListener();
-        $this->output = $this->view->show();
-        // TODO prepend msg thrown by Logger
-        Logger::getInstance()->writeLog();
-    }
+class StackedController extends PageController {
+
+    const VIEW = 'View';
+
     /**
      *
      */
-    protected function actionListener()
-    {
+    protected function actionListener() {
         try {
-            // load the configuration file
-            $level = 1;
-            $module = URLs::getInstance()->module();
-            if (Config::getInstance()->hasModule($module)) {
-                $config = Config::getInstance()->getModule($module);
-            } else if(Config::getInstance()->hasPlugin($module)) {
-                // if the module part of the URI may be a plugin
-                $config = Config::getInstance()->getPluginModule($module, URLs::getInstance()->module(1));
-                $level++;
-            } else {
-                throw new Exception('The requested URL is not available.');
+            if (!$this->raw(self::VIEW)) {
+                // load the configuration file
+                $level = 1;
+                $module = URLs::getInstance()->module();
+                if (Config::getInstance()->hasModule($module)) {
+                    $config = Config::getInstance()->getModule($module);
+                } else if (Config::getInstance()->hasPlugin($module)) {
+                    // if the module part of the URI may be a plugin
+                    $config = Config::getInstance()->getPluginModule($module, URLs::getInstance()->module(1));
+                    $level++;
+                } else {
+                    throw new Exception('The requested URL is not available.');
+                }
+                $config = $this->resolveURL($config, $level);
+                $model = $this->evaluateModel($config, $module);
+                $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : self::VEIW;
+                $this->view = new $view($model, $config);
             }
-            $config = $this->resolveURL($config, $level);
-            $model = $this->evaluateModel($config, $module);
-            $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'View';
-            $this->view = new $view($model, $config);
         } catch (ErrorException $e) {
             $config = Config::getInstance()->getErrorArray('500');
             $log = new Error('An unexpected error has occurred.', 'StackedController::actionListener()', $e->getMessage());
@@ -65,15 +62,15 @@ class StackedController extends AbstractController
         }
     }
 
-    protected function resolveURL($config, $level){
+    protected function resolveURL($config, $level) {
         if ($value = URLs::getInstance()->level($level)) {
             // if a dropdown is present
             if (array_key_exists($value, $config)) {
                 $config = self::resolveURL($config[$value], $level + 1);
-            }else if(array_key_exists('path', $config)){
+            } else if (array_key_exists('path', $config)) {
                 // if URL points to static link
-                $config['path'] = $config['path'].$value.$config['type']::MIME;
-            }else{
+                $config['path'] = $config['path'] . $value . $config['type']::MIME;
+            } else {
                 throw new Exception('The requested URL is not available.');
             }
         }

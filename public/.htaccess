@@ -1,6 +1,8 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
+    RewriteCond %{REQUEST_URI} ^/raw/(.*)
+    RewriteRule ^(.*)$ index.php [L,QSA]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php [L,QSA]
 </IfModule>

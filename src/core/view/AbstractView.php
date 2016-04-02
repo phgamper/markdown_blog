@@ -43,10 +43,10 @@ abstract class AbstractView implements IView, IVisitor {
         if (isset($this->config['style'])) {
             Head::getInstance()->link($this->config['style']);
         }
-        if(!($model instanceof Container)) {
+        if (!($model instanceof Container)) {
             Head::getInstance()->addOg('title', Config::getInstance()->title . ' - ' . $this->config['name']);
             Head::getInstance()->setTitle(Config::getInstance()->title . ' - ' . $this->config['name']);
-        }    
+        }
         if (array_key_exists('description', $this->config)) {
             Head::getInstance()->addOg('description', $this->config['description']);
         }
@@ -73,10 +73,8 @@ abstract class AbstractView implements IView, IVisitor {
         $string = $this->visit($this->model, null);
         // append logger output on top
         if (!(isset($this->config['logger']) && !$this->config['logger'])) {
-            $string = Logger::getInstance()->toString() . $string;
+            $string = '<div class="container">' . Logger::getInstance()->toString() . '</div>' . $string;
         }
         return $string;
     }
 }
-
-?>

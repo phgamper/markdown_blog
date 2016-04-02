@@ -24,41 +24,40 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class FloatingController extends AbstractController {
+class FloatingController extends PageController {
 
-    public function __construct() {
-        $this->actionListener();
-        $this->output = $this->view->show();
-        // TODO prepend msg thrown by Logger
-        Logger::getInstance()->writeLog();
-    }
+    const VIEW = 'OnePager';
 
     protected function actionListener() {
         try {
-            // load the configuration file
-            $module = URLs::getInstance()->module();
-            if (Config::getInstance()->hasModule($module)) {
-                $config = Config::getInstance()->getConfig();
-            } else if (Config::getInstance()->hasPlugin($module)) {
-                // if the module part of the URI may be a plugin
-                $config = Config::getInstance()->getPlugin($module);
-            } else {
-                throw new Exception('The requested URL is not available.');
+            if (!$this->raw(self::VIEW)) {
+                // load the configuration file
+                $module = URLs::getInstance()->module();
+                if (Config::getInstance()->hasModule($module)) {
+                    $config = Config::getInstance()->getConfig();
+                } else if (Config::getInstance()->hasPlugin($module)) {
+                    // if the module part of the URI may be a plugin
+                    $config = Config::getInstance()->getPlugin($module);
+                } else {
+                    throw new Exception('The requested URL is not available.');
+                }
+                $model = new Container($config);
+                foreach ($config as $key => $value) {
+                    $model->addModel($this->evaluateModel($value, $key), $key);
+                }
+                $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : self::VIEW;
+                $this->view = new $view($model, $config);
             }
-            $model = new Container($config);
-            foreach ($config as $key => $value) {
-                $model->addModel($this->evaluateModel($value, $key), $key);
-            }
-            $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : 'OnePager';
-            $this->view = new $view($model, $config);
         } catch (ErrorException $e) {
             $config = Config::getInstance()->getErrorArray('500');
+            $config['view'] = self::VIEW;
             $log = new Error('An unexpected error has occurred.', 'FloatingController::actionListener()', $e->getMessage());
-            self::exception($log, $config, 500);
+            $this->exception($log, $config, 500);
         } catch (Exception $e) {
             $config = Config::getInstance()->getErrorArray('404');
+            $config['view'] = self::VIEW;
             $log = new Warning($e->getMessage(), 'FloatingController::actionListener()');
-            self::exception($log, $config, 404);
+            $this->exception($log, $config, 404);
         }
     }
 

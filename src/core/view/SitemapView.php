@@ -27,7 +27,7 @@
 class SitemapView extends AbstractNavigationView
 {
     public function show() {
-        return '<div class="row sitemap"><div class="sitemap-inner col-md-offset-2 col-md-8"><div class="row""><ul class = "sitemap-top-level">'.parent::show().'</ul></div></div></div>';
+        return '<div class="row sitemap"><div class="sitemap-inner col-md-12"><div class="row""><ul class = "sitemap-top-level">'.parent::show().'</ul></div></div></div>';
     }
 
     /**

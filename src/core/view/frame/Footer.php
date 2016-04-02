@@ -43,8 +43,8 @@ class Footer implements IView
         $sitemap = $this->controller->display();
         // legal notice
         $left = array_key_exists('legal_notice', $this->config) ? $this->config['legal_notice'] : '';
-        $left = '<div class="col-md-6 col-md-offset-2"><p>' . $left . '</p></div>';
-        $right = '<div class="col-md-2"><p class="pull-right"><a href="#">Back to top</a></p></div>';
+        $left = '<div class="col-md-8"><p>' . $left . '</p></div>';
+        $right = '<div class="col-md-4"><p class="pull-right"><a href="#">Back to top</a></p></div>';
         // social
         $social = '';
         $general = Config::getInstance()->getGeneralArray('general');
