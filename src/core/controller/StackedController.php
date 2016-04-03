@@ -48,7 +48,7 @@ class StackedController extends PageController {
                 }
                 $config = $this->resolveURL($config, $level);
                 $model = $this->evaluateModel($config, $module);
-                $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : self::VEIW;
+                $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : self::VIEW;
                 $this->view = new $view($model, $config);
             }
         } catch (ErrorException $e) {
