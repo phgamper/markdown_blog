@@ -125,17 +125,6 @@ class View extends AbstractView
     }
 
     /**
-     * @return string HTML to show
-     */
-    public function show() {
-        $string = '<div class="container">'.$this->visit($this->model, null).'</div>';
-        // append logger output on top
-        if (!(isset($this->config['logger']) && !$this->config['logger'])) {
-            $string = '<div class="container">' . Logger::getInstance()->toString() . '</div>' . $string;
-        }
-        return $string;
-    }
-    /**
      * This function builds the head containing the meta information
      *
      * TODO move to markup()?!
