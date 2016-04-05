@@ -56,8 +56,6 @@ Head::getInstance()->link(PUBLIC_LIB_DIR . 'font-awesome/css/font-awesome.min.cs
 // Add jquery and bootstrap into header so included HTML pages can use the libs
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'jquery/js/jquery.min.js');
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'bootstrap/js/bootstrap.min.js');
-// add meta tag 4 uptime monitor
-Head::getInstance()->addMeta('hostli-watchcat', 'ONLINE');
 
 $navigation = new NavigationController();
 // Onepager or not
