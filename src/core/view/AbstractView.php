@@ -63,18 +63,4 @@ abstract class AbstractView implements IView, IVisitor {
         return $model->accept($this, $arg);
     }
 
-    /**
-     * TODO not the most general implementation => NavigationView
-     *
-     * @return string HTML to show
-     */
-    public function show() {
-        //$string = '<div class="row"><div class="col-md-12">' . $this->visit($this->model, null) . '</div></div>';
-        $string = $this->visit($this->model, null);
-        // append logger output on top
-        if (!(isset($this->config['logger']) && !$this->config['logger'])) {
-            $string = '<div class="container">' . Logger::getInstance()->toString() . '</div>' . $string;
-        }
-        return $string;
-    }
 }

@@ -59,7 +59,13 @@ Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'bootstrap/js/bootstrap.min.js'
 
 $navigation = new NavigationController();
 // Onepager or not
-switch (Config::getInstance()->getGeneral('general', 'page_layout')){
+if (Config::getInstance()->hasPlugin(URLs::getInstance()->module())) {
+    // plugin 
+    $layout = Config::getInstance()->getGeneral('general', 'plugin_layout');
+} else {
+    $layout = Config::getInstance()->getGeneral('general', 'page_layout');
+}
+switch ($layout){
     case "floating":
         $container = new FloatingController();
         $navigation->setView("FloatingNavigationView");
