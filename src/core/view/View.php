@@ -59,7 +59,7 @@ class View extends AbstractView
                 $arg++;
             }
             $cols--;
-            $string .= '<div class="col-md-'.$width.' list-column">'.$column.'</div>';
+            $string .= '<div class="col-sm-'.$width.' list-column">'.$column.'</div>';
         }
         return '<div class="row list">' . $string . '</div>';
     }

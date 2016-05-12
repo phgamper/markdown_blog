@@ -4,9 +4,9 @@
  * This file is part of the MarkdownBlog project.
  * TODO ...
  *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,32 +24,28 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class URLs
-{
+class URLs {
+
     private $base;
-
     private $utf8;
-
     private $uri;
-
     private $parts;
 
     private static $instance = null;
 
-    private function __construct()
-    {
+    private function __construct() {
         self::parseURI();
     }
 
-    private function __clone() {}
+    private function __clone() {
+    }
 
     /**
      * returns the instance created by its first invoke.
      *
      * @return URLs
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -77,19 +73,19 @@ class URLs
      * @param int $level
      * @return string
      */
-    public function module($level = 0){
-        return !array_key_exists($level, $this->parts) || $this->parts[$level] == '' ?  'home' : strtolower($this->parts[$level]);
+    public function module($level = 0) {
+        return !array_key_exists($level, $this->parts) || $this->parts[$level] == '' ? Config::getInstance()->getGeneral('general', 'default_home') : strtolower($this->parts[$level]);
     }
 
-    public function getURI(){
-        return $this->uri == '' ? 'home' : rtrim($this->uri,"/");
+    public function getURI() {
+        return $this->uri == '' ? Config::getInstance()->getGeneral('general', 'default_home') : rtrim($this->uri, "/");
     }
 
-    public function level($level){
+    public function level($level) {
         return array_key_exists($level, $this->parts) ? $this->parts[$level] : false;
     }
-    
-    public function isRaw(){
+
+    public function isRaw() {
         return $this->module() == 'raw';
     }
 }
