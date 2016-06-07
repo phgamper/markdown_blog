@@ -21,6 +21,8 @@
     ExpiresByType application/x-javascript "access plus 1 week"
     ExpiresByType application/javascript "access plus 1 week"
     ExpiresByType application/pdf "access plus 1 week"
+    
+    ExpiresByType application/json "access plus 1 second"
 
     ExpiresDefault "access plus 1 month"
 </IfModule>
