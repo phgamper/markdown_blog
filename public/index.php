@@ -59,7 +59,7 @@ Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'bootstrap/js/bootstrap.min.js'
 
 $navigation = new NavigationController();
 // Onepager or not
-if (Config::getInstance()->hasPlugin(URLs::getInstance()->module())) {
+if (URLs::getInstance()->isPlugin()) {
     // plugin 
     $layout = Config::getInstance()->getGeneral('general', 'plugin_layout');
 } else {

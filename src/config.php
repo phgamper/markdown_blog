@@ -64,6 +64,13 @@ define('PLUGIN_DIR', CONFIG_DIR.'plugins/', TRUE);
 define('CSS_DIR', 'css/', TRUE);
 
 /**
+ * Path to the JS files of the project.
+ *
+ * @global JS_DIR string path of the css directory
+ */
+define('JS_DIR', 'js/', TRUE);
+
+/**
  * Path to the public library directory of the project.
  *
  * @global PUBLIC_LIB_DIR string path to the directory

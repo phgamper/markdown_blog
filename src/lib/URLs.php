@@ -88,5 +88,9 @@ class URLs {
     public function isRaw() {
         return $this->module() == 'raw';
     }
+    
+    public function isPlugin() {
+        return Config::getInstance()->hasPlugin($this->module());
+    }
 }
 

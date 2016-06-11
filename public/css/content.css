@@ -28,11 +28,6 @@
 	border-top: 1px solid #AAAAAA;
 }
 
-.content-item {
-	background: #fff;
-	background: rgba(255,255,255,0.9);
-}
-
 .list-item {
 	padding: 16px 16px 32px 16px;
 }
@@ -52,39 +47,16 @@
 /* RESPONSIVE CSS
     --------------------------------------------------
 @media ( max-width : 979px) {
-    .content h1 {
-        font-size: 15pt;
-        text-align: center;
-    }
-
-    .content h2 {
-        font-size: 13pt;
-    }
-
-    .content h3 {
-        font-size: 12pt;
-    }
-
-    .content p {
-        font-size: 11pt;
-    }
+	.container {
+		padding-left: 4px;
+		padding-right: 4px;
+	}
 
 }
 @media ( max-width : 767px) {
-    .content h1 {
-        font-size: 14pt;
-        text-align: center;
-    }
-
-    .content h2 {
-        font-size: 12pt;
-    }
-
-    .content h3 {
-        font-size: 11pt;
-    }
-
-    .content p {
-        font-size: 10pt;
-    }
-}*/
+	.container {
+		padding-left: 0px;
+		padding-10px-right: 0px;
+	}
+}
+*/

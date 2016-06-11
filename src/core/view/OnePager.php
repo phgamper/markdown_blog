@@ -28,12 +28,7 @@ class OnePager extends View {
     
     public function __construct(AbstractModel $model, $config){
         parent::__construct($model, $config);
-        Script::getInstance()->inline("$('a').click(function(){
-            $('html, body').animate({
-                scrollTop: $( $(this).attr('href') ).offset().top
-            }, 500);
-            return false;
-        });");
+        Script::getInstance()->link(JS_DIR . "onepager.js");
     }
 
     protected function section(AbstractModel $model, $content) {
