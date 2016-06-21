@@ -85,12 +85,18 @@ define('PUBLIC_LIB_DIR', 'lib/', TRUE);
 define('LOG_DIR', '../log/', TRUE);
 
 /**
+ * Path to the cached files of the project.
+ *
+ * @global CACHE_DIR string path of the css directory
+ */
+define('CACHE_DIR', 'cache/', TRUE);
+
+/**
  * The default log file of the project.
  *
  * @global DEFAULT_LOG_FILE string name of the default logfile
  *        
  */
-
 define('DEFAULT_LOG_FILE', 'markdown_blog.log', TRUE);
 
 /**
