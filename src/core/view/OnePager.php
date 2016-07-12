@@ -28,7 +28,6 @@ class OnePager extends View {
     
     public function __construct(AbstractModel $model, $config){
         parent::__construct($model, $config);
-        Script::getInstance()->link(JS_DIR . "onepager.js");
     }
 
     protected function section(AbstractModel $model, $content) {
