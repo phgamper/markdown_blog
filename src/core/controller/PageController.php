@@ -42,6 +42,10 @@ abstract class PageController extends AbstractController
                         $config = array('key' => 'raw', 'name' => 'raw', 'path' => $raw);
                         $model = new HyperTextMarkup($config);
                         break;
+                    case 'php':
+                        $config = array('key' => 'raw', 'name' => 'raw', 'path' => $raw);
+                        $model = new HypertextPreprocessor($config);
+                        break;
                     default:
                         throw new Exception('The requested URL is not available.');
                 }
