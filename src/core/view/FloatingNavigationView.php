@@ -26,8 +26,9 @@
  */
 class FloatingNavigationView extends AbstractNavigationView {
 
-    private $active = "active";
-
+    // FIXME: private $active = "active";
+    private $active = "";
+    
     public function show() {
         $nav = '';
         foreach ($this->model->getModels() as $key => $value) {
@@ -42,12 +43,12 @@ class FloatingNavigationView extends AbstractNavigationView {
 
     public function link(Link $model, $arg) {
         $raw = URLs::getInstance()->isRaw() && $model->config['path'][0] == '#' ? Config::getInstance()->app_root : '';
-        return '<li ' . self::isActive() . '><a class="scroll" href="' . $raw . $model->config['path'] . '">' . $model->config['name'] . '</a></li>';
+        return '<li ' . self::isActive() . '><a class="page-scroll" href="' . $raw . $model->config['path'] . '">' . $model->config['name'] . '</a></li>';
     }
 
     protected function li(AbstractModel $model, $arg) {
         $raw = URLs::getInstance()->isRaw() ? Config::getInstance()->app_root : '';
-        return '<li ' . self::isActive() . '><a class="scroll" href="' . $raw . '#' . $arg . '">' . $model->config['name'] . '</a></li>';
+        return '<li ' . self::isActive() . '><a class="page-scroll" href="' . $raw . '#' . $arg . '">' . $model->config['name'] . '</a></li>';
     }
 
     private function isActive() {
