@@ -28,7 +28,7 @@ abstract class PageController extends AbstractController
     public function __construct()
     {
         $this->actionListener();
-        $this->output = $this->view->show();
+        $this->output = Utils::obfuscateMailTo($this->view->show(), Script::getInstance());
         // TODO prepend msg thrown by Logger
         Logger::getInstance()->writeLog();
     }

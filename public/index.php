@@ -51,7 +51,6 @@ if (isset($config['highlight']) && $config['highlight']) {
 if (array_key_exists('img_resize', $config) && $config['img_resize']) {
     Script::getInstance()->link('image.js');
 }
-Script::getInstance()->link(JS_DIR.'mail.js');
 Head::getInstance()->link(PUBLIC_LIB_DIR . 'bootstrap/css/bootstrap.min.css');
 Head::getInstance()->link(PUBLIC_LIB_DIR . 'font-awesome/css/font-awesome.min.css');
 // Add jquery and bootstrap into header so included HTML pages can use the libs
