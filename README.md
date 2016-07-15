@@ -19,6 +19,7 @@ The content of the website can be provided in easy to use [markdown](http://de.w
 - Extended support for blogs
   - Search for categories
   - Display content on several pages to ensure fast loading
+- Mail obfuscation
 
 ## Quick start
 
