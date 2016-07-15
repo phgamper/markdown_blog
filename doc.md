@@ -313,6 +313,6 @@ find . -iname "*.php" | xargs chmod 640
 Any email address found in the HTML output is obfuscated automatically. To deobfuscate, surround the **a** using **span** as follows 
 ```
 <span class="obfuscate">
-    <a href="mailto:lucaguadagnini@hotmail.com">lucaguadagnini@hotmail.com</a>
+    <a href="mailto:me@example.org">me@example.org</a>
 </span>
  ```
