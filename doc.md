@@ -308,3 +308,11 @@ find . -iname "*.php" | xargs chmod 640
   
 **_Note:_** If MarkdownBlog was cloned from git, it's recommended not to use root to execute the git commands, since that will make root the owner of the cloned files.
 
+5. Miscellaneous
+- Mail Obfuscation
+Any email address found in the HTML output is obfuscated automatically. To deobfuscate, surround the **a** using **span** as follows 
+```
+<span class="obfuscate">
+    <a href="mailto:lucaguadagnini@hotmail.com">lucaguadagnini@hotmail.com</a>
+</span>
+ ```
