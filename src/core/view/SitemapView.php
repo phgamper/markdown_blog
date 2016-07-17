@@ -3,10 +3,10 @@
 /**
  * This file is part of the MarkdownBlog project.
  * It provides a view that displays formatted markdown/html files as a list.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,10 +24,10 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class SitemapView extends AbstractNavigationView
-{
+class SitemapView extends AbstractNavigationView {
+
     public function show() {
-        return '<div class="row sitemap"><div class="sitemap-inner col-md-12"><div class="row""><ul class = "sitemap-top-level">'.parent::show().'</ul></div></div></div>';
+        return '<div class="row sitemap"><div class="sitemap-inner col-md-12"><div class="row""><ul class = "sitemap-top-level">' . parent::show() . '</ul></div></div></div>';
     }
 
     /**
@@ -36,19 +36,27 @@ class SitemapView extends AbstractNavigationView
      * @param int $arg
      * @return string
      */
-    public function container(Container $model, $arg){
-        $sitemap = '';
-        foreach($model->getModels() as $key => $value){
-            $sitemap .= $this->visit($value, $arg.'/'.$key);
-        }
-        return '<li><p>'.$model->config['name'].'</p><div class="sitemap-sub-level"><ul>'.$sitemap.'</ul></div></li>';
+    public function container(Container $model, $arg) {
+        return '<li><p>' . $model->config['name'] . '</p>' . $this->inject($model, $arg) . '</li>';
     }
 
-    public function link(Link $model, $arg) {
-        return '<li><p><a href="'.$model->config['path'].'">'.$model->config['name'].'</a></p></li>';
+    public function typedContainer(TypedContainer $model, $arg) {
+        $anchor = $this->anchor;
+        $this->anchor = false;
+        $inject = $this->inject($model, $arg);
+        $this->anchor = $anchor;
+        return $this->li($model, $arg, $this->anchor, $inject);
     }
-    
-    protected function li(AbstractModel $model, $arg){
-        return '<li><p><a href="'.$arg.'">'.$model->config['name'].'</a></p></li>';
+
+    protected function li(AbstractModel $model, $arg, $anchor, $inject = '') {
+        return '<li><p><a href="' . $this->prefix($arg, $anchor) . $arg . '">' . $model->config['name'] . '</a></p>' . $inject . '</li>';
+    }
+
+    protected function inject(Container $model, $arg) {
+        $sitemap = '';
+        foreach ($model->getModels() as $key => $value) {
+            $sitemap .= $this->visit($value, $arg . '/' . $key);
+        }
+        return '<div class="sitemap-sub-level"><ul>' . $sitemap . '</ul>';
     }
 }

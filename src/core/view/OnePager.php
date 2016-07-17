@@ -25,44 +25,62 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 class OnePager extends View {
-    
-    public function __construct(AbstractModel $model, $config){
+
+    public function __construct(AbstractModel $model, $config) {
         parent::__construct($model, $config);
     }
 
-    protected function section(AbstractModel $model, $content) {
-        return '<section id="' . $model->config['key'] . '"><div class="onepager-item"><div class="container">' . $content . '</div></div></section>';
+    protected function section(AbstractModel $model, $arg, $content) {
+        /** 
+         * FIXME: $arg maybe of other type as I mixed different types :-(
+         * i.e., the use of the argument passed by through the visitor is 
+         * not consistent to super classes section true or false vs. paging in collection
+         **/
+        return is_bool($arg) && $arg ? '<section id="' . $model->config['key'] . '"><div class="onepager-item"><div class="container">' . $content . '</div></div></section>' : $content;
     }
 
+    /**
+     * @param AbstractModel $model
+     * @param boolean $arg indicates whether to use section tag or not
+     * @return mixed
+     */
     public function visit(AbstractModel $model, $arg) {
         if (array_key_exists('style', $model->config)) {
             Head::getInstance()->link($model->config['style']);
         }
         return $model->accept($this, $arg);
     }
-    
-    public function container(Container $model, $arg){
+
+    public function container(Container $model, $arg) {
         $string = '';
-        foreach($model->getModels() as $m) {
-            $string .= $this->visit($m,$arg);
+        foreach ($model->getModels() as $m) {
+            $string .= $this->visit($m, $arg);
         }
         return $string;
     }
 
     public function collection(Collection $model, $arg) {
-        return $this->section($model, parent::container($model, $arg));
+        return $this->section($model, $arg, parent::collection($model, false));
     }
 
     public function markup(Markup $model, $arg) {
-        return $this->section($model, parent::markup($model, $arg));
+        return $this->section($model, $arg, parent::markup($model, $arg));
     }
 
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg) {
-        return $this->section($model, parent::hypertextPreprocessor($model, $arg));
+        return $this->section($model, $arg, parent::hypertextPreprocessor($model, $arg));
     }
 
     public function link(Link $model, $arg) {
         return "";
     }
-    
+
+    /**
+     * This function outputs the HTML string generated during building the view.
+     *
+     * @return string HTML output
+     */
+    public function show() {
+        return $this->logger() . $this->visit($this->model, true);
+    }
 }

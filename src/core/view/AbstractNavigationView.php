@@ -26,14 +26,16 @@
  */
 abstract class AbstractNavigationView extends AbstractView {
 
+    protected $anchor;
+
     /**
      *
      * @param Container $model
-     * @param array $config
+     * @param boolean $anchor indicates whether to use anchors (true) or urls (false)
      */
-    public function __construct(Container $model, array $config) {
+    public function __construct(Container $model, $anchor) {
         $this->model = $model;
-        $this->config = $config;
+        $this->anchor = $anchor;
     }
 
     /**
@@ -43,35 +45,25 @@ abstract class AbstractNavigationView extends AbstractView {
     public function show() {
         $nav = '';
         foreach ($this->model->getModels() as $key => $value) {
-            $nav .= $this->visit($value, $this->config['root'] . $key);
+            $nav .= $this->visit($value, $key);
         }
         return $nav;
     }
 
-    /**
-     * @param AbstractModel $model
-     * @param $arg
-     * @return mixed
-     */
-    protected abstract function li(AbstractModel $model, $arg);
-    
-    /**
-     * @param Container $model
-     * @param int $arg
-     * @return string
-     */
-    public abstract function container(Container $model, $arg);
+    public function typedContainer(TypedContainer $model, $arg) {
+        return $this->container($model, $arg);
+    }
 
     public function composite(Composite $model, $arg) {
-        return $this->li($model, $arg);
+        return $this->li($model, $arg, $this->anchor);
     }
 
     public function collection(Collection $model, $arg) {
-        return $this->li($model, $arg);
+        return $this->li($model, $arg, $this->anchor);
     }
 
     public function markup(Markup $model, $arg) {
-        return $this->li($model, $arg);
+        return $this->li($model, $arg, $this->anchor);
     }
 
     public function markdown(Markdown $model, $arg) {
@@ -83,24 +75,37 @@ abstract class AbstractNavigationView extends AbstractView {
     }
 
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg) {
-        return $this->li($model, $arg);
+        return $this->li($model, $arg, $this->anchor);
     }
 
     public function remote(Remote $model, $arg) {
         return $this->markdown($model, $arg);
     }
 
+    /**
+     * @param Link $model
+     * @param $arg
+     * @return mixed|string
+     */
     public function link(Link $model, $arg) {
-        return '<li><a href="' . $model->config['path'] . '">' . $model->config['name'] . '</a></li>';
+        return $this::li($model, $model->config['path'], false);
     }
 
     public function image(Image $model, $arg) {
-        return $this->li($model, $arg);
+        return $this->li($model, $arg, $this->anchor);
     }
 
     public function carousel(OwlCarousel $model, $arg) {
-        return $this->li($model, $arg);
+        return $this->li($model, $arg, $this->anchor);
     }
+
+    /**
+     * @param AbstractModel $model
+     * @param mixed $arg
+     * @param boolean $anchor indicates whether the link is an anchor (true) or url (false)
+     * @return mixed
+     */
+    protected abstract function li(AbstractModel $model, $arg, $anchor);
 
     protected function active($arg) {
         $active = true;
@@ -111,5 +116,18 @@ abstract class AbstractNavigationView extends AbstractView {
             $level++;
         }
         return $active ? 'class="active"' : '';
+    }
+
+    protected function prefix($arg, $anchor) {
+        if (URLs::getInstance()->isRaw()) {
+            $prefix = Config::getInstance()->app_root;
+        } else if ($anchor && URLs::getInstance()->isRoot()) {
+            $prefix = '#';
+        } else if ($anchor) {
+            $prefix = Config::getInstance()->app_root . '#';
+        } else {
+            $prefix = substr($arg, 0, 1) == '#' && !URLs::getInstance()->isRoot() ? Config::getInstance()->app_root : '';
+        }
+        return $prefix;
     }
 }

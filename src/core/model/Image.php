@@ -25,8 +25,8 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Image extends AbstractModel
-{
+class Image extends AbstractModel implements ILeaf {
+
     // TODO support multiple mimes
     const MIME = '.jpg';
 
@@ -37,8 +37,7 @@ class Image extends AbstractModel
      * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg)
-    {
+    public function accept(IVisitor $visitor, $arg) {
         return $visitor->image($this, $arg);
     }
 
@@ -49,19 +48,18 @@ class Image extends AbstractModel
      * @param int $index - index of parsed element
      * @return string parsed image
      */
-    public function parse($index)
-    {
+    public function parse($index) {
         try {
-            $src = 'src="'.Config::getInstance()->app_root . $this->config['path'].'"';
+            $src = 'src="' . Config::getInstance()->app_root . $this->config['path'] . '"';
             if (Config::getInstance()->getGeneral('general', 'img_resize')) {
-                $src = 'src="/img/loader.gif" data-'.$src;
+                $src = 'src="/img/loader.gif" data-' . $src;
             }
-            $img = '<img index='.$index.' '.$src.' class="owl-jumpTo">';
+            $img = '<img index=' . $index . ' ' . $src . ' class="owl-jumpTo">';
             // TODO move link to modal or use $index for case distinction
             $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="' . $index . '">' . $img . '</a>';
             return '<div class="thumbnail img-resize">' . $a . '</div>';
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Image::parse("'.$this->config['path'].'")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Image::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

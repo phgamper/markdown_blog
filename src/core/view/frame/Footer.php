@@ -39,8 +39,7 @@ class Footer implements IView
     public function show()
     {
         // sitemap
-        $this->controller->setView('SitemapView');
-        $sitemap = $this->controller->display();
+        $sitemap = $this->controller->sitemap();
         // legal notice
         $left = array_key_exists('legal_notice', $this->config) ? $this->config['legal_notice'] : '';
         $left = '<div class="col-md-8"><p>' . $left . '</p></div>';

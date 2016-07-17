@@ -4,9 +4,9 @@
  * This file is part of the MarkdownBlog project.
  * TODO
  *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,26 +24,25 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-abstract class Markup extends AbstractModel
-{
+abstract class Markup extends AbstractModel implements ILeaf{
+
     /**
      * This function reads the tags from the file, if they have been provided
      *
      * @return array parsed tags
      */
-    public function parseTags()
-    {
+    public function parseTags() {
         try {
             if ($fh = fopen($this->config['path'], 'r')) {
 
                 $tags = array();
                 $meta = false;
 
-                while (! feof($fh)) {
+                while (!feof($fh)) {
                     $line = fgets($fh);
 
                     // opening tag
-                    if (! $meta && preg_match('/^(\<\!\-\-).*/', $line)) {
+                    if (!$meta && preg_match('/^(\<\!\-\-).*/', $line)) {
                         $tags['meta'] = array();
                         $meta = true;
                     }
@@ -88,11 +87,9 @@ abstract class Markup extends AbstractModel
                 throw new Exception('Can not open ' . $this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markup::parse("'.$this->config['path'].'")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markup::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return array();
         }
     }
 }
-
-?>
 

@@ -2,9 +2,8 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the central part of the application and is responsible for loading 
- * and parsing the PHP files.
- * 
+ * TODO
+ *
  * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
  * Its purpose is to provide a easy way to share your thoughts without any Database 
  * or special setup needed. 
@@ -25,10 +24,17 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class HypertextPreprocessor extends AbstractModel implements ILeaf
+class TypedContainer extends Container
 {
-    const MIME = '.php';
+    public $models = array();
+    protected $leaf;
 
+    
+    public function __construct(ILeaf $leaf, $config) {
+        parent::__construct($config);
+        $this->leaf = $leaf;
+    }
+    
     /**
      *
      *
@@ -36,9 +42,15 @@ class HypertextPreprocessor extends AbstractModel implements ILeaf
      * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg)
-    {
-        return $visitor->hypertextPreprocessor($this, $arg);
+    public function accept(IVisitor $visitor, $arg){
+        return $visitor->typedContainer($this, $arg);
+    }
+
+    /**
+     * @return ILeaf 
+     */
+    public function leaf(){
+        return $this->leaf;
     }
 
     /**
@@ -46,25 +58,10 @@ class HypertextPreprocessor extends AbstractModel implements ILeaf
      * containing its content.
      *
      * @param int $index - index of parsed element
-     * @return string parsed HTML
+     * @return string parsed image
      */
     public function parse($index)
     {
-        try {
-            if (file_exists($this->config['path'])) {
-                ob_start();
-                include $this->config['path'];
-                $content = ob_get_contents();
-                ob_end_clean();
-                return $content;
-            } else {
-                throw new Exception('File not found: ' . $this->config['path']);
-            }
-        } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'HypertextPreprocessor::parse("'.$this->config['path'].'")', $e->getMessage()));
-            return '';
-        }
+        return $this->leaf->parse($index);
     }
 }
-
-?>

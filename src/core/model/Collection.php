@@ -4,9 +4,9 @@
  * This file is part of the MarkdownBlog project.
  * TODO
  *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,22 +24,21 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Collection extends Container
-{
-    public $models = array();
+class Collection extends Container implements ILeaf {
+
+    public $models = [];
 
     public $start = 0;
 
-    public function __construct($model, $config)
-    {
+    public function __construct($model, $config) {
         parent::__construct($config);
 
         $files = ScanDir::getFilesOfType($this->config['path'], $model::MIME, !isset($config['reverse']) || $config['reverse']);
         $this->count = count($files);
         $this->limit = isset($config['limit']) ? $config['limit'] : $this->count;
         $static = isset($config['static']) ? $config['static'] : true;
-        foreach($files as $f){
-            $this->models[] = new $model(array('name' => $f, 'path' => $config['path'].$f, 'type' => $config['type'], 'static' => $static));
+        foreach ($files as $f) {
+            $this->models[] = new $model(['name' => $f, 'path' => $config['path'] . $f, 'type' => $config['type'], 'static' => $static]);
         }
     }
 
@@ -50,7 +49,7 @@ class Collection extends Container
      * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
+    public function accept(IVisitor $visitor, $arg) {
         return $visitor->collection($this, $arg);
     }
 }

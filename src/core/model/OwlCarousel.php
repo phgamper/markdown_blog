@@ -2,12 +2,12 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the central part of the application and is responsible for loading 
+ * It provides the central part of the application and is responsible for loading
  * and parsing the image files.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -25,8 +25,8 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class OwlCarousel extends AbstractModel
-{
+class OwlCarousel extends AbstractModel implements ILeaf {
+
     // TODO multiple mimes
     const MIME = '.jpg';
 
@@ -37,7 +37,7 @@ class OwlCarousel extends AbstractModel
      * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
+    public function accept(IVisitor $visitor, $arg) {
         $index = !isset($this->config['reverse']) || $this->config['reverse'] ? 1 : 0;
         return $visitor->carousel($this, $index);
     }
@@ -49,8 +49,7 @@ class OwlCarousel extends AbstractModel
      * @param int $index
      * @return string generated carousel
      */
-    public function parse($index)
-    {
+    public function parse($index) {
         $files = ScanDir::getFilesOfType($this->config['path'], self::MIME, $index);
         try {
             Head::getInstance()->link('lib/owl-carousel/css/owl.carousel.css');
@@ -59,12 +58,12 @@ class OwlCarousel extends AbstractModel
             Head::getInstance()->link('lib/owl-carousel/css/lazy_load.css');
             Script::getInstance()->link('lib/owl-carousel/js/lazy_load.js');
             $items = '';
-            foreach ($files as $f){
-                $items .= '<div class="item"><img class="lazyOwl" data-src="'.Config::getInstance()->app_root.$this->config['path'].$f.'" /></div>';
+            foreach ($files as $f) {
+                $items .= '<div class="item"><img class="lazyOwl" data-src="' . Config::getInstance()->app_root . $this->config['path'] . $f . '" /></div>';
             }
-            return '<div id="carousel" class="owl-carousel owl-theme">'.$items.'</div>';
+            return '<div id="carousel" class="owl-carousel owl-theme">' . $items . '</div>';
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'OwlCarousel::parse("'.$this->config['path'].'")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'OwlCarousel::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

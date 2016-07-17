@@ -2,12 +2,12 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the central part of the application and is responsible for loading 
+ * It provides the central part of the application and is responsible for loading
  * and parsing the markdown files.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -25,8 +25,8 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Markdown extends Markup
-{
+class Markdown extends Markup {
+
     const MIME = '.md';
 
     /**
@@ -36,7 +36,7 @@ class Markdown extends Markup
      * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
+    public function accept(IVisitor $visitor, $arg) {
         return $visitor->markdown($this, $arg);
     }
 
@@ -47,8 +47,7 @@ class Markdown extends Markup
      * @param int $index - index of parsed element
      * @return string parsed Markdown
      */
-    public function parse($index)
-    {
+    public function parse($index) {
         try {
             if ($fh = fopen($this->config['path'], 'r')) {
                 $content = Parsedown::instance()->text(fread($fh, filesize($this->config['path'])));
@@ -58,7 +57,7 @@ class Markdown extends Markup
                 throw new Exception('Can not open ' . $this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("'.$this->config['path'].'")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markdown::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

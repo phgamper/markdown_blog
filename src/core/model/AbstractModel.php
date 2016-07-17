@@ -2,12 +2,12 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the abstract central part of the application and is responsible for loading 
+ * It provides the abstract central part of the application and is responsible for loading
  * and parsing the files.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -25,13 +25,12 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-abstract class AbstractModel implements IModel
-{
+abstract class AbstractModel implements IModel {
+
     // TODO public / private
     public $config;
 
-    public function __construct($config)
-    {
+    public function __construct($config) {
         $this->config = $config;
     }
 

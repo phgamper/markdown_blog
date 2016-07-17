@@ -4,9 +4,9 @@
  * This file is part of the MarkdownBlog project.
  * TODO
  *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,8 +24,8 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Link extends AbstractModel
-{
+class Link extends AbstractModel implements ILeaf {
+
     /**
      *
      *
@@ -33,7 +33,7 @@ class Link extends AbstractModel
      * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
+    public function accept(IVisitor $visitor, $arg) {
         return $visitor->link($this, $arg);
     }
 
@@ -44,8 +44,7 @@ class Link extends AbstractModel
      * @param int $index - index of parsed element
      * @return string parsed image
      */
-    public function parse($index)
-    {
-        return '<a href="'.$this->config['path'].'" target="blank">'.$this->config['path'].'</a>';
+    public function parse($index) {
+        return '<a href="' . $this->config['path'] . '" target="blank">' . $this->config['path'] . '</a>';
     }
 }

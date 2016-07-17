@@ -26,40 +26,39 @@
  */
 class NavigationController extends AbstractController {
 
-    private $root;
+    protected $navigation;
     private $model;
 
-    public function __construct() {
-        parent::__construct();
-        $this->view = "StackedNavigationView";
+    public function __construct($view) {
+        $this->view = $view;
         Head::getInstance()->link(CSS_DIR . 'sitemap.css');
+        $this->actionListener();
     }
 
-    public function setView($view) {
-        $this->view = $view;
+    public function sitemap() {
+        $anchor = $this->navigation instanceof FloatingNavigationView ? true : false;
+        $sitemap = (new SitemapView($this->model, $anchor))->show();
+        return Utils::obfuscateMailTo($sitemap, Script::getInstance());
     }
 
     public function display() {
-        $output = (new $this->view($this->model, array('root' => $this->root)))->show();
+        $output = (new $this->view($this->model))->show();
         Logger::getInstance()->writeLog();
-        return $output;
+        return Utils::obfuscateMailTo($output, Script::getInstance());
     }
 
     protected function actionListener() {
         try {
-            $this->root = Config::getInstance()->getGeneral('general', 'app_root');
             $module = URLs::getInstance()->module();
             if (Config::getInstance()->hasPlugin($module)) {
                 // if the module part of the URI may be a plugin
                 $config = Config::getInstance()->getPlugin($module);
-                $this->root .= $module . '/';
             } else {
                 $config = Config::getInstance()->getConfig();
             }
             $this->model = new Container($config);
-            foreach ($config as $key => $value) {
-                $this->model->addModel(parent::evaluateModel($value, $key), $key);
-            }
+            $this->addModel($this->model, $config);
+            $this->navigation = new $this->view($this->model, $config);
         } catch (ErrorException $e) {
             $this->model = new Container(array());
             // TODO

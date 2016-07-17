@@ -63,6 +63,10 @@ class View extends AbstractView
         }
         return '<div class="row list">' . $string . '</div>';
     }
+    
+    public function typedContainer(TypedContainer $model, $arg) {
+        return $this->visit($model->leaf(), $arg);
+    }
 
     public function composite(Composite $model, $arg){
         return $this->container($model, $arg);
@@ -73,7 +77,8 @@ class View extends AbstractView
         if(!array_key_exists('paging', $model->config) || $model->config['paging']){
             $pager = $this->pager($model->count, $model->limit) ;
         }
-        return $this->container($model, $model->start).$pager;
+        // FIXME, self is required here
+        return self::container($model, $model->start).$pager;
     }
 
     public function markup(Markup $model, $arg){

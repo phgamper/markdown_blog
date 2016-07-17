@@ -26,6 +26,20 @@
  */
 class StackedNavigationView extends AbstractNavigationView {
 
+    /**
+     * StackedNavigationView constructor.
+     * 
+     * @param Container $model
+     */
+    public function __construct(Container $model) {
+        parent::__construct($model, false);
+    }
+
+    /**
+     * @param Container $model
+     * @param int $arg
+     * @return string
+     */
     public function container(Container $model, $arg) {
         $active = $this->active($arg);
         $dropdown = '';
@@ -36,8 +50,14 @@ class StackedNavigationView extends AbstractNavigationView {
         return '<li ' . $active . '><a href="' . $arg . '" class="dropdown-toggle" data-toggle="dropdown">' . $model->config['name'] . '<b class="caret"></b></a>' . $dropdown . '</li>';
     }
 
-    protected function li(AbstractModel $model, $arg) {
-        $active = $this->active($arg);
-        return '<li ' . $active . '><a href="' . $arg . '">' . $model->config['name'] . '</a></li>';
+    /**
+     * @param AbstractModel $model
+     * @param mixed $arg
+     * @param bool $anchor
+     * 
+     * @return string
+     */
+    protected function li(AbstractModel $model, $arg, $anchor) {
+        return '<li ' . $this->active($arg) . '><a href="' . $this->prefix($arg, $anchor) . $arg . '">' . $model->config['name'] . '</a></li>';
     }
 }

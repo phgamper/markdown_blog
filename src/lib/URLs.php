@@ -85,6 +85,15 @@ class URLs {
         return array_key_exists($level, $this->parts) ? $this->parts[$level] : false;
     }
 
+    public function root() {
+        $root = $this->isPlugin() ? $this->module() : '';
+        return Config::getInstance()->app_root.$root;
+    }
+    
+    public function isRoot() {
+        return '/'.$this->uri == $this->root();
+    }
+    
     public function isRaw() {
         return $this->module() == 'raw';
     }

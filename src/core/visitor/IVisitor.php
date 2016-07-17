@@ -29,6 +29,8 @@ interface IVisitor
     public function visit(AbstractModel $model, $arg);
 
     public function container(Container $model, $arg);
+    
+    public function typedContainer(TypedContainer $model, $arg);
 
     public function composite(Composite $model, $arg);
 

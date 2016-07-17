@@ -2,11 +2,7 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * This interface enables all view elements to display their HTML source.
- *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
- * Its purpose is to provide a easy way to share your thoughts without any Database
- * or special setup needed.
+ * TODO
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,14 +20,7 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-interface IView {
-
-    /**
-     * This function outputs the HTML string generated during building the view.
-     *
-     * @return string HTML output
-     */
-    public function show();
+interface ILeaf extends IModel
+{
+    
 }
-
-?>

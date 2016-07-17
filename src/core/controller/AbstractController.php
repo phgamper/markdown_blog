@@ -53,23 +53,28 @@ abstract class AbstractController {
      */
     protected function evaluateModel($config, $key) {
         $config['key'] = $key;
-        if (isset($config['type'])) {
+        if (array_key_exists('type', $config)) {
             $type = $config['type'];
         } else {
             throw new ErrorException('There is an error in the configuration file!');
         }
 
         switch (true) {
+            case $type == 'TypedContainer':
+                if (array_key_exists('leaf', $config)) {
+                    $leaf = new $config['leaf']($config);
+                } else {
+                    throw new ErrorException('There is an error in the configuration file!');
+                }
+                $model = new TypedContainer($leaf, $config);
+                self::addModel($model, $config);
+                break;
             case !array_key_exists('path', $config):
             case $type == 'Container':
             case $type == 'Composite':
                 // type should be Composite or Container
                 $model = new $type($config);
-                foreach ($config as $key => $value) {
-                    if (is_array($value)) {
-                        $model->addModel($this->evaluateModel($value, $key), $key);
-                    }
-                }
+                self::addModel($model, $config);
                 break;
             case is_dir($config['path']) && $type != 'OwlCarousel' && $type != 'Link':
                 $filter = new Filter(new Collection($type, $config));
@@ -109,6 +114,14 @@ abstract class AbstractController {
             $config = Config::getInstance()->getErrorArray('404');
             $log = new Error('There is a misconfiguration in the error behaviour.', 'Controller::exception()', $e->getMessage());
             self::exception($log, $config, 404);
+        }
+    }
+
+    protected function addModel(Container $model, $config) {
+        foreach ($config as $key => $value) {
+            if (is_array($value)) {
+                $model->addModel($this->evaluateModel($value, $key), $key);
+            }
         }
     }
 }

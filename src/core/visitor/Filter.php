@@ -44,6 +44,10 @@ class Filter implements IVisitor
         return null; // TODO not implemented || unused
     }
 
+    public function typedContainer(TypedContainer $model, $arg){
+        return null; // TODO not implemented || unused
+    }
+    
     public function composite(Composite $model, $arg){
         return null; // TODO not implemented || unused
     }

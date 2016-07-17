@@ -28,52 +28,16 @@ class StackedController extends PageController {
 
     const VIEW = 'View';
 
-    /**
-     *
-     */
-    protected function actionListener() {
-        try {
-            if (!$this->raw(self::VIEW)) {
-                // load the configuration file
-                $level = 1;
-                $module = URLs::getInstance()->module();
-                if (Config::getInstance()->hasModule($module)) {
-                    $config = Config::getInstance()->getModule($module);
-                } else if (Config::getInstance()->hasPlugin($module)) {
-                    // if the module part of the URI may be a plugin
-                    $config = Config::getInstance()->getPluginModule($module, URLs::getInstance()->module(1));
-                    $level++;
-                } else {
-                    throw new Exception('The requested URL is not available.');
-                }
-                $config = $this->resolveURL($config, $level);
-                $model = $this->evaluateModel($config, $module);
-                $view = array_key_exists('view', $config) && $config['view'] ? $config['view'] : self::VIEW;
-                $this->view = new $view($model, $config);
-            }
-        } catch (ErrorException $e) {
-            $config = Config::getInstance()->getErrorArray('500');
-            $log = new Error('An unexpected error has occurred.', 'StackedController::actionListener()', $e->getMessage());
-            self::exception($log, $config, 500);
-        } catch (Exception $e) {
-            $config = Config::getInstance()->getErrorArray('404');
-            $log = new Warning($e->getMessage(), 'StackedController::actionListener()');
-            self::exception($log, $config, 404);
-        }
+    protected function page(&$config, $module) {
+        return self::process($config, $module, 1);
     }
 
-    protected function resolveURL($config, $level) {
-        if ($value = URLs::getInstance()->level($level)) {
-            // if a dropdown is present
-            if (array_key_exists($value, $config)) {
-                $config = self::resolveURL($config[$value], $level + 1);
-            } else if (array_key_exists('path', $config)) {
-                // if URL points to static link
-                $config['path'] = $config['path'] . $value . $config['type']::MIME;
-            } else {
-                throw new Exception('The requested URL is not available.');
-            }
-        }
-        return $config;
+    protected function plugin(&$config, $module) {
+        return self::process($config, $module, 2);
+    }
+
+    private function process(&$config, $module, $level) {
+        $config = $this->resolveURL($config[$module], $level);
+        return $this->evaluateModel($config, $module);
     }
 }

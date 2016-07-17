@@ -57,7 +57,6 @@ Head::getInstance()->link(PUBLIC_LIB_DIR . 'font-awesome/css/font-awesome.min.cs
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'jquery/js/jquery.min.js');
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'bootstrap/js/bootstrap.min.js');
 
-$navigation = new NavigationController();
 // Onepager or not
 if (URLs::getInstance()->isPlugin()) {
     // plugin 
@@ -65,17 +64,21 @@ if (URLs::getInstance()->isPlugin()) {
 } else {
     $layout = Config::getInstance()->getGeneral('general', 'page_layout');
 }
-switch ($layout){
+switch ($layout) {
     case "floating":
         $container = new FloatingController();
-        $navigation->setView("FloatingNavigationView");
+        $navigation = new NavigationController("FloatingNavigationView");
         break;
     case "stacked":
     default:
-        $navigation->setView("StackedNavigationView");
         $container = new StackedController();
+        $navigation = new NavigationController("StackedNavigationView");
 }
 $footer = new Footer($navigation);
+
+if (($css = Config::getInstance()->getGeneral('general', 'template_css'))) {
+    Head::getInstance()->link(TEMPLATES_DIR . 'css/'. $css);
+}
 
 if (($template = Config::getInstance()->getGeneral('general', 'template'))) {
     include_once(TEMPLATES_DIR . $template);
@@ -104,5 +107,3 @@ function error_handler($errno, $errstr, $errfile, $errline) {
         }
     }
 }
-
-?>

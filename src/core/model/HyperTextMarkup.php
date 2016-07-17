@@ -2,12 +2,12 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It provides the central part of the application and is responsible for loading 
+ * It provides the central part of the application and is responsible for loading
  * and parsing the HTML files.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -25,9 +25,10 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class HyperTextMarkup extends Markup
-{
+class HyperTextMarkup extends Markup {
+
     const MIME = '.html';
+
     /**
      *
      *
@@ -35,7 +36,7 @@ class HyperTextMarkup extends Markup
      * @param $arg
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
+    public function accept(IVisitor $visitor, $arg) {
         return $visitor->hyperTextMarkup($this, $arg);
     }
 
@@ -46,18 +47,17 @@ class HyperTextMarkup extends Markup
      * @param int $index - index of parsed element
      * @return string parsed HTML
      */
-    public function parse($index)
-    {
+    public function parse($index) {
         try {
             if ($fh = fopen($this->config['path'], 'r')) {
                 $content = fread($fh, filesize($this->config['path']));
                 fclose($fh);
                 return $content;
             } else {
-                throw new Exception('Can not open '.$this->config['path']);
+                throw new Exception('Can not open ' . $this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("'.$this->config['path'].'")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'HyperTextMarkup::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }
