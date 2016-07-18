@@ -63,17 +63,17 @@ class OnePager extends AbstractPage {
         }
         return $string;
     }
-    
+
     public function collection(Collection $model, $arg, $bool) {
-        return $this->section($model, $bool, parent::container($model, $model->start, $bool) . $this->pager($model));
+        return $this->section($model, $bool, parent::container($model, $model->start, false) . $this->pager($model));
     }
 
     public function markup(Markup $model, $arg, $bool) {
-        return $this->section($model, $bool, parent::markup($model, $arg, $bool));
+        return $this->section($model, $bool, parent::markup($model, $arg, false));
     }
 
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool) {
-        return $this->section($model, $bool, parent::hypertextPreprocessor($model, $arg, $bool));
+        return $this->section($model, $bool, parent::hypertextPreprocessor($model, $arg, false));
     }
 
     public function link(Link $model, $arg, $bool) {
