@@ -113,4 +113,7 @@ abstract class AbstractNavigationView extends AbstractView {
      * @return string whether the current li is active or not
      */
     protected abstract function active($arg);
+
+
+    protected abstract function prefix($arg, $anchor);
 }

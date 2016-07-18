@@ -37,8 +37,7 @@ class NavigationController extends AbstractController {
 
     public function sitemap() {
         $anchor = $this->navigation instanceof FloatingNavigationView ? true : false;
-        $sitemap = (new SitemapView($this->model, $anchor))->show();
-        return Utils::obfuscateMailTo($sitemap, Script::getInstance());
+        return (new SitemapView($this->model, $anchor))->show();
     }
 
     public function display() {

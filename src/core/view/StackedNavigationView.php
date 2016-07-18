@@ -76,4 +76,8 @@ class StackedNavigationView extends AbstractNavigationView {
         }
         return $active ? 'class="active"' : '';
     }
+    
+    protected function prefix($arg, $anchor) {
+        return ''; 
+    }
 }

@@ -90,7 +90,7 @@
 	.sitemap-sub-level {
 		margin: 8px 16px 16px 16px
 	}
-	.sitemap-top-level {
+	.sitemap-top-level li {
 		float: none;
 	}
 }

@@ -38,15 +38,11 @@ class SitemapView extends AbstractNavigationView {
      * @return string
      */
     public function container(Container $model, $arg, $bool) {
-        return '<li><p>' . $model->config['name'] . '</p>' . $this->inject($model, $arg, $bool) . '</li>';
+        return '<li><p>' . $model->config['name'] . '</p>' . $this->inject($model, $arg, false) . '</li>';
     }
 
     public function typedContainer(TypedContainer $model, $arg, $bool) {
-        $anchor = $this->anchor;
-        $this->anchor = false;
-        $inject = $this->inject($model, $arg, $bool);
-        $this->anchor = $anchor;
-        return $this->li($model, $arg, $this->anchor, $inject);
+        return $this->li($model, $arg, $bool, $this->inject($model, $arg, false));
     }
 
     protected function li(AbstractModel $model, $arg, $anchor, $inject = '') {

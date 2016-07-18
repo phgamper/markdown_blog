@@ -64,10 +64,12 @@ class FloatingNavigationView extends AbstractNavigationView {
      * @return string
      */
     protected function active($arg) {
+        /* TODO that should be done by the javascript 
         $a = URLs::getInstance()->isRaw() ? '' : 'class="' . $this->active . '"';
         $this->config[0]; // TODO
         $this->active = '';
-        return $a;
+        */
+        return '';
     }
     
     protected function prefix($arg, $anchor) {

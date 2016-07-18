@@ -33,9 +33,9 @@ class OnePager extends AbstractPage {
     /**
      * This method is used to decide whether to surround the given HTML snippet by a section tag or not.
      * Doing it this way prevents from implementing the check within every visitor method.
-     * 
+     *
      * @param AbstractModel $model that is currently visited
-     * @param boolean $bool specifies whether to add the section tag or not 
+     * @param boolean $bool specifies whether to add the section tag or not
      * @param string $content HTML to surround
      * @return string extended HTML string
      */
@@ -57,26 +57,23 @@ class OnePager extends AbstractPage {
     }
 
     public function container(Container $model, $arg, $bool) {
-        /*
         $string = '';
         foreach ($model->getModels() as $m) {
             $string .= $this->visit($m, $arg, $bool);
         }
         return $string;
-        */
-        return parent::container($model, $arg, false);
     }
-
+    
     public function collection(Collection $model, $arg, $bool) {
-        return $this->section($model, $arg, parent::collection($model, $arg, false));
+        return $this->section($model, $bool, parent::container($model, $model->start, $bool) . $this->pager($model));
     }
 
     public function markup(Markup $model, $arg, $bool) {
-        return $this->section($model, $arg, parent::markup($model, $arg, $bool));
+        return $this->section($model, $bool, parent::markup($model, $arg, $bool));
     }
 
     public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool) {
-        return $this->section($model, $arg, parent::hypertextPreprocessor($model, $arg, $bool));
+        return $this->section($model, $bool, parent::hypertextPreprocessor($model, $arg, $bool));
     }
 
     public function link(Link $model, $arg, $bool) {

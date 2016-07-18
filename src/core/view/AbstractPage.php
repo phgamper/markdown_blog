@@ -81,25 +81,7 @@ abstract class AbstractPage extends AbstractView {
     }
 
     public function collection(Collection $model, $arg, $bool) {
-        $pager = '';
-        if (!array_key_exists('paging', $model->config) || $model->config['paging']) {
-
-            if (!is_null($model->limit)) {
-                $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
-                $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
-                $self = URLs::getInstance()->getURI() . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
-                $self = Config::getInstance()->app_root . $self;
-                if ($prev > 0) {
-                    $pager = '<li class="previous"><a href="' . $self . $prev . '"><i class="fa fa-arrow-left"></i> Newer</a></li>';
-                }
-                if ($next <= ceil($model->count / ($model->limit))) {
-                    $pager .= '<li class="next"><a href="' . $self . $next . '">Older <i class="fa fa-arrow-right"></i></a></li>';
-                }
-                $pager = '<ul class="pager">' . $pager . '</ul>';
-                $pager = '<div class="row"><div class="col-md-12">' . $pager . '</div></div>';
-            }
-        }
-        return $this->container($model, $model->start, $bool) . $pager;
+        return $this->container($model, $model->start, $bool) . $this->pager($model);
     }
 
     public function markup(Markup $model, $arg, $bool) {
@@ -162,5 +144,27 @@ abstract class AbstractPage extends AbstractView {
 
     public function remote(Remote $model, $arg, $bool) {
         return $this->markup($model, $arg, $bool);
+    }
+    
+    protected function pager($model){
+        $pager = '';
+        if (!array_key_exists('paging', $model->config) || $model->config['paging']) {
+
+            if (!is_null($model->limit)) {
+                $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
+                $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
+                $self = URLs::getInstance()->getURI() . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
+                $self = Config::getInstance()->app_root . $self;
+                if ($prev > 0) {
+                    $pager = '<li class="previous"><a href="' . $self . $prev . '"><i class="fa fa-chevron-left"></i> Newer</a></li>';
+                }
+                if ($next <= ceil($model->count / ($model->limit))) {
+                    $pager .= '<li class="next"><a href="' . $self . $next . '">Older <i class="fa fa-chevron-right"></i></a></li>';
+                }
+                $pager = '<ul class="pager">' . $pager . '</ul>';
+                $pager = '<div class="row"><div class="col-md-12">' . $pager . '</div></div>';
+            }
+        }
+        return $pager;
     }
 }
