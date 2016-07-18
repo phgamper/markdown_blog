@@ -27,7 +27,6 @@
 abstract class AbstractView implements IView, IVisitor {
 
     protected $config;
-
     protected $model;
 
     /**
@@ -39,17 +38,6 @@ abstract class AbstractView implements IView, IVisitor {
     public function __construct(AbstractModel $model, array $config) {
         $this->model = $model;
         $this->config = $config;
-        Head::getInstance()->link(CSS_DIR . 'content.css');
-        if (isset($this->config['style'])) {
-            Head::getInstance()->link($this->config['style']);
-        }
-        if (!($model instanceof Container)) {
-            Head::getInstance()->addOg('title', Config::getInstance()->title . ' - ' . $this->config['name']);
-            Head::getInstance()->setTitle(Config::getInstance()->title . ' - ' . $this->config['name']);
-        }
-        if (array_key_exists('description', $this->config)) {
-            Head::getInstance()->addOg('description', $this->config['description']);
-        }
     }
 
     /**
@@ -57,10 +45,11 @@ abstract class AbstractView implements IView, IVisitor {
      *
      * @param AbstractModel $model to visit
      * @param int $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function visit(AbstractModel $model, $arg) {
-        return $model->accept($this, $arg);
+    public function visit(AbstractModel $model, $arg, $bool) {
+        return $model->accept($this, $arg, $bool);
     }
 
     /**
@@ -68,12 +57,12 @@ abstract class AbstractView implements IView, IVisitor {
      *
      * @return string HTML output
      */
-    public function show(){
-        return $this->logger().$this->visit($this->model, null);
+    public function show() {
+        return $this->logger() . $this->visit($this->model, null, false);
     }
 
     /**
-     * 
+     *
      * @return string parsed logger output
      */
     protected function logger() {

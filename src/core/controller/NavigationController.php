@@ -50,23 +50,16 @@ class NavigationController extends AbstractController {
     protected function actionListener() {
         try {
             $module = URLs::getInstance()->module();
-            if (Config::getInstance()->hasPlugin($module)) {
-                // if the module part of the URI may be a plugin
-                $config = Config::getInstance()->getPlugin($module);
-            } else {
-                $config = Config::getInstance()->getConfig();
-            }
+            $config = Config::getInstance()->hasPlugin($module) ? Config::getInstance()->getPlugin($module) : Config::getInstance()->getConfig();
             $this->model = new Container($config);
             $this->addModel($this->model, $config);
             $this->navigation = new $this->view($this->model, $config);
         } catch (ErrorException $e) {
-            $this->model = new Container(array());
+            $this->model = new Container([]);
             // TODO
         } catch (Exception $e) {
-            $this->model = new Container(array());
+            $this->model = new Container([]);
             // TODO
         }
     }
 }
-
-?>

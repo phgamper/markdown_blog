@@ -26,29 +26,29 @@
  */
 interface IVisitor
 {
-    public function visit(AbstractModel $model, $arg);
+    public function visit(AbstractModel $model, $arg, $bool);
 
-    public function container(Container $model, $arg);
+    public function container(Container $model, $arg, $bool);
     
-    public function typedContainer(TypedContainer $model, $arg);
+    public function typedContainer(TypedContainer $model, $arg, $bool);
 
-    public function composite(Composite $model, $arg);
+    public function composite(Composite $model, $arg, $bool);
 
-    public function collection(Collection $model, $arg);
+    public function collection(Collection $model, $arg, $bool);
 
-    public function image(Image $model, $arg);
+    public function image(Image $model, $arg, $bool);
 
-    public function carousel(OwlCarousel $model, $arg);
+    public function carousel(OwlCarousel $model, $arg, $bool);
 
-    public function markup(Markup $model, $arg);
+    public function markup(Markup $model, $arg, $bool);
 
-    public function markdown(Markdown $model, $arg);
+    public function markdown(Markdown $model, $arg, $bool);
 
-    public function hyperTextMarkup(HyperTextMarkup $model, $arg);
+    public function hyperTextMarkup(HyperTextMarkup $model, $arg, $bool);
 
-    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg);
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool);
 
-    public function remote(Remote $model, $arg);
+    public function remote(Remote $model, $arg, $bool);
 
-    public function link(Link $model,$arg);
+    public function link(Link $model, $arg, $bool);
 }

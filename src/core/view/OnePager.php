@@ -24,54 +24,62 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class OnePager extends View {
+class OnePager extends AbstractPage {
 
     public function __construct(AbstractModel $model, $config) {
         parent::__construct($model, $config);
     }
 
-    protected function section(AbstractModel $model, $arg, $content) {
-        /** 
-         * FIXME: $arg maybe of other type as I mixed different types :-(
-         * i.e., the use of the argument passed by through the visitor is 
-         * not consistent to super classes section true or false vs. paging in collection
-         **/
-        return is_bool($arg) && $arg ? '<section id="' . $model->config['key'] . '"><div class="onepager-item"><div class="container">' . $content . '</div></div></section>' : $content;
+    /**
+     * This method is used to decide whether to surround the given HTML snippet by a section tag or not.
+     * Doing it this way prevents from implementing the check within every visitor method.
+     * 
+     * @param AbstractModel $model that is currently visited
+     * @param boolean $bool specifies whether to add the section tag or not 
+     * @param string $content HTML to surround
+     * @return string extended HTML string
+     */
+    protected function section(AbstractModel $model, $bool, $content) {
+        return $bool ? '<section id="' . $model->config['key'] . '"><div class="onepager-item"><div class="container">' . $content . '</div></div></section>' : $content;
     }
 
     /**
      * @param AbstractModel $model
-     * @param boolean $arg indicates whether to use section tag or not
+     * @param null $arg unused
+     * @param boolean $bool indicates whether to use section tag or not
      * @return mixed
      */
-    public function visit(AbstractModel $model, $arg) {
+    public function visit(AbstractModel $model, $arg, $bool) {
         if (array_key_exists('style', $model->config)) {
             Head::getInstance()->link($model->config['style']);
         }
-        return $model->accept($this, $arg);
+        return $model->accept($this, $arg, $bool);
     }
 
-    public function container(Container $model, $arg) {
+    public function container(Container $model, $arg, $bool) {
+        /*
         $string = '';
         foreach ($model->getModels() as $m) {
-            $string .= $this->visit($m, $arg);
+            $string .= $this->visit($m, $arg, $bool);
         }
         return $string;
+        */
+        return parent::container($model, $arg, false);
     }
 
-    public function collection(Collection $model, $arg) {
-        return $this->section($model, $arg, parent::collection($model, false));
+    public function collection(Collection $model, $arg, $bool) {
+        return $this->section($model, $arg, parent::collection($model, $arg, false));
     }
 
-    public function markup(Markup $model, $arg) {
-        return $this->section($model, $arg, parent::markup($model, $arg));
+    public function markup(Markup $model, $arg, $bool) {
+        return $this->section($model, $arg, parent::markup($model, $arg, $bool));
     }
 
-    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg) {
-        return $this->section($model, $arg, parent::hypertextPreprocessor($model, $arg));
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool) {
+        return $this->section($model, $arg, parent::hypertextPreprocessor($model, $arg, $bool));
     }
 
-    public function link(Link $model, $arg) {
+    public function link(Link $model, $arg, $bool) {
         return "";
     }
 
@@ -81,6 +89,6 @@ class OnePager extends View {
      * @return string HTML output
      */
     public function show() {
-        return $this->logger() . $this->visit($this->model, true);
+        return $this->logger() . $this->visit($this->model, null, true);
     }
 }

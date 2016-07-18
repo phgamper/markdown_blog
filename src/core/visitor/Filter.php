@@ -33,32 +33,32 @@ class Filter implements IVisitor
     }
 
     public function filter(){
-        return self::visit($this->collection, null);
+        return self::visit($this->collection, null, false);
     }
 
-    public function visit(AbstractModel $model, $arg){
-        return $model->accept($this, $arg);
+    public function visit(AbstractModel $model, $arg, $bool){
+        return $model->accept($this, $arg, $bool);
     }
 
-    public function container(Container $model, $arg){
+    public function container(Container $model, $arg, $bool){
         return null; // TODO not implemented || unused
     }
 
-    public function typedContainer(TypedContainer $model, $arg){
+    public function typedContainer(TypedContainer $model, $arg, $bool){
         return null; // TODO not implemented || unused
     }
     
-    public function composite(Composite $model, $arg){
+    public function composite(Composite $model, $arg, $bool){
         return null; // TODO not implemented || unused
     }
 
-    public function collection(Collection $model, $arg){
+    public function collection(Collection $model, $arg, $bool){
         $criteria = isset($_GET['tag']) ? array('category' =>$_GET['tag']) : array();
         $model->start = isset($_GET['page']) && $_GET['page'] > 0 ? $model->limit * ($_GET['page'] - 1) : 0;
         $models = array();
 
         for($i = $model->start; $i < $model->count && $i - $model->start < $model->limit; $i++){
-            if(empty($criteria) || self::visit($model->models[$i], $criteria)) {
+            if(empty($criteria) || self::visit($model->models[$i], $criteria, $bool)) {
                 $models[] = $model->models[$i];
             }
         }
@@ -66,15 +66,15 @@ class Filter implements IVisitor
         return $model;
     }
 
-    public function image(Image $model, $arg){
+    public function image(Image $model, $arg, $bool){
         return null; // TODO not implemented || unused
     }
 
-    public function carousel(OwlCarousel $model, $arg){
+    public function carousel(OwlCarousel $model, $arg, $bool){
         return null; // TODO not implemented || unused
     }
 
-    public function markup(Markup $model, $arg){
+    public function markup(Markup $model, $arg, $bool){
         $tags = $model->parseTags();
         foreach ($arg as $key => $value) {
             if (isset($tags[$key])) {
@@ -93,26 +93,26 @@ class Filter implements IVisitor
         return true;
     }
 
-    public function markdown(Markdown $model, $arg){
-        return self::markup($model, $arg);
+    public function markdown(Markdown $model, $arg, $bool){
+        return self::markup($model, $arg, $bool);
     }
 
-    public function hyperTextMarkup(HyperTextMarkup $model, $arg){
-        return self::markup($model, $arg);
+    public function hyperTextMarkup(HyperTextMarkup $model, $arg, $bool){
+        return self::markup($model, $arg, $bool);
     }
 
     // public function remote(Remote $model, $arg);
-    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool)
     {
         return null; // TODO not implemented || unused
     }
 
-    public function remote(Remote $model, $arg)
+    public function remote(Remote $model, $arg, $bool)
     {
-        return self::markup($model, $arg);
+        return self::markup($model, $arg, $bool);
     }
 
-    public function link(Link $model, $arg)
+    public function link(Link $model, $arg, $bool)
     {
         return null; // TODO not implemented || unused
     }

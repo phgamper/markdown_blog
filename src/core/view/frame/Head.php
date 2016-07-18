@@ -2,12 +2,12 @@
 
 /**
  * This file is part of the MarkdownBlog project.
- * It works as a dynamic loader for the CSS files and other header items to aviod 
+ * It works as a dynamic loader for the CSS files and other header items to aviod
  * unnecessary traffic.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -25,27 +25,20 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Head
-{
+class Head {
 
     private $config;
-
-    private $sheets = array();
-
-    private $meta = array();
-
-    private $scripts = array();
-
-    private $og = array();
-
+    private $sheets = [];
+    private $meta = [];
+    private $scripts = [];
+    private $og = [];
     private $title = '';
 
     private static $instance = null;
 
-    private function __construct()
-    {
+    private function __construct() {
         $this->config = Config::getInstance()->getGeneralArray('head');
-        self::setTitle($this->config['title'].' - '.URLs::getInstance()->module());
+        self::setTitle($this->config['title']);
         // default meta tags
         self::addMeta('description', $this->config['description']);
         if (isset($this->config['meta'])) {
@@ -54,23 +47,22 @@ class Head
             }
         }
         // default og tags
-        $title = $this->config['title'].' - '.URLs::getInstance()->module();
-        self::addOg('title', $title);
+        self::addOg('title', $this->title);
         self::addOg('description', $this->config['description']);
-        self::addOg('url', 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+        self::addOg('url', 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         self::addOg('image', $this->config['image']);
         self::addOg('type', 'website');
     }
 
-    private function __clone() {}
+    private function __clone() {
+    }
 
     /**
      * returns the instance created by its first invoke.
      *
      * @return Head
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -80,14 +72,14 @@ class Head
     /**
      * @param string $title to set
      */
-    public function setTitle($title){
+    public function setTitle($title) {
         $this->title = $title;
     }
 
     /**
      * @return string title of the page
      */
-    public function getTitle(){
+    public function getTitle() {
         return $this->title;
     }
 
@@ -98,21 +90,19 @@ class Head
      * @param string $rel type of how to link the css
      * @param bool $abs link css using absolute path e.g. https:// ...
      */
-    public function link($href, $rel = 'stylesheet', $abs = false)
-    {
+    public function link($href, $rel = 'stylesheet', $abs = false) {
         if ($abs) {
             $this->sheets[$href] = $rel;
-        }else{
-            $this->sheets[Config::getInstance()->app_root.$href] = $rel;
+        } else {
+            $this->sheets[Config::getInstance()->app_root . $href] = $rel;
         }
     }
 
     /**
      * empties the style sheets list
      */
-    public function flush()
-    {
-        $this->sheets = array();
+    public function flush() {
+        $this->sheets = [];
     }
 
     /**
@@ -121,17 +111,15 @@ class Head
      * @param string $name - name of the og tag
      * @param string $content - content of the og tag
      */
-    public function addOg($name, $content)
-    {
+    public function addOg($name, $content) {
         $this->og[$name] = $content;
     }
 
     /**
      * empties the og tag list
      */
-    public function flushOg()
-    {
-        $this->og = array();
+    public function flushOg() {
+        $this->og = [];
     }
 
     /**
@@ -140,17 +128,15 @@ class Head
      * @param string $name - name of the meta tag
      * @param string $content - content of the meta tag
      */
-    public function addMeta($name, $content)
-    {
+    public function addMeta($name, $content) {
         $this->meta[$name] = $content;
     }
 
     /**
      * empties the meta tag list
      */
-    public function flushMeta()
-    {
-        $this->meta = array();
+    public function flushMeta() {
+        $this->meta = [];
     }
 
     /**
@@ -159,17 +145,15 @@ class Head
      * @param string $script path to js file
      * @param bool $abs link script using absolute path e.g. https:// ...
      */
-    public function linkScript($script, $abs = false)
-    {
-        $this->scripts[] = $abs ? $script : Config::getInstance()->app_root.$script;
+    public function linkScript($script, $abs = false) {
+        $this->scripts[] = $abs ? $script : Config::getInstance()->app_root . $script;
     }
 
     /**
      * empty the script list
      */
-    public function flushScript()
-    {
-        $this->scripts = array();
+    public function flushScript() {
+        $this->scripts = [];
     }
 
     /**
@@ -177,11 +161,10 @@ class Head
      *
      * @return string to print
      */
-    public function og()
-    {
+    public function og() {
         $og = '';
         foreach ($this->og as $name => $content) {
-            $og .= '<meta property="og:'.$name.'" content="'.$content.'">';
+            $og .= '<meta property="og:' . $name . '" content="' . $content . '">';
         }
         return $og;
     }
@@ -191,8 +174,7 @@ class Head
      *
      * @return string to print
      */
-    public function meta()
-    {
+    public function meta() {
         $meta = '<meta charset="utf-8">';
         foreach ($this->meta as $name => $content) {
             $meta .= '<meta name="' . $name . '" content="' . $content . '">';
@@ -205,8 +187,7 @@ class Head
      *
      * @return string to print
      */
-    public function css()
-    {
+    public function css() {
         $css = '';
         foreach ($this->sheets as $href => $rel) {
             $css .= '<link href="' . $href . '" rel="' . $rel . '" type="text/css">';
@@ -219,22 +200,21 @@ class Head
      *
      * @return string to print
      */
-    public function javascript()
-    {
+    public function javascript() {
         $js = '';
         foreach ($this->scripts as $j) {
             $js .= '<script src="' . $j . '"></script>';
         }
         return $js;
     }
+
     /**
      * generate the head as a HTML string
      *
      * @return string to print
      */
-    public function toString()
-    {
-        return $this->meta().'<title>'.$this->title.'</title>'.$this->og().$this->css().$this->javascript();
+    public function toString() {
+        return $this->meta() . '<title>' . $this->title . '</title>' . $this->og() . $this->css() . $this->javascript();
     }
 }
 

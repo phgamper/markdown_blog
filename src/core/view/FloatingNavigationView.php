@@ -27,6 +27,7 @@
 class FloatingNavigationView extends AbstractNavigationView {
 
     // FIXME: private $active = "active";
+    // TODO remove ...
     private $active = "";
     
     /**
@@ -41,9 +42,10 @@ class FloatingNavigationView extends AbstractNavigationView {
     /**
      * @param Container $model
      * @param int $arg
+     * @param $bool
      * @return mixed|string
      */
-    public function container(Container $model, $arg) {
+    public function container(Container $model, $arg, $bool) {
         return $this::li($model, $arg, $this->anchor);
     }
 
@@ -63,7 +65,21 @@ class FloatingNavigationView extends AbstractNavigationView {
      */
     protected function active($arg) {
         $a = URLs::getInstance()->isRaw() ? '' : 'class="' . $this->active . '"';
+        $this->config[0]; // TODO
         $this->active = '';
         return $a;
+    }
+    
+    protected function prefix($arg, $anchor) {
+        if (URLs::getInstance()->isRaw()) {
+            $prefix = Config::getInstance()->app_root;
+        } else if ($anchor && URLs::getInstance()->isRoot()) {
+            $prefix = '#';
+        } else if ($anchor) {
+            $prefix = Config::getInstance()->app_root . '#';
+        } else {
+            $prefix = substr($arg, 0, 1) == '#' && !URLs::getInstance()->isRoot() ? Config::getInstance()->app_root : '';
+        }
+        return $prefix;
     }
 }

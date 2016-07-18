@@ -33,11 +33,12 @@ class HyperTextMarkup extends Markup {
      *
      *
      * @param IVisitor $visitor
-     * @param $arg
+     * @param mixed $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg) {
-        return $visitor->hyperTextMarkup($this, $arg);
+    public function accept(IVisitor $visitor, $arg, $bool) {
+        return $visitor->hyperTextMarkup($this, $arg, $bool);
     }
 
     /**

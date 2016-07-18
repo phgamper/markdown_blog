@@ -94,11 +94,11 @@ abstract class PageController extends AbstractController {
         if (URLs::getInstance()->isRaw() && is_file($raw)) {
             switch (pathinfo($raw, PATHINFO_EXTENSION)) {
                 case 'html':
-                    $config = array('key' => 'raw', 'name' => 'raw', 'path' => $raw);
+                    $config = ['key' => 'raw', 'name' => 'raw', 'path' => $raw, 'subtitle' => false];
                     $model = new HyperTextMarkup($config);
                     break;
                 case 'php':
-                    $config = array('key' => 'raw', 'name' => 'raw', 'path' => $raw);
+                    $config = ['key' => 'raw', 'name' => 'raw', 'path' => $raw, 'subtitle' => false];
                     $model = new HypertextPreprocessor($config);
                     break;
                 default:

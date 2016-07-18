@@ -4,9 +4,9 @@
  * This file is part of the MarkdownBlog project.
  * TODO
  *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,19 +24,20 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Remote extends Markdown
-{
+class Remote extends Markdown {
+
     const MIME = '.md';
 
     /**
      *
      *
      * @param IVisitor $visitor
-     * @param $arg
+     * @param mixed $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
-        return $visitor->remote($this, $arg);
+    public function accept(IVisitor $visitor, $arg, $bool) {
+        return $visitor->remote($this, $arg, $bool);
     }
 
     /**
@@ -46,8 +47,7 @@ class Remote extends Markdown
      * @param int $index - index of parsed element
      * @return string parsed Markdown
      */
-    public function parse($index)
-    {
+    public function parse($index) {
         try {
             if ($file = file_get_contents($this->config['path'])) {
                 return Parsedown::instance()->text($file);
@@ -55,7 +55,7 @@ class Remote extends Markdown
                 throw new Exception('Can not read ' . $this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Remote::parse("'.$this->config['path'].'")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Remote::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

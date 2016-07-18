@@ -45,58 +45,59 @@ abstract class AbstractNavigationView extends AbstractView {
     public function show() {
         $nav = '';
         foreach ($this->model->getModels() as $key => $value) {
-            $nav .= $this->visit($value, $key);
+            $nav .= $this->visit($value, $key, $this->anchor);
         }
         return $nav;
     }
 
-    public function typedContainer(TypedContainer $model, $arg) {
-        return $this->container($model, $arg);
+    public function typedContainer(TypedContainer $model, $arg, $bool) {
+        return $this->container($model, $arg, $bool);
     }
 
-    public function composite(Composite $model, $arg) {
-        return $this->li($model, $arg, $this->anchor);
+    public function composite(Composite $model, $arg, $bool) {
+        return $this->li($model, $arg, $bool);
     }
 
-    public function collection(Collection $model, $arg) {
-        return $this->li($model, $arg, $this->anchor);
+    public function collection(Collection $model, $arg, $bool) {
+        return $this->li($model, $arg, $bool);
     }
 
-    public function markup(Markup $model, $arg) {
-        return $this->li($model, $arg, $this->anchor);
+    public function markup(Markup $model, $arg, $bool) {
+        return $this->li($model, $arg, $bool);
     }
 
-    public function markdown(Markdown $model, $arg) {
-        return $this->markup($model, $arg);
+    public function markdown(Markdown $model, $arg, $bool) {
+        return $this->markup($model, $arg, $bool);
     }
 
-    public function hyperTextMarkup(HyperTextMarkup $model, $arg) {
-        return $this->markup($model, $arg);
+    public function hyperTextMarkup(HyperTextMarkup $model, $arg, $bool) {
+        return $this->markup($model, $arg, $bool);
     }
 
-    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg) {
-        return $this->li($model, $arg, $this->anchor);
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool) {
+        return $this->li($model, $arg, $bool);
     }
 
-    public function remote(Remote $model, $arg) {
-        return $this->markdown($model, $arg);
+    public function remote(Remote $model, $arg, $bool) {
+        return $this->markdown($model, $arg, $bool);
     }
 
     /**
      * @param Link $model
      * @param $arg
+     * @param $bool
      * @return mixed|string
      */
-    public function link(Link $model, $arg) {
+    public function link(Link $model, $arg, $bool) {
         return $this::li($model, $model->config['path'], false);
     }
 
-    public function image(Image $model, $arg) {
-        return $this->li($model, $arg, $this->anchor);
+    public function image(Image $model, $arg, $bool) {
+        return $this->li($model, $arg, $bool);
     }
 
-    public function carousel(OwlCarousel $model, $arg) {
-        return $this->li($model, $arg, $this->anchor);
+    public function carousel(OwlCarousel $model, $arg, $bool) {
+        return $this->li($model, $arg, $bool);
     }
 
     /**
@@ -107,27 +108,9 @@ abstract class AbstractNavigationView extends AbstractView {
      */
     protected abstract function li(AbstractModel $model, $arg, $anchor);
 
-    protected function active($arg) {
-        $active = true;
-        $level = count(explode('/', $this->config['root'])) - 2;
-        $regexp = '/' . str_replace('/', '\/', $this->config['root']) . '/';
-        foreach (explode('/', preg_replace($regexp, '', $arg, 1)) as $module) {
-            $active &= URLs::getInstance()->module($level) == $module;
-            $level++;
-        }
-        return $active ? 'class="active"' : '';
-    }
-
-    protected function prefix($arg, $anchor) {
-        if (URLs::getInstance()->isRaw()) {
-            $prefix = Config::getInstance()->app_root;
-        } else if ($anchor && URLs::getInstance()->isRoot()) {
-            $prefix = '#';
-        } else if ($anchor) {
-            $prefix = Config::getInstance()->app_root . '#';
-        } else {
-            $prefix = substr($arg, 0, 1) == '#' && !URLs::getInstance()->isRoot() ? Config::getInstance()->app_root : '';
-        }
-        return $prefix;
-    }
+    /**
+     * @param string $arg current path
+     * @return string whether the current li is active or not
+     */
+    protected abstract function active($arg);
 }

@@ -34,12 +34,13 @@ class OwlCarousel extends AbstractModel implements ILeaf {
      *
      *
      * @param IVisitor $visitor
-     * @param $arg
+     * @param mixed $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg) {
+    public function accept(IVisitor $visitor, $arg, $bool) {
         $index = !isset($this->config['reverse']) || $this->config['reverse'] ? 1 : 0;
-        return $visitor->carousel($this, $index);
+        return $visitor->carousel($this, $index, $bool);
     }
 
     /**

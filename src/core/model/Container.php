@@ -4,9 +4,9 @@
  * This file is part of the MarkdownBlog project.
  * TODO
  *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,20 +24,17 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Container extends AbstractModel
-{
-    public $models = array();
+class Container extends AbstractModel {
 
+    public $models = [];
     public $count = 0;
-
     public $limit = 0;
 
     /**
      *
      * @return array Models
      */
-    public function getModels()
-    {
+    public function getModels() {
         return $this->models;
     }
 
@@ -45,7 +42,7 @@ class Container extends AbstractModel
      * @param AbstractModel $model to add
      * @param string $key
      */
-    public function addModel(AbstractModel $model, $key){
+    public function addModel(AbstractModel $model, $key) {
         $this->models[$key] = $model;
     }
 
@@ -56,8 +53,7 @@ class Container extends AbstractModel
      * @param int $index of parsed element
      * @return string parsed collection
      */
-    public function parse($index)
-    {
+    public function parse($index) {
         return '';
     }
 
@@ -66,9 +62,10 @@ class Container extends AbstractModel
      *
      * @param IVisitor $visitor
      * @param $arg
+     * @param $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
-        return $visitor->container($this, $arg);
+    public function accept(IVisitor $visitor, $arg, $bool) {
+        return $visitor->container($this, $arg, $bool);
     }
 }

@@ -4,9 +4,9 @@
  * This file is part of the MarkdownBlog project.
  * TODO
  *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,32 +24,32 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class TypedContainer extends Container
-{
-    public $models = array();
+class TypedContainer extends Container {
+
+    public $models = [];
     protected $leaf;
 
-    
     public function __construct(ILeaf $leaf, $config) {
         parent::__construct($config);
         $this->leaf = $leaf;
     }
-    
+
     /**
      *
      *
      * @param IVisitor $visitor
-     * @param $arg
+     * @param mixed $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
-        return $visitor->typedContainer($this, $arg);
+    public function accept(IVisitor $visitor, $arg, $bool) {
+        return $visitor->typedContainer($this, $arg, $bool);
     }
 
     /**
-     * @return ILeaf 
+     * @return ILeaf
      */
-    public function leaf(){
+    public function leaf() {
         return $this->leaf;
     }
 
@@ -60,8 +60,7 @@ class TypedContainer extends Container
      * @param int $index - index of parsed element
      * @return string parsed image
      */
-    public function parse($index)
-    {
+    public function parse($index) {
         return $this->leaf->parse($index);
     }
 }

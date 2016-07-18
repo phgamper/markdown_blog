@@ -3,10 +3,10 @@
 /**
  * This file is part of the MarkdownBlog project.
  * It generates the footer of every page based on the config file.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,20 +24,18 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Footer implements IView
-{
-    protected $config;
-    protected $controller; // TODO hmm ... not nice
+class Footer implements IView {
 
-    public function __construct(NavigationController $controller)
-    {
+    protected $config;
+    protected $controller;
+
+    public function __construct(NavigationController $controller) {
         $this->controller = $controller;
         $this->config = Config::getInstance()->getGeneralArray('footer');
-        Head::getInstance()->link(CSS_DIR.'footer.css');
+        Head::getInstance()->link(CSS_DIR . 'footer.css');
     }
 
-    public function show()
-    {
+    public function show() {
         // sitemap
         $sitemap = $this->controller->sitemap();
         // legal notice
@@ -48,13 +46,13 @@ class Footer implements IView
         $social = '';
         $general = Config::getInstance()->getGeneralArray('general');
         if (array_key_exists('social', $general) && $general['social']) {
-            $buttons = Social::getInstance()->socialButtons('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], Head::getInstance()->getTitle());
-            $span = floor(6/count($buttons));
-            foreach($buttons as $b){
-                $social .= '<div class="col-xs-2 col-md-'.$span.' text-center">'.$b.'</div>';
+            $buttons = Social::getInstance()->socialButtons('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], Head::getInstance()->getTitle());
+            $span = floor(6 / count($buttons));
+            foreach ($buttons as $b) {
+                $social .= '<div class="col-xs-2 col-md-' . $span . ' text-center">' . $b . '</div>';
             }
             $x = floor((8 - count($buttons)) / 2);
-            $social = '<div class="row"><div class="col-md-offset-2 col-md-'.$x.'"></div>'.$social.'</div>';
+            $social = '<div class="row"><div class="col-md-offset-2 col-md-' . $x . '"></div>' . $social . '</div>';
         }
         // powered by
         $poweredby = '';
@@ -63,6 +61,6 @@ class Footer implements IView
             $poweredby = '<div class="row"><div class="col-md-8 col-md-offset-2">' . $poweredby . '</div></div>';
         }
         // put it together
-        return $sitemap .'<div class="footer-inner row">'. $left . $right .'</div>'.$social.$poweredby;
+        return $sitemap . '<div class="footer-inner row">' . $left . $right . '</div>' . $social . $poweredby;
     }
 }

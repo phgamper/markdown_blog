@@ -33,44 +33,48 @@ class Carousel implements IVisitor
     }
 
     public function items(){
-        return self::visit($this->model, null);
+        return self::visit($this->model, null, false);
     }
 
-    public function visit(AbstractModel $model, $arg){
-        return $model->accept($this, $arg);
+    public function visit(AbstractModel $model, $arg, $bool){
+        return $model->accept($this, $arg, $bool);
     }
 
-    public function container(Container $model, $arg){
-        return array(); // TODO not implemented || unused
+    public function container(Container $model, $arg, $bool){
+        return []; // TODO not implemented || unused
     }
 
-    public function composite(Composite $model, $arg){
-        $items = array();
+    public function typedContainer(TypedContainer $model, $arg, $bool) {
+        return []; // TODO not implemented || unused
+    }
+
+    public function composite(Composite $model, $arg, $bool){
+        $items = [];
         foreach($model->models as $m){
-            $items = array_merge($items, self::visit($m, $arg));
+            $items = array_merge($items, self::visit($m, $arg, $bool));
         }
         return $items;
     }
 
-    public function collection(Collection $model, $arg){
-        $items = array();
+    public function collection(Collection $model, $arg, $bool){
+        $items = [];
         for($i = 0; $i < $model->count && $i < $model->limit; $i++){
-            $items[] = self::visit($model->models[$i], $model->start);
+            $items[] = self::visit($model->models[$i], $model->start, $bool);
         }
         return $items;
     }
 
-    public function image(Image $model, $arg){
-        return array(); // TODO not implemented || unused
+    public function image(Image $model, $arg, $bool){
+        return []; // TODO not implemented || unused
     }
 
-    public function carousel(OwlCarousel $model, $arg){
-        return array(); // TODO not implemented || unused
+    public function carousel(OwlCarousel $model, $arg, $bool){
+        return []; // TODO not implemented || unused
     }
 
-    public function markup(Markup $model, $arg){
+    public function markup(Markup $model, $arg, $bool){
         $tags = $model->parseTags();
-        $item = array();
+        $item = [];
         if (array_key_exists('name', $tags)) {
             $item['name'] = $tags['name'];
             $item['static'] = Config::getInstance()->app_root.$model->config['static'].'/'.preg_replace('/\\.[^.\\s]{2,4}$/', '', basename($model->config['path']));
@@ -78,27 +82,27 @@ class Carousel implements IVisitor
         return $item;
     }
 
-    public function markdown(Markdown $model, $arg){
-        return self::markup($model, $arg);
+    public function markdown(Markdown $model, $arg, $bool){
+        return self::markup($model, $arg, $bool);
     }
 
-    public function hyperTextMarkup(HyperTextMarkup $model, $arg){
-        return self::markup($model, $arg);
+    public function hyperTextMarkup(HyperTextMarkup $model, $arg, $bool){
+        return self::markup($model, $arg, $bool);
     }
 
     // public function remote(Remote $model, $arg);
-    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg)
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool)
     {
-        return array(); // TODO not implemented || unused
+        return []; // TODO not implemented || unused
     }
 
-    public function remote(Remote $model, $arg)
+    public function remote(Remote $model, $arg, $bool)
     {
-        return self::markup($model, $arg);
+        return self::markup($model, $arg, $bool);
     }
 
-    public function link(Link $model, $arg)
+    public function link(Link $model, $arg, $bool)
     {
-        return array(); // TODO not implemented || unused
+        return []; // TODO not implemented || unused
     }
 }

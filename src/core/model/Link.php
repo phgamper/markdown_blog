@@ -30,11 +30,12 @@ class Link extends AbstractModel implements ILeaf {
      *
      *
      * @param IVisitor $visitor
-     * @param $arg
+     * @param mixed $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg) {
-        return $visitor->link($this, $arg);
+    public function accept(IVisitor $visitor, $arg, $bool) {
+        return $visitor->link($this, $arg, $bool);
     }
 
     /**

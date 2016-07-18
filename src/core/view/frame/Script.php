@@ -4,10 +4,10 @@
  * This file is part of the MarkdownBlog project.
  * It works as a dynamic loader for the JavaScript files in the bottom of the page
  * to aviod unnecessary traffic.
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -25,8 +25,7 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Script
-{
+class Script {
 
     private $scripts = array();
 
@@ -34,24 +33,22 @@ class Script
 
     private static $instance = null;
 
-    private function __construct()
-    {
+    private function __construct() {
     }
 
-    private function __clone()
-    {}
+    private function __clone() {
+    }
 
     /**
      * returns the instance created by its first invoke.
      *
      * @return Script
      */
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
-        
+
         return self::$instance;
     }
 
@@ -61,9 +58,8 @@ class Script
      * @param string $script path to js file
      * @param bool $abs link script using absolute path e.g. https:// ...
      */
-    public function link($script, $abs = false)
-    {
-        $this->scripts[] = $abs ? $script : Config::getInstance()->app_root.$script;
+    public function link($script, $abs = false) {
+            $this->scripts[$script] = $abs ? $script : Config::getInstance()->app_root . $script;
     }
 
     /**
@@ -72,16 +68,14 @@ class Script
      * @param $script script
      *            to inline
      */
-    public function inline($script)
-    {
+    public function inline($script) {
         $this->inlines[] = $script;
     }
 
     /**
      * empty the script list
      */
-    public function flush()
-    {
+    public function flush() {
         $this->scripts = array();
     }
 
@@ -90,8 +84,7 @@ class Script
      *
      * @return string to print
      */
-    public function toString()
-    {
+    public function toString() {
         $js = '<!-- Le javascript -->';
         foreach ($this->scripts as $j) {
             $js .= '<script src="' . $j . '"></script>';

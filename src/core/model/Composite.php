@@ -4,9 +4,9 @@
  * This file is part of the MarkdownBlog project.
  * TODO
  *
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,19 +24,20 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Composite extends Container
-{
-    public $models = array();
+class Composite extends Container {
+
+    public $models = [];
 
     /**
      *
      *
      * @param IVisitor $visitor
-     * @param $arg
+     * @param mixed $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg){
-        return $visitor->composite($this, $arg);
+    public function accept(IVisitor $visitor, $arg, $bool) {
+        return $visitor->composite($this, $arg, $bool);
     }
 
     /**
@@ -44,15 +45,14 @@ class Composite extends Container
      * @param AbstractModel $model to add
      * @param string $key
      */
-    public function addModel(AbstractModel $model, $key){
+    public function addModel(AbstractModel $model, $key) {
         $this->count++;
         $this->limit++;
         $model->config['paging'] = !array_key_exists('paging', $this->config) || $this->config['paging'];
         parent::addModel($model, $key);
     }
 
-    public function get()
-    {
+    public function get() {
         return $this->models;
     }
 
@@ -63,8 +63,7 @@ class Composite extends Container
      * @param int $index - index of parsed element
      * @return string parsed image
      */
-    public function parse($index)
-    {
+    public function parse($index) {
         return '';
     }
 }

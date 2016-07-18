@@ -35,7 +35,7 @@ abstract class Markup extends AbstractModel implements ILeaf{
         try {
             if ($fh = fopen($this->config['path'], 'r')) {
 
-                $tags = array();
+                $tags = [];
                 $meta = false;
 
                 while (!feof($fh)) {
@@ -43,7 +43,7 @@ abstract class Markup extends AbstractModel implements ILeaf{
 
                     // opening tag
                     if (!$meta && preg_match('/^(\<\!\-\-).*/', $line)) {
-                        $tags['meta'] = array();
+                        $tags['meta'] = [];
                         $meta = true;
                     }
                     // closing tag
@@ -88,7 +88,7 @@ abstract class Markup extends AbstractModel implements ILeaf{
             }
         } catch (Exception $e) {
             Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markup::parse("' . $this->config['path'] . '")', $e->getMessage()));
-            return array();
+            return [];
         }
     }
 }

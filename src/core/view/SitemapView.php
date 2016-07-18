@@ -34,16 +34,17 @@ class SitemapView extends AbstractNavigationView {
      *
      * @param Collection|Container $model
      * @param int $arg
+     * @param $bool
      * @return string
      */
-    public function container(Container $model, $arg) {
-        return '<li><p>' . $model->config['name'] . '</p>' . $this->inject($model, $arg) . '</li>';
+    public function container(Container $model, $arg, $bool) {
+        return '<li><p>' . $model->config['name'] . '</p>' . $this->inject($model, $arg, $bool) . '</li>';
     }
 
-    public function typedContainer(TypedContainer $model, $arg) {
+    public function typedContainer(TypedContainer $model, $arg, $bool) {
         $anchor = $this->anchor;
         $this->anchor = false;
-        $inject = $this->inject($model, $arg);
+        $inject = $this->inject($model, $arg, $bool);
         $this->anchor = $anchor;
         return $this->li($model, $arg, $this->anchor, $inject);
     }
@@ -52,10 +53,31 @@ class SitemapView extends AbstractNavigationView {
         return '<li><p><a href="' . $this->prefix($arg, $anchor) . $arg . '">' . $model->config['name'] . '</a></p>' . $inject . '</li>';
     }
 
-    protected function inject(Container $model, $arg) {
+    protected function prefix($arg, $anchor) {
+        if (URLs::getInstance()->isRaw()) {
+            $prefix = Config::getInstance()->app_root;
+        } else if ($anchor && URLs::getInstance()->isRoot()) {
+            $prefix = '#';
+        } else if ($anchor) {
+            $prefix = Config::getInstance()->app_root . '#';
+        } else {
+            $prefix = Config::getInstance()->app_root;
+        }
+        return $prefix;
+    }
+
+    /**
+     * @param string $arg current path
+     * @return string whether the current li is active or not
+     */
+    protected function active($arg) {
+        return ''; 
+    }
+    
+    private function inject(Container $model, $arg, $bool) {
         $sitemap = '';
         foreach ($model->getModels() as $key => $value) {
-            $sitemap .= $this->visit($value, $arg . '/' . $key);
+            $sitemap .= $this->visit($value, $arg . '/' . $key, $bool);
         }
         return '<div class="sitemap-sub-level"><ul>' . $sitemap . '</ul>';
     }

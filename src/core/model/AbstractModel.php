@@ -34,8 +34,12 @@ abstract class AbstractModel implements IModel {
         $this->config = $config;
     }
 
-    public abstract function accept(IVisitor $visitor, $arg);
+    /**
+     * 
+     * @param IVisitor $visitor used to travers the tree 
+     * @param mixed $arg passed through while traversing the tree
+     * @param bool $bool passed through while traversing the tree
+     * @return mixed return value pushed up to the root
+     */
+    public abstract function accept(IVisitor $visitor, $arg, $bool);
 }
-
-?>
-

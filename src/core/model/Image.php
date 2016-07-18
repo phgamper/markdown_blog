@@ -34,11 +34,12 @@ class Image extends AbstractModel implements ILeaf {
      *
      *
      * @param IVisitor $visitor
-     * @param $arg
+     * @param mixed $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg) {
-        return $visitor->image($this, $arg);
+    public function accept(IVisitor $visitor, $arg, $bool) {
+        return $visitor->image($this, $arg, $bool);
     }
 
     /**

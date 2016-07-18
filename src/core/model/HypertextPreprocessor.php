@@ -33,12 +33,13 @@ class HypertextPreprocessor extends AbstractModel implements ILeaf
      *
      *
      * @param IVisitor $visitor
-     * @param $arg
+     * @param mixed $arg
+     * @param boolean $bool
      * @return mixed
      */
-    public function accept(IVisitor $visitor, $arg)
+    public function accept(IVisitor $visitor, $arg, $bool)
     {
-        return $visitor->hypertextPreprocessor($this, $arg);
+        return $visitor->hypertextPreprocessor($this, $arg, $bool);
     }
 
     /**
@@ -66,5 +67,3 @@ class HypertextPreprocessor extends AbstractModel implements ILeaf
         }
     }
 }
-
-?>
