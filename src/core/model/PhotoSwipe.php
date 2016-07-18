@@ -53,26 +53,22 @@ class PhotoSwipe extends AbstractModel implements ILeaf {
     public function parse($index) {
         $files = ScanDir::getFilesOfType($this->config['path'], self::MIME, $index);
         try {
-            Head::getInstance()->link(PUBLIC_LIB_DIR.'photoswipe/photoswipe.css');
-            Head::getInstance()->link(PUBLIC_LIB_DIR.'photoswipe/default-skin/default-skin.css');
-            Script::getInstance()->link(PUBLIC_LIB_DIR.'photoswipe/photoswipe.min.js');
-            Script::getInstance()->link(PUBLIC_LIB_DIR.'photoswipe/photoswipe-ui-default.min.js');
-            Script::getInstance()->link(PUBLIC_LIB_DIR.'photoswipe/init.js');
-
-            $html = file_get_contents(PUBLIC_LIB_DIR.'photoswipe/photoswipe.html');
-
-            $html .= '<button id="btn">Open PhotoSwipe</button>';
-            
-            
-            
-
-            /*
+            Head::getInstance()->link(PUBLIC_LIB_DIR . 'photoswipe/photoswipe.css');
+            Head::getInstance()->link(PUBLIC_LIB_DIR . 'photoswipe/default-skin/default-skin.css');
+            Script::getInstance()->link(PUBLIC_LIB_DIR . 'photoswipe/photoswipe.min.js');
+            Script::getInstance()->link(PUBLIC_LIB_DIR . 'photoswipe/photoswipe-ui-default.min.js');
+            Script::getInstance()->link(PUBLIC_LIB_DIR . 'photoswipe/init.js');
+            $html = file_get_contents(PUBLIC_LIB_DIR . 'photoswipe/photoswipe.html');
             $items = '';
             foreach ($files as $f) {
-                $items .= '<div class="item"><img class="lazyOwl" data-src="' . Config::getInstance()->app_root . $this->config['path'] . $f . '" /></div>';
+                list($width, $height) = getimagesize($this->config['path'] . $f);
+                $src = 'data-src="' . Config::getInstance()->app_root . $this->config['path'] . $f . '"';
+                $width = 'data-width="' . $width . '"';
+                $height = 'data-height="' . $height . '"';
+                $items .= '<span ' . $src . $width . $height . '" class="img-swipe">';
             }
-            */
-            return $html;
+
+            return '<div class="hidden">' . $items . '</div>' . $html;
         } catch (Exception $e) {
             Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'PhotoSwipe::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';

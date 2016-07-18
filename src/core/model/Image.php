@@ -55,9 +55,9 @@ class Image extends AbstractModel implements ILeaf {
             if (Config::getInstance()->getGeneral('general', 'img_resize')) {
                 $src = 'src="/img/loader.gif" data-' . $src;
             }
-            $img = '<img index=' . $index . ' ' . $src . ' class="owl-jumpTo">';
-            // TODO move link to modal or use $index for case distinction
-            $a = '<a href="" data-toggle="modal" data-target="#carousel-modal" data-index="' . $index . '">' . $img . '</a>';
+            $img = '<img index=' . $index . ' ' . $src . '>';
+            // TODO no hashtag ...
+            $a = '<a href="#" class="toggle-swipe" data-index="' . $index . '">' . $img . '</a>';
             return '<div class="thumbnail img-resize">' . $a . '</div>';
         } catch (Exception $e) {
             Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Image::parse("' . $this->config['path'] . '")', $e->getMessage()));
