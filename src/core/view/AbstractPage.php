@@ -150,8 +150,9 @@ abstract class AbstractPage extends AbstractView {
         if (!array_key_exists('paging', $model->config) || $model->config['paging']) {
 
             if (!is_null($model->limit)) {
-                $prev = isset($_GET['page']) ? $_GET['page'] - 1 : 0;
-                $next = isset($_GET['page']) ? $_GET['page'] + 1 : 2;
+                $page = is_numeric($_GET['page']) ? $_GET['page'] : 0;
+                $prev = isset($_GET['page']) ? $page - 1 : 0;
+                $next = isset($_GET['page']) ? $page + 1 : 2;
                 $self = URLs::getInstance()->getURI() . '?' . QueryString::remove('page', $_SERVER['QUERY_STRING']) . '&page=';
                 $self = Config::getInstance()->app_root . $self;
                 if ($prev > 0) {

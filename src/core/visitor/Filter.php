@@ -3,10 +3,10 @@
 /**
  * This file is part of the MarkdownBlog project.
  * TODO
- * 
- * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. 
- * Its purpose is to provide a easy way to share your thoughts without any Database 
- * or special setup needed. 
+ *
+ * MarkdownBlog is a lightweight blog software written in php and twitter bootstrap.
+ * Its purpose is to provide a easy way to share your thoughts without any Database
+ * or special setup needed.
  *
  * Copyright (C) 2014 Philipp Gamper & Max Schrimpf
  *
@@ -24,41 +24,41 @@
  * along with the project. if not, write to the Free Software Foundation, Inc.
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-class Filter implements IVisitor
-{
+class Filter implements IVisitor {
+
     private $collection;
 
-    public function __construct(Collection $collection){
+    public function __construct(Collection $collection) {
         $this->collection = $collection;
     }
 
-    public function filter(){
+    public function filter() {
         return self::visit($this->collection, null, false);
     }
 
-    public function visit(AbstractModel $model, $arg, $bool){
+    public function visit(AbstractModel $model, $arg, $bool) {
         return $model->accept($this, $arg, $bool);
     }
 
-    public function container(Container $model, $arg, $bool){
+    public function container(Container $model, $arg, $bool) {
         return null; // TODO not implemented || unused
     }
 
-    public function typedContainer(TypedContainer $model, $arg, $bool){
-        return null; // TODO not implemented || unused
-    }
-    
-    public function composite(Composite $model, $arg, $bool){
+    public function typedContainer(TypedContainer $model, $arg, $bool) {
         return null; // TODO not implemented || unused
     }
 
-    public function collection(Collection $model, $arg, $bool){
-        $criteria = isset($_GET['tag']) ? array('category' =>$_GET['tag']) : array();
-        $model->start = isset($_GET['page']) && $_GET['page'] > 0 ? $model->limit * ($_GET['page'] - 1) : 0;
-        $models = array();
+    public function composite(Composite $model, $arg, $bool) {
+        return null; // TODO not implemented || unused
+    }
 
-        for($i = $model->start; $i < $model->count && $i - $model->start < $model->limit; $i++){
-            if(empty($criteria) || self::visit($model->models[$i], $criteria, $bool)) {
+    public function collection(Collection $model, $arg, $bool) {
+        $criteria = isset($_GET['tag']) ? ['category' => htmlentities($_GET['tag'])] : [];
+        $model->start = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? $model->limit * ($_GET['page'] - 1) : 0;
+        $models = [];
+
+        for ($i = $model->start; $i < $model->count && $i - $model->start < $model->limit; $i++) {
+            if (empty($criteria) || self::visit($model->models[$i], $criteria, $bool)) {
                 $models[] = $model->models[$i];
             }
         }
@@ -66,15 +66,15 @@ class Filter implements IVisitor
         return $model;
     }
 
-    public function image(Image $model, $arg, $bool){
+    public function image(Image $model, $arg, $bool) {
         return null; // TODO not implemented || unused
     }
 
-    public function photoSwipe(PhotoSwipe $model, $arg, $bool){
+    public function photoSwipe(PhotoSwipe $model, $arg, $bool) {
         return []; // TODO not implemented || unused
     }
 
-    public function markup(Markup $model, $arg, $bool){
+    public function markup(Markup $model, $arg, $bool) {
         $tags = $model->parseTags();
         foreach ($arg as $key => $value) {
             if (isset($tags[$key])) {
@@ -93,27 +93,24 @@ class Filter implements IVisitor
         return true;
     }
 
-    public function markdown(Markdown $model, $arg, $bool){
+    public function markdown(Markdown $model, $arg, $bool) {
         return self::markup($model, $arg, $bool);
     }
 
-    public function hyperTextMarkup(HyperTextMarkup $model, $arg, $bool){
+    public function hyperTextMarkup(HyperTextMarkup $model, $arg, $bool) {
         return self::markup($model, $arg, $bool);
     }
 
     // public function remote(Remote $model, $arg);
-    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool)
-    {
+    public function hypertextPreprocessor(HypertextPreprocessor $model, $arg, $bool) {
         return null; // TODO not implemented || unused
     }
 
-    public function remote(Remote $model, $arg, $bool)
-    {
+    public function remote(Remote $model, $arg, $bool) {
         return self::markup($model, $arg, $bool);
     }
 
-    public function link(Link $model, $arg, $bool)
-    {
+    public function link(Link $model, $arg, $bool) {
         return null; // TODO not implemented || unused
     }
 }
