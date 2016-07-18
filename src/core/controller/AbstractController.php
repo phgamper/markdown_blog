@@ -76,7 +76,7 @@ abstract class AbstractController {
                 $model = new $type($config);
                 self::addModel($model, $config);
                 break;
-            case is_dir($config['path']) && $type != 'OwlCarousel' && $type != 'Link':
+            case is_dir($config['path']) && $type != 'OwlCarousel' && $type != 'PhotoSwipe' && $type != 'Link':
                 $filter = new Filter(new Collection($type, $config));
                 $model = $filter->filter();
                 break;
@@ -87,6 +87,7 @@ abstract class AbstractController {
             case $type == 'Remote':
             case $type == 'Link':
             case $type == 'OwlCarousel':
+            case $type == 'PhotoSwipe':
                 $model = new $type($config);
                 break;
             default:
@@ -125,5 +126,3 @@ abstract class AbstractController {
         }
     }
 }
-
-?>

@@ -68,6 +68,10 @@ class Carousel implements IVisitor
         return []; // TODO not implemented || unused
     }
 
+    public function photoSwipe(PhotoSwipe $model, $arg, $bool){
+        return []; // TODO not implemented || unused
+    }
+    
     public function carousel(OwlCarousel $model, $arg, $bool){
         return []; // TODO not implemented || unused
     }

@@ -98,7 +98,7 @@ abstract class PageController extends AbstractController {
                     $model = new HyperTextMarkup($config);
                     break;
                 case 'php':
-                    $config = ['key' => 'raw', 'name' => 'raw', 'path' => $raw, 'subtitle' => false];
+                    $config = ['key' => 'raw', 'name' => 'raw', 'path' => $raw, 'subtitle' => falset ];
                     $model = new HypertextPreprocessor($config);
                     break;
                 default:

@@ -38,6 +38,8 @@ interface IVisitor
 
     public function image(Image $model, $arg, $bool);
 
+    public function photoSwipe(PhotoSwipe $model, $arg, $bool);
+    
     public function carousel(OwlCarousel $model, $arg, $bool);
 
     public function markup(Markup $model, $arg, $bool);

@@ -38,6 +38,10 @@ abstract class AbstractPage extends AbstractView {
         return $model->parse($arg);
     }
 
+    public function photoSwipe(PhotoSwipe $model, $arg, $bool) {
+        return $model->parse($arg);
+    }
+    
     public function carousel(OwlCarousel $model, $arg, $bool) {
         $carousel = '<div class="modal-dialog"><div class="modal-content">' . $model->parse($arg) . '</div></div>';
         return '<div class="modal fade" id="carousel-modal" role="dialog">' . $carousel . '</div>';

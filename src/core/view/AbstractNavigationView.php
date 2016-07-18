@@ -96,6 +96,10 @@ abstract class AbstractNavigationView extends AbstractView {
         return $this->li($model, $arg, $bool);
     }
 
+    public function photoSwipe(PhotoSwipe $model, $arg, $bool) {
+        return $this->li($model, $arg, $bool);
+    }
+    
     public function carousel(OwlCarousel $model, $arg, $bool) {
         return $this->li($model, $arg, $bool);
     }
