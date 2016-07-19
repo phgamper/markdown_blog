@@ -33,33 +33,30 @@ class SitemapView extends AbstractNavigationView {
     /**
      *
      * @param Collection|Container $model
-     * @param int $arg
+     * @param string $arg
      * @param $bool
      * @return string
      */
     public function container(Container $model, $arg, $bool) {
-        return '<li><p>' . $model->config['name'] . '</p>' . $this->inject($model, $arg, false) . '</li>';
+        return '<li><p>' . $model->config['name'] . '</p>' . $this->inject($model, $arg) . '</li>';
     }
 
     public function typedContainer(TypedContainer $model, $arg, $bool) {
-        return $this->li($model, $arg, $bool, $this->inject($model, $arg, false));
+        return $this->li($model, $arg, $bool, $this->inject($model, $arg));
+    }
+
+    /**
+     * @param Link $model
+     * @param string $arg
+     * @param boolean $bool
+     * @return mixed|string
+     */
+    public function link(Link $model, $arg, $bool) {
+        return '<li><p><a href="' . $arg . '">' . $model->config['name'] . '</a></p></li>';
     }
 
     protected function li(AbstractModel $model, $arg, $anchor, $inject = '') {
-        return '<li><p><a href="' . $this->prefix($arg, $anchor) . $arg . '">' . $model->config['name'] . '</a></p>' . $inject . '</li>';
-    }
-
-    protected function prefix($arg, $anchor) {
-        if (URLs::getInstance()->isRaw()) {
-            $prefix = Config::getInstance()->app_root;
-        } else if ($anchor && URLs::getInstance()->isRoot()) {
-            $prefix = '#';
-        } else if ($anchor) {
-            $prefix = Config::getInstance()->app_root . '#';
-        } else {
-            $prefix = Config::getInstance()->app_root;
-        }
-        return $prefix;
+        return '<li><p><a href="' . $this->prefix($anchor) . $arg . '">' . $model->config['name'] . '</a></p>' . $inject . '</li>';
     }
 
     /**
@@ -70,10 +67,10 @@ class SitemapView extends AbstractNavigationView {
         return ''; 
     }
     
-    private function inject(Container $model, $arg, $bool) {
+    private function inject(Container $model, $arg) {
         $sitemap = '';
         foreach ($model->getModels() as $key => $value) {
-            $sitemap .= $this->visit($value, $arg . '/' . $key, $bool);
+            $sitemap .= $this->visit($value, $arg . '/' . $key, false);
         }
         return '<div class="sitemap-sub-level"><ul>' . $sitemap . '</ul>';
     }

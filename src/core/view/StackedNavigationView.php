@@ -52,6 +52,16 @@ class StackedNavigationView extends AbstractNavigationView {
     }
 
     /**
+     * @param Link $model
+     * @param string $arg
+     * @param boolean $bool
+     * @return mixed|string
+     */
+    public function link(Link $model, $arg, $bool) {
+        return '<li ' . $this->active($arg) . '><a href="' . $arg . '">' . $model->config['name'] . '</a></li>';
+    }
+    
+    /**
      * @param AbstractModel $model
      * @param string $arg
      * @param bool $anchor
@@ -59,7 +69,7 @@ class StackedNavigationView extends AbstractNavigationView {
      * @return string
      */
     protected function li(AbstractModel $model, $arg, $anchor) {
-        return '<li ' . $this->active($arg) . '><a href="' . Config::getInstance()->app_root . $arg . '">' . $model->config['name'] . '</a></li>';
+        return '<li ' . $this->active($arg) . '><a href="' . $this->prefix($anchor) . $arg . '">' . $model->config['name'] . '</a></li>';
     }
 
     /**
@@ -69,15 +79,11 @@ class StackedNavigationView extends AbstractNavigationView {
     protected function active($arg) {
         $active = true;
         $level = count(explode('/', URLs::getInstance()->root())) - 2;
-        $regexp = '/' . str_replace('/', '\/', $this->config['root']) . '/';
+        $regexp = '/' . str_replace('/', '\/', URLs::getInstance()->root()) . '/';
         foreach (explode('/', preg_replace($regexp, '', $arg, 1)) as $module) {
             $active &= URLs::getInstance()->module($level) == $module;
             $level++;
         }
         return $active ? 'class="active"' : '';
-    }
-    
-    protected function prefix($arg, $anchor) {
-        return ''; 
     }
 }

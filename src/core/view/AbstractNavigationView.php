@@ -88,9 +88,7 @@ abstract class AbstractNavigationView extends AbstractView {
      * @param $bool
      * @return mixed|string
      */
-    public function link(Link $model, $arg, $bool) {
-        return $this::li($model, $model->config['path'], false);
-    }
+    public abstract function link(Link $model, $arg, $bool); 
 
     public function image(Image $model, $arg, $bool) {
         return $this->li($model, $arg, $bool);
@@ -99,7 +97,7 @@ abstract class AbstractNavigationView extends AbstractView {
     public function photoSwipe(PhotoSwipe $model, $arg, $bool) {
         return $this->li($model, $arg, $bool);
     }
-    
+
     /**
      * @param AbstractModel $model
      * @param mixed $arg
@@ -114,6 +112,15 @@ abstract class AbstractNavigationView extends AbstractView {
      */
     protected abstract function active($arg);
 
-
-    protected abstract function prefix($arg, $anchor);
+    protected function prefix($anchor) {
+        $root =  URLs::getInstance()->root();
+        if (URLs::getInstance()->isRaw() && $anchor) {
+            $prefix = $root . '#';
+        } else if ($anchor) {
+            $prefix = '#';
+        } else {
+            $prefix = $root ;
+        }
+        return $prefix;
+    }
 }

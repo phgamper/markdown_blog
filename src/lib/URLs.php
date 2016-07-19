@@ -86,7 +86,7 @@ class URLs {
     }
 
     public function root() {
-        $root = $this->isPlugin() ? $this->module() : '';
+        $root = $this->isPlugin() ? $this->module().'/' : '';
         return Config::getInstance()->app_root.$root;
     }
     
