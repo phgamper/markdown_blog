@@ -19,7 +19,11 @@ $('a.toggle-swipe').click(function() {
         focus: false,
         index: i,
         showAnimationDuration: 0,
-        hideAnimationDuration: 0
+        hideAnimationDuration: 0,
+        bgOpacity: 0.7,
+        shareButtons: [
+            {id:'download', label:'Download image', url:'{{raw_image_url}}', download:true}
+        ]
     };
     var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
     gallery.init();

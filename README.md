@@ -57,6 +57,7 @@ Furthermore you might want to add custom CA authorities ("ca-bundle.crt") into t
 - [prismjs](http://prismjs.com/index.html)
 - [Bootstrap 3.2](http://getbootstrap.com)
 - [OWL Carousel](http://owlgraphic.com/owlcarousel/)
+- [PhotoSwipe](http://photoswipe.com/)
 - [Font Awesome](https://fortawesome.github.io/Font-Awesome/)
 - HTML 5
 - PHP 5.6
