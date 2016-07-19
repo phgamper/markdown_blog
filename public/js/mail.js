@@ -1,6 +1,7 @@
 $('span.obfuscate').each(function (count, enc) { //foreach encoded DOM element
-    encodedData = jQuery(enc).html(); //grab encoded text
-    decodedData = encodedData.replace(/[a-zA-Z]/g, function (char) { //foreach character
+    $(this).show();
+    var base64 = jQuery(enc).html().trim(); //grab encoded text
+    var decoded = atob(base64).replace(/[a-zA-Z]/g, function (char) { //foreach character
         return String.fromCharCode( //decode string
             /**
              * char is equal/less than 'Z' (i.e. a  capital letter), then compare upper case Z unicode
@@ -14,5 +15,5 @@ $('span.obfuscate').each(function (count, enc) { //foreach encoded DOM element
             (char <= "Z" ? 90 : 122) >= (char = char.charCodeAt(0) + 13) ? char : char - 26
         );
     });
-    jQuery(enc).html(decodedData); // replace text
+    jQuery(enc).html(decoded); // replace text
 });

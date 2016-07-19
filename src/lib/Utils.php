@@ -27,12 +27,13 @@
 class Utils {
 
     const MAIL_REGEX = '/\<a([^>]+)href\=\"mailto\:([^">]+)\"([^>]*)\>(.*?)\<\/a\>|[A-Za-z0-9_-]+@[A-Za-z0-9_-]+\.([A-Za-z0-9_-][A-Za-z0-9_]+)/';
-
+    
     public static function obfuscateMailTo($string, Script $script) {
+
         $script->link(JS_DIR . 'mail.js');
         preg_match_all(self::MAIL_REGEX, $string, $matches);
         foreach ($matches[0] as $m) {
-            $string = str_replace($m, str_rot13($m), $string);
+            $string = str_replace($m, base64_encode(str_rot13(trim($m))), $string);
         }
         return $string;
     }

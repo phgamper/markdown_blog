@@ -28,7 +28,7 @@ abstract class AbstractPage extends AbstractView {
 
     public function __construct(AbstractModel $model, array $config) {
         parent::__construct($model, $config);
-        Head::getInstance()->link(CSS_DIR . 'content.css');
+        Head::getInstance()->link(CSS_DIR . 'style.css');
         if (isset($this->config['style'])) {
             Head::getInstance()->link($this->config['style']);
         }
