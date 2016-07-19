@@ -308,11 +308,22 @@ find . -iname "*.php" | xargs chmod 640
   
 **_Note:_** If MarkdownBlog was cloned from git, it's recommended not to use root to execute the git commands, since that will make root the owner of the cloned files.
 
-5. Miscellaneous
-- Mail Obfuscation
+## 5. Miscellaneous
+
+### 5.1 Mail Obfuscation
+
 Any email address found in the HTML output is obfuscated automatically. To deobfuscate, surround the **a** using **span** as follows 
 ```
 <span class="obfuscate">
     <a href="mailto:me@example.org">me@example.org</a>
 </span>
  ```
+ 
+### 5.2 On-the-fly image resize
+
+A **img** inside **div** assigned to the class `img-resize` is resized on-the-fly to the size of the surrounding div round up to the next tenth. Therefore the attribute `data-src` must be set to the source path of the image while the `src` attribute can be set to `/img/loader.gif` in order to get feedback. 
+```
+<div class="img-resize">
+    <img src="/img/loader.gif" data-src="/content/ppaht/to/my/img.jpg">
+</div>
+```
