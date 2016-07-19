@@ -51,7 +51,7 @@ class Social
     }
 
     public function socialButtons($link, $name = '', $desc = ''){
-        $socials = array();
+        $socials = [];
         if (array_key_exists('facebook', $this->socials) && $this->socials['facebook']) {
             $item = '<a href="https://www.facebook.com/sharer/sharer.php?u='.$link.'">';
             $item .= '<i class="fa fa-2x fa-facebook-square wow bounceIn" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: bounceIn;"> </i></a>';
@@ -79,8 +79,7 @@ class Social
             $socials[] = $item;
         }
         if (array_key_exists('mail', $this->socials) && $this->socials['mail']) {
-            $mail = filter_var($this->socials['mail'], FILTER_VALIDATE_EMAIL) ? $this->socials['mail'] : '';
-            $item = '<span class="obfuscate"><a href="mailto:'.$mail.'?subject='.$name.'&amp;body='.$desc.'%0A%0A'.$link.'">';
+            $item = '<span class="obfuscate"><a href="mailto:?subject='.$name.'&amp;body='.$desc.'%0A%0A'.$link.'">';
             $item .= '<i class="fa fa-2x fa-envelope-square wow bounceIn" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: bounceIn;"> </i> </a></span>';
             $socials[] = $item;
         }

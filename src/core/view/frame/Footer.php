@@ -48,8 +48,9 @@ class Footer implements IView {
         if (array_key_exists('social', $general) && $general['social']) {
             $buttons = Social::getInstance()->socialButtons('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], Head::getInstance()->getTitle());
             $span = floor(6 / count($buttons));
+            $xs = floor(12 / count($buttons));
             foreach ($buttons as $b) {
-                $social .= '<div class="col-xs-2 col-md-' . $span . ' text-center">' . $b . '</div>';
+                $social .= '<div class="col-xs-'.$xs.' col-md-' . $span . ' text-center">' . $b . '</div>';
             }
             $x = floor((8 - count($buttons)) / 2);
             $social = '<div class="row"><div class="col-md-offset-2 col-md-' . $x . '"></div>' . $social . '</div>';
