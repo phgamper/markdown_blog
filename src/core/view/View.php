@@ -37,8 +37,4 @@ class View extends AbstractPage {
             Head::getInstance()->setTitle($title);
         }
     }
-
-    public function link(Link $model, $arg, $bool) {
-        return '<div class="row content-item"><div class="col-md-12">' . $model->parse($arg) . '</div></div>';
-    }
 }

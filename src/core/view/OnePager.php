@@ -77,7 +77,7 @@ class OnePager extends AbstractPage {
     }
 
     public function link(Link $model, $arg, $bool) {
-        return "";
+        return $this->section($model, $bool, parent::link($model, $arg, false));
     }
 
     /**

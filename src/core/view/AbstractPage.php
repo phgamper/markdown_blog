@@ -144,6 +144,10 @@ abstract class AbstractPage extends AbstractView {
     public function remote(Remote $model, $arg, $bool) {
         return $this->markup($model, $arg, $bool);
     }
+
+    public function link(Link $model, $arg, $bool) {
+        return '<div class="row content-item"><div class="col-md-12">' . $model->parse($arg) . '</div></div>';
+    }
     
     protected function pager($model){
         $pager = '';
