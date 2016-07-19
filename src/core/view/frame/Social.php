@@ -79,8 +79,8 @@ class Social
             $socials[] = $item;
         }
         if (array_key_exists('mail', $this->socials) && $this->socials['mail']) {
-            $item = '<a href="mailto:?subject='.$name.'&amp;body='.$desc.'%0A%0A'.$link.'">';
-            $item .= '<i class="fa fa-2x fa-envelope-square wow bounceIn" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: bounceIn;"> </i> </a>';
+            $item = '<span class="obfuscate"><a href="mailto:?subject='.$name.'&amp;body='.$desc.'%0A%0A'.$link.'">';
+            $item .= '<i class="fa fa-2x fa-envelope-square wow bounceIn" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: bounceIn;"> </i> </a></span>';
             $socials[] = $item;
         }
         return $socials;
