@@ -9,16 +9,12 @@ RUN rm -rfv /var/www/html \
 
 # COPY config/php.ini /usr/local/etc/php
 COPY apache.conf /etc/apache2/sites-available/
-COPY config /var/www/html/config
-COPY public /var/www/html/public
-COPY src /var/www/html/src
 
 RUN mkdir -p $APACHE_LOG_DIR\
     && mkdir -p /etc/ssl/domain/private/ \
     && mkdir -p /etc/apache2/ssl.crt/ \
     && echo "" > $APACHE_LOG_DIR/default.log \
     && chmod 777 $APACHE_LOG_DIR/default.log \
-    && chown -R www-data:www-data /var/www/html/  \
     && a2enmod rewrite \
     && a2enmod ssl \
     && a2enmod headers \
@@ -35,10 +31,17 @@ RUN mkdir -p $APACHE_LOG_DIR\
     && rm -vf /etc/apache2/sites-enabled/* \
     && ln -s /etc/apache2/sites-available/apache.conf /etc/apache2/sites-enabled/ 
 
+VOLUME ["$APACHE_LOG_DIR"]
 VOLUME ["/etc/ssl/domain"]
 VOLUME ["/etc/ssl/domain/private"]
 VOLUME ["/etc/apache2/ssl.crt"]
-VOLUME ["/var/www/html/log/"]
+
+COPY config /var/www/html/config
+COPY public /var/www/html/public
+COPY src /var/www/html/src
+
+RUN chown -R www-data:www-data /var/www/html/
+
 VOLUME ["/var/www/html/public/content"]
 VOLUME ["/var/www/html/config"]
 
