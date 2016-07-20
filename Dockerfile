@@ -14,7 +14,7 @@ RUN mkdir -p $APACHE_LOG_DIR\
     && mkdir -p /etc/ssl/domain/private/ \
     && mkdir -p /etc/apache2/ssl.crt/ \
     && echo "" > $APACHE_LOG_DIR/default.log \
-    && chmod 777 $APACHE_LOG_DIR/default.log \
+    && chmod 664 $APACHE_LOG_DIR/default.log \
     && a2enmod rewrite \
     && a2enmod ssl \
     && a2enmod headers \
