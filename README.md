@@ -1,9 +1,11 @@
 # MarkdownBlog
 
-MarkdownBlog is a lightweight blog software written in php and twitter bootstrap. Its purpose is to provide a easy way to share your thoughts without any database or special setup needed.
-The content of the website can be provided in easy to use [markdown](http://de.wikipedia.org/wiki/Markdown) files `(*.md)` instead. 
+MarkdownBlog is a lightweight php blog software. 
+Its purpose is to provide a easy way to share your thoughts without any database or special setup needed.
+The content of the website can be provided in easy to use [markdown](http://de.wikipedia.org/wiki/Markdown) files `(*.md)` instead of other more complicated solutions. 
 
 ## Features
+
 - Dynamic setup of your blog or website with simple configuration files but without any need of programming.
 - Support for (remote) markdown and HTML files
 - Easy to build navigation, including the ability to link external sites
@@ -12,7 +14,6 @@ The content of the website can be provided in easy to use [markdown](http://de.w
   - Remote pages to show content hosted on an onther server (e.g. your favourite GitHub project).
   - List of markdown files (the sample usecase of a blog)
   - Grouping of topics in a dynamicly generated dropdown menue.
-- Full responsive design due to the use of Twitter Bootstrap.
 - Syntax highlighting for both HTML and markdown
 - Build-in Gallery, including a lazy-load slider
 - Dynamic image resize to minimize network traffic
@@ -29,6 +30,9 @@ The content of the website can be provided in easy to use [markdown](http://de.w
 4. Copy your `*.md` files on the server (e.g. `public/content/` and provide their location in the `config/config.ini`. 
 5. Make sure the server has read and execution access to all linked markdown files.
 6. Share your thoughts and enjoy!
+
+You should probably exclude .git and .ini files from being served by your web server.
+A full example of a Apache configuration can be found in the `apache.conf` in this repo.
 
 For detailed information see the [documentation](https://github.com/phgamper/markdown_blog/blob/master/doc.md).
 
@@ -55,22 +59,7 @@ Furthermore you might want to add custom CA authorities ("ca-bundle.crt") into t
 - [Parsedown](http://parsedown.org)
 - [IniParser](https://github.com/austinhyde/IniParser)
 - [prismjs](http://prismjs.com/index.html)
-- [Bootstrap 3.2](http://getbootstrap.com)
-- [OWL Carousel](http://owlgraphic.com/owlcarousel/)
 - [PhotoSwipe](http://photoswipe.com/)
 - [Font Awesome](https://fortawesome.github.io/Font-Awesome/)
 - HTML 5
 - PHP 5.6
-
-## Tested on
-
-- Google Chrome 45.x
-- Safari on iOS 8
-- Google Chrome for iOS 45.x
-- Google Chrome for Android 45.x
-- Mozilla Firefox for Ubuntu 31.0
-
-## Releases
-
-- 22.09.2014  v0.1 - initial release
-- 03.10.2015  v0.2 - stable release
