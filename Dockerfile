@@ -13,8 +13,8 @@ COPY apache.conf /etc/apache2/sites-available/
 RUN mkdir -p $APACHE_LOG_DIR\
     && mkdir -p /etc/ssl/domain/private/ \
     && mkdir -p /etc/apache2/ssl.crt/ \
-    && echo "" > $APACHE_LOG_DIR/default.log \
-    && chmod 664 $APACHE_LOG_DIR/default.log \
+    && echo "" > $APACHE_LOG_DIR/markdown_blog.log \
+    && chmod 664 $APACHE_LOG_DIR/markdown_blog.log \
     && a2enmod rewrite \
     && a2enmod ssl \
     && a2enmod headers \
