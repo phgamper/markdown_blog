@@ -18,7 +18,7 @@ RUN mkdir -p $APACHE_LOG_DIR\
     && a2enmod rewrite \
     && a2enmod ssl \
     && a2enmod headers \
-    && apt-get -y update \
+    && apt-get -y update --force-yes \
     && apt-get install -y ca-certificates \
     && apt-get install -y openssl \
     && update-ca-certificates \
