@@ -7,8 +7,12 @@ ENV APACHE_LOG_DIR /var/www/html/log/
 RUN rm -rfv /var/www/html \
     && mkdir /var/www/html
 
-# COPY config/php.ini /usr/local/etc/php
 COPY apache.conf /etc/apache2/sites-available/
+
+RUN yes | pecl install xdebug \
+    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN mkdir -p $APACHE_LOG_DIR\
     && mkdir -p /etc/ssl/domain/private/ \
@@ -49,3 +53,7 @@ EXPOSE 80
 EXPOSE 443
 
 CMD ["apache2-foreground"]
+
+
+
+
