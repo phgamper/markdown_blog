@@ -49,11 +49,16 @@ For a test you can follow these steps:
 5. `docker run -v $(pwd)/:/var/www/html/public/content -v $(pwd)/.config/:/var/www/html/config -p 8080:443 YOUR_NAME/mdblog` (where $(pwd) equals the path of your website folder)
 6. You can access your MarkdownBlog via https://localhost:8080/
 
+__Note:__ Debug your PHP in Docker with Intellij/PHPStorm and Xdebug [see here](https://gist.github.com/chadrien/c90927ec2d160ffea9c4)
+1. `docker run -e XDEBUG_CONFIG="remote_host=YOUR_IP_ADDRESS" -v $(pwd)/:/var/www/html/public/content -v $(pwd)/.config/:/var/www/html/config -p 8080:443 YOUR_NAME/mdblog` (where $(pwd) equals the path of your website folder)
+2. In Intellij/PHPStorm go to: `Languages & Frameworks > PHP > Debug > DBGp Proxy` and set the following settings: `Host: YOUR_IP_ADDRESS` `Port: 9000`
+
 __Note:__ This setup is only suited for testing purposes. You Should definitely replace the self signed certificate that is generated in the docker container with a real SSL Cert.
 - Your public key ("domain.pem") and the intermediate Certificates ("intermediate.pem") have to be linked into _/etc/ssl/certs_.
 - Your private key ("domain.key") has to be linked into _etc/ssl/private_
 
 Furthermore you might want to add custom CA authorities ("ca-bundle.crt") into the _/etc/apache2/ssl.crt_ folder and export the logs _/var/log/httpd_.
+
 
 ## Build with
 
