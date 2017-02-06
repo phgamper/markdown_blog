@@ -14,6 +14,10 @@ RUN yes | pecl install xdebug \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
+RUN touch /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "upload_max_filesize = 10M;" >> /usr/local/etc/php/conf.d/uploads.ini
+
+
 RUN mkdir -p $APACHE_LOG_DIR\
     && mkdir -p /etc/ssl/domain/private/ \
     && mkdir -p /etc/apache2/ssl.crt/ \
@@ -48,6 +52,7 @@ RUN chown -R www-data:www-data /var/www/html/
 
 VOLUME ["/var/www/html/public/content"]
 VOLUME ["/var/www/html/config"]
+VOLUME ["/var/www/html/public/agent"]
 
 EXPOSE 80
 EXPOSE 443
