@@ -87,9 +87,60 @@ class IniParser {
             throw new LogicException("Need a file to parse.");
         }
 
-        $simple_parsed = parse_ini_file($this->file, true);
+        $simple_parsed = parse_ini_file($this->file, true, INI_SCANNER_TYPED);
         $inheritance_parsed = $this->parseSections($simple_parsed);
         return $this->parseKeys($inheritance_parsed);
+    }
+
+    /**
+     * Writes the given INI data structure into the given file. The file will be created if absent.
+     *
+     * @param array $ini data structure to write
+     * @param string $file to write
+     */
+    public static function write($ini, $file) {
+        if ($file == null || empty($file) || !is_array($ini)) {
+            throw new Exception("Input validation failed.");
+        }
+        $tmp = "/tmp/" . time();
+        if (!$fh = fopen($tmp, 'w')){
+            throw new Exception("Failed to open ");
+        }
+        $string = '';
+        foreach ($ini as $key => $group) {
+            $string .= "[".$key."]\n" . self::writeLevel($group, '') . "\n";
+        }
+        if (!fwrite($fh, $string)) {
+            fclose($fh);
+            delete($tmp);
+            throw new Exception("Failed to write file");
+        }
+        fclose($fh);
+
+        if (!rename($tmp, $file)) {
+            throw new Exception("Failed to move file");
+        }
+    }
+
+    private static function writeLevel($array, $prefix) {
+        $string = "\n";
+        foreach ($array as $key => $value) {
+            $p = empty($prefix) ? $key : $prefix . '.' . $key;
+            if (is_array($value)) {
+                $string .= self::writeLevel($value, $p);
+            } else {
+                $out = $value;
+                if (is_null($value)) {
+                    $out = "null";
+                } else if (is_bool($value)) {
+                    $out =  $value ? "true" : "false";
+                } else if (!is_numeric($value)) {
+                    $out = "\"".$value."\"";
+                }
+                $string .= $p . " = " . $out . "\n";
+            }
+        }
+        return $string;
     }
 
     /**
@@ -136,7 +187,7 @@ class IniParser {
         }
         return $ini;
     }
-    
+
     private function array_merge_recursive_distinct ( array &$array1, array &$array2 )
     {
         $merged = $array1;
