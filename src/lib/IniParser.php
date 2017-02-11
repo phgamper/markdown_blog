@@ -102,8 +102,7 @@ class IniParser {
         if ($file == null || empty($file) || !is_array($ini)) {
             throw new Exception("Input validation failed.");
         }
-        $tmp = "/tmp/" . time();
-        if (!$fh = fopen($tmp, 'w')){
+        if (!$fh = fopen($file, 'w')){
             throw new Exception("Failed to open ");
         }
         $string = '';
@@ -112,14 +111,9 @@ class IniParser {
         }
         if (!fwrite($fh, $string)) {
             fclose($fh);
-            delete($tmp);
             throw new Exception("Failed to write file");
         }
         fclose($fh);
-
-        if (!rename($tmp, $file)) {
-            throw new Exception("Failed to move file");
-        }
     }
 
     private static function writeLevel($array, $prefix) {
