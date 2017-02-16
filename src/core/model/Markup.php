@@ -32,15 +32,16 @@ abstract class Markup extends AbstractModel implements ILeaf{
      * @return array parsed tags
      */
     public function parseTags() {
-        try {
-            if ($fh = fopen($this->config['path'], 'r')) {
+        return self::tags($this->config['path']);
+    }
 
+    public static function tags($file) {
+        try {
+            if ($fh = fopen($file, 'r')) {
                 $tags = [];
                 $meta = false;
-
                 while (!feof($fh)) {
                     $line = fgets($fh);
-
                     // opening tag
                     if (!$meta && preg_match('/^(\<\!\-\-).*/', $line)) {
                         $tags['meta'] = [];
@@ -84,12 +85,37 @@ abstract class Markup extends AbstractModel implements ILeaf{
                 fclose($fh);
                 return $tags;
             } else {
-                throw new Exception('Can not open ' . $this->config['path']);
+                throw new Exception('Can not open ' . $file);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markup::parse("' . $this->config['path'] . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markup::tags("' . $file . '")', $e->getMessage()));
             return [];
         }
+    }
+
+    public static function text($file) {
+        try {
+            if ($fh = fopen($file, 'r')) {
+                while(!feof($fh)) {
+                    $line = fgets($fh);
+                    if (preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line)){
+                        break;
+                    }
+                }
+                $out = '';
+                while (!feof($fh)) {
+                    $out .= fgets($fh);
+                }
+                fclose($fh);
+                return $out;
+            } else {
+                throw new Exception('Can not open ' . $file);
+            }
+        } catch (Exception $e) {
+            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markup::text("' . $file . '")', $e->getMessage()));
+            return '';
+        }
+
     }
 }
 
