@@ -17,7 +17,7 @@ class Parsedown
 {
     # ~
 
-    const version = '1.5.4';
+    const version = '1.6.0';
 
     # ~
 
@@ -141,7 +141,7 @@ class Parsedown
 
                 foreach ($parts as $part)
                 {
-                    $shortage = 4 - strlen($line) % 4;
+                    $shortage = 4 - mb_strlen($line, 'utf-8') % 4;
 
                     $line .= str_repeat(' ', $shortage);
                     $line .= $part;

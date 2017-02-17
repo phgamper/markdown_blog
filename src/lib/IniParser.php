@@ -117,7 +117,7 @@ class IniParser {
     }
 
     private static function writeLevel($array, $prefix) {
-        $string = "\n";
+        $string = "";
         foreach ($array as $key => $value) {
             $p = empty($prefix) ? $key : $prefix . '.' . $key;
             if (is_array($value)) {
