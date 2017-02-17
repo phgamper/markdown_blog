@@ -96,13 +96,17 @@ abstract class Markup extends AbstractModel implements ILeaf{
     public static function text($file) {
         try {
             if ($fh = fopen($file, 'r')) {
-                while(!feof($fh)) {
-                    $line = fgets($fh);
-                    if (preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line)){
-                        break;
-                    }
-                }
                 $out = '';
+                if (!feof($fh) && preg_match('/^(\<\!\-\-).*/', $line = fgets($fh))) {
+                    while(!feof($fh)) {
+                        $line = fgets($fh);
+                        if (preg_match('/.*(\-\-\>)|(\-\-\!\>)$/', $line)){
+                            break;
+                        }
+                    }
+                } else {
+                    $out = $line;
+                }
                 while (!feof($fh)) {
                     $out .= fgets($fh);
                 }
