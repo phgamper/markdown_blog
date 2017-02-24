@@ -6,7 +6,7 @@ function enqueue(qname, div) {
 
             $.ajax({
                 type: 'GET',
-                url: '/image.php?src=' + img.data('src') + '&width=' + div.context.offsetWidth,
+                url: '/image.php?src=' + img.data('src') + '&width=' + div.outerWidth(),
                 data: 'html',
                 success: function(data){
                     img.attr('src', data);

@@ -43,7 +43,7 @@ class NavigationController extends AbstractController {
     public function display() {
         $output = (new $this->view($this->model))->show();
         Logger::getInstance()->writeLog();
-        return Utils::obfuscateMailTo($output, Script::getInstance());
+        return Utils::obfuscate($output, Script::getInstance());
     }
 
     protected function actionListener() {

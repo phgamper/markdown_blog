@@ -26,16 +26,46 @@
  */
 class Utils {
 
-    const MAIL_REGEX = '/\<a([^>]+)href\=\"mailto\:([^">]+)\"([^>]*)\>(.*?)\<\/a\>|[A-Za-z0-9_-]+@[A-Za-z0-9_-]+\.([A-Za-z0-9_-][A-Za-z0-9_]+)/';
-    
-    public static function obfuscateMailTo($string, Script $script) {
+    const MAIL_REGEX = '#<\s*?obfuscate\b[^>]*>(.*?)</obfuscate\b[^>]*>#s';
 
-        $script->link(JS_DIR . 'mail.js');
+    public static function obfuscate($string, Script $script) {
+        $script->link(JS_DIR . 'minerva.js');
         preg_match_all(self::MAIL_REGEX, $string, $matches);
-        foreach ($matches[0] as $m) {
-            $string = str_replace($m, base64_encode(str_rot13(trim($m))), $string);
+        foreach ($matches[0] as $k => $m) {
+            $string = str_replace($m, '<span class="minerva">'.base64_encode(str_rot13(trim($matches[1][$k]))).'</span>', $string);
         }
         return $string;
+    }
+    
+    public static function minifyCSS($src) {
+        return self::cacheFile($src);
+    }
+
+    /**
+     * Assume the given source path is absolute to the Document Root,
+     * i.e., let the Document Root be equal /var/www/html/public, then the following
+     * file /content/myFile.txt resolves to <Document Root>/content/myFile.txt, thus
+     * to /var/www/html/public/content/myFile.txt
+     * A source path must not be relative as content/myFile.txt would resolve to 
+     * /var/html/publicconentn/myFile.txt
+     * 
+     *
+     * @param string $src path to file
+     * @return string
+     */
+    public static function cacheFile($src){
+        $file = $_SERVER['DOCUMENT_ROOT'].$src;
+        if (!file_exists($file)){
+            Logger::getInstance()->add(new Warning('No such file or directory: "'.$file.'"', 'Utils::cacheFile()'));
+            return $src;
+        }
+        $min = CACHE_DIR.md5_file($file).'.'.pathinfo($file, PATHINFO_EXTENSION);
+        if (!file_exists($min)) {
+            if(!copy($file, $min)){
+                Logger::getInstance()->add(new Error('Failed to copy file: "cp '.$file.' '.$min.'"', 'Utils::cacheFile()'));
+            }
+        }
+        return '/'.$min;
     }
 }
 

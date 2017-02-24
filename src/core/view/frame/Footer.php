@@ -63,6 +63,6 @@ class Footer implements IView {
         }
         // put it together
         $sitemap = $sitemap . '<div class="footer-inner row">' . $left . $right . '</div>' . $social . $poweredby;
-        return Utils::obfuscateMailTo($sitemap, Script::getInstance());
+        return Utils::obfuscate($sitemap, Script::getInstance());
     }
 }

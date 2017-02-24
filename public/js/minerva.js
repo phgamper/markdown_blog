@@ -1,4 +1,4 @@
-$('span.obfuscate').each(function (count, enc) { //foreach encoded DOM element
+$('span.minerva').each(function (count, enc) { //foreach encoded DOM element
     $(this).show();
     var base64 = jQuery(enc).html().trim(); //grab encoded text
     var decoded = atob(base64).replace(/[a-zA-Z]/g, function (char) { //foreach character
