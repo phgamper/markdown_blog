@@ -33,8 +33,8 @@ final class Autoload
 
     private function __construct()
     {
-        self::import(str_replace('//', '/', SRC_DIR));
         self::import(LIB_DIR);
+        self::import(str_replace('//', '/', SRC_DIR));
     }
 
     public static function getInstance()
@@ -46,7 +46,7 @@ final class Autoload
         return self::$instance;
     }
 
-    private function import($path)
+    public function import($path)
     {
         $ScanDir = new ScanDir($path);
         self::addClasses($ScanDir->getFiles(), $path);
@@ -62,7 +62,7 @@ final class Autoload
             foreach ($files as $file) {
                 if (substr($file, - 4) == '.php') {
                     $classname = substr($file, 0, - 4);
-                    $this->classes[$classname] = $path . '/' . $file;
+                    $this->classes[$classname] = $path . $file;
                 }
             }
         }

@@ -29,10 +29,14 @@ include_once('../src/settings.php');
 include_once(LIB_DIR . 'Autoload.php');
 include_once(LIB_DIR . 'ScanDir.php');
 ini_set('display_errors', 1);
-$src = Autoload::getInstance(SRC_DIR, false)->getClasses();
-$lib = Autoload::getInstance(LIB_DIR, false)->getClasses();
-$classes = array_merge($src, $lib);
 set_error_handler("error_handler", E_ALL);
+
+$classes = Autoload::getInstance()->getClasses();
+$config = Config::getInstance()->getGeneralArray('general');
+if ($content_classes = Config::getInstance()->getGeneral('general', 'class_source_path')) {
+    Autoload::getInstance()->import($content_classes);
+    $classes = Autoload::getInstance()->getClasses();
+}
 
 /**
  * Parse REQUEST_URI to enable pretty URLS
@@ -42,7 +46,6 @@ URLs::getInstance()->parseURI();
 /**
  * setup page and load provided business-casual.php
  */
-$config = Config::getInstance()->getGeneralArray('general');
 if (isset($config['highlight']) && $config['highlight']) {
     $style = isset($config['scheme']) ? $config['scheme'] : 'default.css';
     Head::getInstance()->link(PUBLIC_LIB_DIR . 'prismjs/css/' . $style);
@@ -52,10 +55,12 @@ if (array_key_exists('img_resize', $config) && $config['img_resize']) {
     Script::getInstance()->link('image.js');
 }
 Head::getInstance()->link(PUBLIC_LIB_DIR . 'bootstrap/css/bootstrap.min.css');
+// TODO wow/animate? bootstrap-theme.min.css?
 Head::getInstance()->link(PUBLIC_LIB_DIR . 'font-awesome/css/font-awesome.min.css');
 // Add jquery and bootstrap into header so included HTML pages can use the libs
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'jquery/js/jquery.min.js');
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'bootstrap/js/bootstrap.min.js');
+// TODO wow/wow.min.js?
 
 // Onepager or not
 if (URLs::getInstance()->isPlugin()) {
