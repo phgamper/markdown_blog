@@ -52,7 +52,7 @@ class FloatingNavigationView extends AbstractNavigationView {
      * @return mixed|string
      */
     public function link(Link $model, $arg, $bool) {
-        return '<li ' . $this->active($arg) . '><a class="page-scroll" href="' . $arg . '">' . $model->config['name'] . '</a></li>';
+        return '<li ' . $this->active($arg) . '><a class="page-scroll" href="' . $model->config['path'] . '">' . $model->config['name'] . '</a></li>';
     }
 
     /**
@@ -73,15 +73,4 @@ class FloatingNavigationView extends AbstractNavigationView {
         return '';
     }
 
-    protected function prefix($anchor) {
-        $root = URLs::getInstance()->root();
-        if ($anchor && URLs::getInstance()->isRoot()) {
-            $prefix = '#';
-        } else if ($anchor || URLs::getInstance()->isRaw() && $anchor) {
-            $prefix = $root . '#';
-        } else {
-            $prefix = $root;
-        }
-        return $prefix;
-    }
 }

@@ -58,7 +58,7 @@ class StackedNavigationView extends AbstractNavigationView {
      * @return mixed|string
      */
     public function link(Link $model, $arg, $bool) {
-        return '<li ' . $this->active($arg) . '><a href="' . $arg . '">' . $model->config['name'] . '</a></li>';
+        return '<li ' . $this->active($arg) . '><a href="' . $model->config['path'] . '">' . $model->config['name'] . '</a></li>';
     }
     
     /**

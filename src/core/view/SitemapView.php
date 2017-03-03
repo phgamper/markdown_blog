@@ -52,11 +52,11 @@ class SitemapView extends AbstractNavigationView {
      * @return mixed|string
      */
     public function link(Link $model, $arg, $bool) {
-        return '<li><p><a href="' . $arg . '">' . $model->config['name'] . '</a></p></li>';
+        return '<li><p><a href="' . $model->config['path'] . '">' . $model->config['name'] . '</a></p></li>';
     }
 
     protected function li(AbstractModel $model, $arg, $anchor, $inject = '') {
-        return '<li><p><a href="' . $this->prefix($anchor) . $arg . '">' . $model->config['name'] . '</a></p>' . $inject . '</li>';
+        return '<li><p><a class="page-scroll" href="' . $this->prefix($anchor) . $arg . '">' . $model->config['name'] . '</a></p>' . $inject . '</li>';
     }
 
     /**

@@ -88,7 +88,7 @@ abstract class AbstractNavigationView extends AbstractView {
      * @param $bool
      * @return mixed|string
      */
-    public abstract function link(Link $model, $arg, $bool); 
+    public abstract function link(Link $model, $arg, $bool);
 
     public function image(Image $model, $arg, $bool) {
         return $this->li($model, $arg, $bool);
@@ -113,13 +113,13 @@ abstract class AbstractNavigationView extends AbstractView {
     protected abstract function active($arg);
 
     protected function prefix($anchor) {
-        $root =  URLs::getInstance()->root();
-        if (URLs::getInstance()->isRaw() && $anchor) {
-            $prefix = $root . '#';
-        } else if ($anchor) {
+        $root = URLs::getInstance()->root();
+        if ($anchor && URLs::getInstance()->isRoot()) {
             $prefix = '#';
+        } else if ($anchor) {
+            $prefix = "$root#";
         } else {
-            $prefix = $root ;
+            $prefix = $root;
         }
         return $prefix;
     }
