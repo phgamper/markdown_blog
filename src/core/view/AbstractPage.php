@@ -71,10 +71,6 @@ abstract class AbstractPage extends AbstractView {
         return '<div class="row list">' . $string . '</div>';
     }
 
-    public function typedContainer(TypedContainer $model, $arg, $bool) {
-        return $this->visit($model->leaf(), $arg, $bool);
-    }
-
     public function composite(Composite $model, $arg, $bool) {
         return $this->container($model, $arg, $bool);
     }

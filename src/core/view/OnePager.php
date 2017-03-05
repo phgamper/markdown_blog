@@ -64,6 +64,14 @@ class OnePager extends AbstractPage {
         return $string;
     }
 
+    public function composite(Composite $model, $arg, $bool) {
+        $string = '';
+        foreach ($model->getModels() as $m) {
+            $string .= $this->visit($m, $arg, false);
+        }
+        return $this->section($model, $bool, $string);
+    }
+
     public function collection(Collection $model, $arg, $bool) {
         return $this->section($model, $bool, parent::container($model, $model->start, false) . $this->pager($model));
     }

@@ -30,8 +30,6 @@ interface IVisitor
 
     public function container(Container $model, $arg, $bool);
     
-    public function typedContainer(TypedContainer $model, $arg, $bool);
-
     public function composite(Composite $model, $arg, $bool);
 
     public function collection(Collection $model, $arg, $bool);

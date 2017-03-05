@@ -50,10 +50,6 @@ abstract class AbstractNavigationView extends AbstractView {
         return $nav;
     }
 
-    public function typedContainer(TypedContainer $model, $arg, $bool) {
-        return $this->container($model, $arg, $bool);
-    }
-
     public function composite(Composite $model, $arg, $bool) {
         return $this->li($model, $arg, $bool);
     }

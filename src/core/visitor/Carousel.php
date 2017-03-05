@@ -44,10 +44,6 @@ class Carousel implements IVisitor
         return []; // TODO not implemented || unused
     }
 
-    public function typedContainer(TypedContainer $model, $arg, $bool) {
-        return []; // TODO not implemented || unused
-    }
-
     public function composite(Composite $model, $arg, $bool){
         $items = [];
         foreach($model->models as $m){

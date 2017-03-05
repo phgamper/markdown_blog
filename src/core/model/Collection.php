@@ -37,8 +37,9 @@ class Collection extends Container implements ILeaf {
         $this->count = count($files);
         $this->limit = isset($config['limit']) ? $config['limit'] : $this->count;
         $static = isset($config['static']) ? $config['static'] : true;
-        foreach ($files as $f) {
-            $this->models[] = new $model(['name' => $f, 'path' => $config['path'] . $f, 'type' => $config['type'], 'static' => $static]);
+        foreach ($files as $i => $f) {
+            $model = new $model(['name' => $f, 'path' => $config['path'] . $f, 'type' => $config['type'], 'static' => $static]);
+            $this->addModel($model, $i);
         }
     }
 

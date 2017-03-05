@@ -41,10 +41,6 @@ class SitemapView extends AbstractNavigationView {
         return '<li><p>' . $model->config['name'] . '</p>' . $this->inject($model, $arg) . '</li>';
     }
 
-    public function typedContainer(TypedContainer $model, $arg, $bool) {
-        return $this->li($model, $arg, $bool, $this->inject($model, $arg));
-    }
-
     /**
      * @param Link $model
      * @param string $arg

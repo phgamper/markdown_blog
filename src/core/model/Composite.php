@@ -48,7 +48,6 @@ class Composite extends Container {
     public function addModel(AbstractModel $model, $key) {
         $this->count++;
         $this->limit++;
-        $model->config['paging'] = !array_key_exists('paging', $this->config) || $this->config['paging'];
         parent::addModel($model, $key);
     }
 

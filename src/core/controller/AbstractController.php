@@ -60,15 +60,6 @@ abstract class AbstractController {
         }
 
         switch (true) {
-            case $type == 'TypedContainer':
-                if (array_key_exists('leaf', $config)) {
-                    $leaf = new $config['leaf']($config);
-                } else {
-                    throw new ErrorException('There is an error in the configuration file!');
-                }
-                $model = new TypedContainer($leaf, $config);
-                self::addModel($model, $config);
-                break;
             case !array_key_exists('path', $config):
             case $type == 'Container':
             case $type == 'Composite':
