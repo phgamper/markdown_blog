@@ -55,11 +55,14 @@ if (array_key_exists('img_resize', $config) && $config['img_resize']) {
     Script::getInstance()->link('image.js');
 }
 Head::getInstance()->link(PUBLIC_LIB_DIR . 'bootstrap/css/bootstrap.min.css');
+Head::getInstance()->link(PUBLIC_LIB_DIR . 'wow/animate.css');
 // TODO wow/animate? bootstrap-theme.min.css?
 Head::getInstance()->link(PUBLIC_LIB_DIR . 'font-awesome/css/font-awesome.min.css');
 // Add jquery and bootstrap into header so included HTML pages can use the libs
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'jquery/js/jquery.min.js');
 Head::getInstance()->linkScript(PUBLIC_LIB_DIR . 'bootstrap/js/bootstrap.min.js');
+Script::getInstance()->link(PUBLIC_LIB_DIR . 'wow/wow.min.js');
+Script::getInstance()->link(JS_DIR . '/mdblog.js');
 // TODO wow/wow.min.js?
 
 // Onepager or not

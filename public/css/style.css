@@ -40,6 +40,10 @@
 	display: none;
 }
 
+.wow {
+	visibility: hidden;
+}
+
 /* TODO for pretty markdown files, => css per filetype
 .content th, .content td {
     border: 1px solid #999999;
