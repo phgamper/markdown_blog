@@ -2,10 +2,18 @@ FROM php:5.6-apache
 
 MAINTAINER Max Schrimpf <code@schrimpf.ch>
 
+RUN apt-get -y update --force-yes \
+    && apt-get install locales \
+    && dpkg-reconfigure locales \
+    && locale-gen en_US.UTF-8  
+
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
 ENV APACHE_LOG_DIR /var/www/html/log/ 
 
 RUN rm -rfv /var/www/html \
-    && mkdir /var/www/html
+    && mkdir /var/www/html \
+    && mkdir /data
 
 COPY apache.conf /etc/apache2/sites-available/
 
@@ -17,7 +25,6 @@ RUN yes | pecl install xdebug \
 RUN touch /usr/local/etc/php/conf.d/uploads.ini \
     && echo "upload_max_filesize = 10M;" >> /usr/local/etc/php/conf.d/uploads.ini
 
-
 RUN mkdir -p $APACHE_LOG_DIR\
     && mkdir -p /etc/ssl/domain/private/ \
     && mkdir -p /etc/apache2/ssl.crt/ \
@@ -26,9 +33,9 @@ RUN mkdir -p $APACHE_LOG_DIR\
     && a2enmod rewrite \
     && a2enmod ssl \
     && a2enmod headers \
-    && apt-get -y update --force-yes \
     && apt-get install -y ca-certificates \
     && apt-get install -y openssl \
+    && apt-get install -y netcat-traditional \
     && update-ca-certificates \
     && apt-get install -y imagemagick \
     && apt-get clean \
@@ -38,6 +45,9 @@ RUN mkdir -p $APACHE_LOG_DIR\
     && cp /etc/ssl/domain/domain.pem /etc/ssl/domain/intermediate.pem \
     && rm -vf /etc/apache2/sites-enabled/* \
     && ln -s /etc/apache2/sites-available/apache.conf /etc/apache2/sites-enabled/ 
+
+RUN usermod -u 1000 www-data
+RUN usermod -G staff www-data
 
 VOLUME ["$APACHE_LOG_DIR"]
 VOLUME ["/etc/ssl/domain"]
@@ -52,6 +62,7 @@ RUN chown -R www-data:www-data /var/www/html/
 
 VOLUME ["/var/www/html/public/content"]
 VOLUME ["/var/www/html/config"]
+VOLUME ["/data"]
 VOLUME ["/var/www/html/public/agent"]
 
 EXPOSE 80

@@ -104,10 +104,42 @@ class Logger
      * @return string to print
      */
     public function toString() {
-        $string = self::alertBlock('Info', 'info');
-        $string .= self::alertBlock('Success', 'success');
-        $string .= self::alertBlock('Warning', 'warning');
-        $string .= self::alertBlock('Error', 'danger');
+        $string = '';
+        if ($ret = self::alertBlock('Info')) {
+            $string .= $ret;
+            $class = 'info';
+        }
+        if ($ret = self::alertBlock('Success')) {
+            $string .= $ret;
+            $class = 'success';
+        }
+        if ($ret = self::alertBlock('Warning')) {
+            $string .= $ret;
+            $class = 'warning';
+        }
+        if ($ret = self::alertBlock('Error')) {
+            $string .= $ret;
+            $class = 'danger';
+        }
+        if (!empty($string)) {
+            Script::getInstance()->inline("$('#modal-logger').modal('show');");
+        $string = <<< HTML
+    <div class="modal fade" id="modal-logger" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content alert-$class">
+                <div class="modal-header hidden-sm hidden-md hidden-lg">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>$string</p>
+                </div>
+            </div>
+        </div>
+    </div>
+HTML;
+        }
         return $string;
     }
 
@@ -115,23 +147,18 @@ class Logger
      * prints an alert block in the colour according to the given alert type
      *
      * @param string $alert type passed
-     * @param string $class indicates which css class to use
      * @return string to print
      */
-    private function alertBlock($alert, $class) {
-        $has = false;
+    private function alertBlock($alert) {
         $string = '';
         if (! empty($this->messages)) {
-            $string .= '<div class="alert alert-'.$class.'" role="alert"><button type="button" class="close" data-dismiss="alert">x</button><ul>';
             foreach ($this->messages as $key => $msg) {
                 if ($msg instanceof $alert) {
-                    $has = true;
                     $string .= '<li>' . $msg->toString() . '</li>';
                     unset($this->messages[$key]);
                 }
             }
-            $string .= '</ul></div>';
         }
-        return $has ? $string : '';
+        return empty($string) ? false : $string;
     }
 }
