@@ -40,7 +40,7 @@ class OnePager extends AbstractPage {
      * @return string extended HTML string
      */
     protected function section(AbstractModel $model, $bool, $content) {
-        return $bool ? '<section id="' . $model->config['key'] . '"><div class="container onepager-item">' . $content . '</div></section>' : $content;
+        return $bool ? '<section id="' . $model->config['key'] . '"><div class="onepager-item"><div class="container">' . $content . '</div></div></section>' : $content;
     }
 
     /**
