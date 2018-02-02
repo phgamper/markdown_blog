@@ -44,6 +44,12 @@
 	visibility: hidden;
 }
 
+
+.modal-content, .thumbnail, .well {
+    border-radius: 0;
+}
+
+
 .modal-content.alert-info {
 	color: #31708f;
 	background-color: #d9edf7;
