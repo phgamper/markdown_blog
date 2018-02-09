@@ -62,7 +62,7 @@ class HypertextPreprocessor extends AbstractModel implements ILeaf
                 throw new Exception('File not found: ' . $this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error("An unexpected error has occurred. '".$e->getMessage()."'", 'HypertextPreprocessor::parse("'.$this->config['path'].'")', $e->getMessage()));
+            Logger::getInstance()->add(new Fault("An unexpected error has occurred. '".$e->getMessage()."'", 'HypertextPreprocessor::parse("'.$this->config['path'].'")', $e->getMessage()));
             return '';
         }
     }

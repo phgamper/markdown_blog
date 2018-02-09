@@ -88,13 +88,13 @@ class Logger
             foreach ($this->logs as $log) {
                 if (! fwrite($fh, $log->toString())) {
                     self::add(
-                        new Error('Can\'t write to Logfile: '.$this->logfile, 'Logger::writeLog( )'));
+                        new Fault('Can\'t write to Logfile: '.$this->logfile, 'Logger::writeLog( )'));
                     return;
                 }
             }
             $this->logs = array();
         } else {
-            self::add(new Error('Can\'t open Logfile: '.$this->logfile, 'Logger::writeLog( )'));
+            self::add(new Fault('Can\'t open Logfile: '.$this->logfile, 'Logger::writeLog( )'));
         }
     }
 

@@ -60,7 +60,7 @@ abstract class PageController extends AbstractController {
         } catch (ErrorException $e) {
             $config = Config::getInstance()->getErrorArray('500');
             $config['view'] = $this::VIEW;
-            $log = new Error('An unexpected error has occurred.', 'PageController::actionListener()', $e->getMessage());
+            $log = new Fault('An unexpected error has occurred.', 'PageController::actionListener()', $e->getMessage());
             $this->exception($log, $config, 500);
         } catch (Exception $e) {
             $config = Config::getInstance()->getErrorArray('404');

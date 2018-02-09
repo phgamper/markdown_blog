@@ -103,7 +103,7 @@ abstract class AbstractController {
             die();
         } catch (Exception $e) {
             $config = Config::getInstance()->getErrorArray('404');
-            $log = new Error('There is a misconfiguration in the error behaviour.', 'Controller::exception()', $e->getMessage());
+            $log = new Fault('There is a misconfiguration in the error behaviour.', 'Controller::exception()', $e->getMessage());
             self::exception($log, $config, 404);
         }
     }

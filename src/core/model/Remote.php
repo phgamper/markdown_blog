@@ -55,7 +55,7 @@ class Remote extends Markdown {
                 throw new Exception('Can not read ' . $this->config['path']);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Remote::parse("' . $this->config['path'] . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Fault('An unexpected error has occurred.', 'Remote::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

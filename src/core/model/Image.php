@@ -60,7 +60,7 @@ class Image extends AbstractModel implements ILeaf {
             $a = '<a href="#" class="toggle-swipe" data-index="' . $index . '">' . $img . '</a>';
             return '<div class="thumbnail img-resize">' . $a . '</div>';
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Image::parse("' . $this->config['path'] . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Fault('An unexpected error has occurred.', 'Image::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

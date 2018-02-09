@@ -70,7 +70,7 @@ class PhotoSwipe extends AbstractModel implements ILeaf {
 
             return '<div class="hidden">' . $items . '</div>' . $html;
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'PhotoSwipe::parse("' . $this->config['path'] . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Fault('An unexpected error has occurred.', 'PhotoSwipe::parse("' . $this->config['path'] . '")', $e->getMessage()));
             return '';
         }
     }

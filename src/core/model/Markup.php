@@ -73,6 +73,10 @@ abstract class Markup extends AbstractModel implements ILeaf{
                         if (preg_match('/^\s*(categories)\s*(=).*/i', $line)) {
                             $tags['category'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
                         }
+                        // images
+                        if (preg_match('/^\s*(images)\s*(=).*/i', $line)) {
+                            $tags['images'] = explode(';', trim(substr($line, strpos($line, '=') + 1)));
+                        }
                         // meta
                         if (preg_match('/^\s*(meta)\s*(=).*/i', $line)) {
                             $e = explode('=>', trim(substr($line, strpos($line, '=') + 1)), 2);
@@ -88,7 +92,7 @@ abstract class Markup extends AbstractModel implements ILeaf{
                 throw new Exception('Can not open ' . $file);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markup::tags("' . $file . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Fault('An unexpected error has occurred.', 'Markup::tags("' . $file . '")', $e->getMessage()));
             return [];
         }
     }
@@ -116,7 +120,7 @@ abstract class Markup extends AbstractModel implements ILeaf{
                 throw new Exception('Can not open ' . $file);
             }
         } catch (Exception $e) {
-            Logger::getInstance()->add(new Error('An unexpected error has occurred.', 'Markup::text("' . $file . '")', $e->getMessage()));
+            Logger::getInstance()->add(new Fault('An unexpected error has occurred.', 'Markup::text("' . $file . '")', $e->getMessage()));
             return '';
         }
 

@@ -111,7 +111,7 @@ function error_handler($errno, $errstr, $errfile, $errline) {
         }
         default: {
             $msg = $errno . ' - ' . $errstr . ' - ' . $errfile . ' - ' . $errline;
-            Logger::getInstance()->addLog(new Log(new Error('An unexpected error has been caught by the error_handler.', 'index.php::error_handler()', $msg)));
+            Logger::getInstance()->addLog(new Log(new Fault('An unexpected error has been caught by the error_handler.', 'index.php::error_handler()', $msg)));
         }
     }
 }

@@ -62,7 +62,7 @@ class Utils {
         $min = CACHE_DIR.md5_file($file).'.'.pathinfo($file, PATHINFO_EXTENSION);
         if (!file_exists($min)) {
             if(!copy($file, $min)){
-                Logger::getInstance()->add(new Error('Failed to copy file: "cp '.$file.' '.$min.'"', 'Utils::cacheFile()'));
+                Logger::getInstance()->add(new Fault('Failed to copy file: "cp '.$file.' '.$min.'"', 'Utils::cacheFile()'));
             }
         }
         return '/'.$min;
