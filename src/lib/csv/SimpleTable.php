@@ -40,9 +40,9 @@ class SimpleTable {
         $this->file = $file;
         $this->conf = $conf;
         $visible = explode(';', array_key_exists('visible', $conf) ? $conf['visible'] : array());
-        $this->visible = array_map(intval, $visible);
+        $this->visible = array_map("intval", $visible);
         $mobile = explode(';', array_key_exists('mobile', $conf) ? $conf['mobile'] : array());
-        $this->mobile = array_map(intval, $mobile);
+        $this->mobile = array_map("intval", $mobile);
     }
     
     public function show() {
