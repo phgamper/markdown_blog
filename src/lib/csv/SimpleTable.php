@@ -39,10 +39,8 @@ class SimpleTable {
         Script::getInstance()->link(PUBLIC_LIB_DIR."csv/simple.js");
         $this->file = $file;
         $this->conf = $conf;
-        $visible = explode(';', array_key_exists('visible', $conf) ? $conf['visible'] : array());
-        $this->visible = array_map("intval", $visible);
-        $mobile = explode(';', array_key_exists('mobile', $conf) ? $conf['mobile'] : array());
-        $this->mobile = array_map("intval", $mobile);
+        $this->visible = array_map("intval", explode(';', array_key_exists('visible', $conf) ? $conf['visible'] : array()));
+        $this->mobile = array_map("intval", explode(';', array_key_exists('mobile', $conf) ? $conf['mobile'] : array()));
     }
     
     public function show() {
@@ -76,7 +74,7 @@ class SimpleTable {
         foreach ($line as $i => $item) {
             $this->labels[$i] = $item;
             if (empty($this->visible) || in_array($i, $this->visible)) {
-                $hidden = empty($this->mobile) || in_array($i, $this->mobile) ? 'class="hidden-xs"' : '';
+                $hidden = !empty($this->mobile) && in_array($i, $this->mobile) ? 'class="hidden-xs"' : '';
                 $ret .= "<th $hidden>$item</th>";
             }
         }
@@ -96,7 +94,7 @@ class SimpleTable {
         $td = '';
         foreach ($csv as $i => $cell) {
             if (empty($this->visible) || in_array($i, $this->visible)) {
-                $hidden = empty($this->mobile) || in_array($i, $this->mobile) ? 'class="hidden-xs"' : '';
+                $hidden = !empty($this->mobile) && in_array($i, $this->mobile) ? 'class="hidden-xs"' : '';
                 $td .= '<td scope="col" '.$hidden.' '.$attr.'>'.$cell.'</td>';
             }
         }
