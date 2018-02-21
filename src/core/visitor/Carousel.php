@@ -101,4 +101,8 @@ class Carousel implements IVisitor
     {
         return []; // TODO not implemented || unused
     }
+
+    public function csv(CSV $model, $arg, $bool) {
+        return null; // TODO not implemented || unused
+    }
 }

@@ -49,4 +49,6 @@ interface IVisitor
     public function remote(Remote $model, $arg, $bool);
 
     public function link(Link $model, $arg, $bool);
+
+    public function csv(CSV $model, $arg, $bool);
 }

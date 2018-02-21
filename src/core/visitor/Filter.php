@@ -109,4 +109,8 @@ class Filter implements IVisitor {
     public function link(Link $model, $arg, $bool) {
         return null; // TODO not implemented || unused
     }
+
+    public function csv(CSV $model, $arg, $bool) {
+        return null; // TODO not implemented || unused
+    }
 }

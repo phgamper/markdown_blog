@@ -76,6 +76,11 @@ class OnePager extends AbstractPage {
         return $this->section($model, $bool, parent::container($model, $model->start, false) . $this->pager($model));
     }
 
+    /* TODO tags etc must not necessarily apply to html content */
+    public function hyperTextMarkup(HyperTextMarkup $model, $arg, $bool) {
+        return $this->section($model, $bool, $model->parse($arg));
+    }
+
     public function markup(Markup $model, $arg, $bool) {
         return $this->section($model, $bool, parent::markup($model, $arg, false));
     }

@@ -144,7 +144,25 @@ abstract class AbstractPage extends AbstractView {
     public function link(Link $model, $arg, $bool) {
         return '<div class="row content-item"><div class="col-md-12">' . $model->parse($arg) . '</div></div>';
     }
-    
+
+    public function csv(CSV $model, $arg, $bool) {
+        $content = '';
+        $conf = array_key_exists('conf', $this->config) ? $this->config['conf'] : array();
+
+        if (array_key_exists('title', $conf) && $conf['title']) {
+            $title = strtolower(str_replace('/', ' > ', URLs::getInstance()->getURI()));
+            $content .= '<div class="row"><div class="col-md-12"><h2>'.$title.'</h2></div></div><hr>';
+        }
+        if (array_key_exists('loadable', $conf) && $conf['loadable']) {
+            $content .= '<div class="row" style="padding-bottom: 16px"><div class="col-md-12 text-right"><a class="btn btn-default" href="'.$conf['loadable'].'?csv='.$this->config['path'].'";">Download CSV</a></div></div>';
+        }
+        if (array_key_exists('filter', $conf) && $conf['filter']) {
+            $content .= '<div class="row"><div class="col-md-12"><div class="input-group"> <span class="input-group-addon">Filter</span><input id="filter" type="text" class="form-control" placeholder="Type here..."></div></div></div>';
+        }
+
+        return $content.$model->parse($arg);
+    }
+
     protected function pager($model){
         $pager = '';
         if (!array_key_exists('paging', $model->config) || $model->config['paging']) {

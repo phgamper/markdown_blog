@@ -29,6 +29,9 @@ class Google {
     /**
      * Validates the Goolge ReCaptcha V2 Token found in the $_POST
      *
+     * @param callable $success
+     * @param callable $fail
+     * @param array $args
      */
     public static function validateReCaptcha(callable $success, callable $fail, array $args) {
         if(isset($_POST['g-recaptcha-response'])){

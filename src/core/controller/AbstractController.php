@@ -78,6 +78,7 @@ abstract class AbstractController {
             case $type == 'Remote':
             case $type == 'Link':
             case $type == 'PhotoSwipe':
+            case $type == 'CSV':
                 $model = new $type($config);
                 break;
             default:
