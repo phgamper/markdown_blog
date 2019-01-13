@@ -153,6 +153,9 @@ abstract class AbstractPage extends AbstractView {
             $title = strtolower(str_replace('/', ' > ', URLs::getInstance()->getURI()));
             $content .= '<div class="row"><div class="col-md-12"><h2>'.$title.'</h2></div></div><hr>';
         }
+        if (array_key_exists('readme', $conf) && $conf['readme']) {
+            $content .= $this->visit(new Markdown(array('path' => $conf['readme'])), 0, FALSE);
+        }
         if (array_key_exists('loadable', $conf) && $conf['loadable']) {
             $content .= '<div class="row" style="padding-bottom: 16px"><div class="col-md-12 text-right"><a class="btn btn-default" href="'.$conf['loadable'].'?csv='.$this->config['path'].'";">Download CSV</a></div></div>';
         }
