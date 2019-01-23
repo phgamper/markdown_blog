@@ -83,10 +83,8 @@ class Logger
      * writes all alerts into the logfile
      */
     public function writeLog() {
-        $fh = fopen($this->logfile, 'a');
-        if (!$fh) {
-            $fh = fopen('php://stdout', 'w');
-        }
+        // $fh = fopen($this->logfile, 'a');
+        $fh = fopen('php://stdout', 'w');
         if ($fh) {
             foreach ($this->logs as $log) {
                 if (! fwrite($fh, $log->toString())) {
