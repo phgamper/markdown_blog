@@ -84,6 +84,9 @@ class Logger
      */
     public function writeLog() {
         $fh = fopen($this->logfile, 'a');
+        if (!$fh) {
+            $fh = fopen('php://stdout', 'w');
+        }
         if ($fh) {
             foreach ($this->logs as $log) {
                 if (! fwrite($fh, $log->toString())) {
@@ -93,6 +96,7 @@ class Logger
                 }
             }
             $this->logs = array();
+            fclose($fh);
         } else {
             self::add(new Fault('Can\'t open Logfile: '.$this->logfile, 'Logger::writeLog( )'));
         }
